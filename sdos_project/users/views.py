@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserRegisterForm
 from .models import Account, Mentor, Mentee
+from django.contrib.auth.decorators import login_required
 
 
 def register(request):
@@ -24,7 +25,7 @@ def register_mentor(request):
 
 			username = form.cleaned_data.get('username')
 			messages.success(request, f'Mentor account Created for {username}!')
-			return redirect('register')
+			return redirect('login')
 	else:
 		form = UserRegisterForm()
 	
@@ -51,7 +52,7 @@ def register_mentee(request):
 			
 			username = form.cleaned_data.get('username')
 			messages.success(request, f'Mentee account Created for {username}!')
-			return redirect('register')
+			return redirect('login')
 	else:
 		form = UserRegisterForm()
 
@@ -60,3 +61,9 @@ def register_mentee(request):
 	}
 
 	return render(request, 'users/register_mentee.html', context)
+
+
+@login_required
+def profile(request):
+	return render(request, 'users/profile.html')
+

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
 	# Custom apps
 	'users',
+	'home',
 ]
 
 MIDDLEWARE = [
@@ -123,3 +124,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LOGIN_REDIRECT_URL = 'homepage'
+LOGIN_URL = 'login'
