@@ -30,9 +30,11 @@ INSTALLED_APPS = [
 	'users',
 	'home',
 
-	# Django Widget Tweaks
-	'widget_tweaks',
+	# Crispy Forms
+	'crispy_forms',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
 	'django.middleware.security.SecurityMiddleware',

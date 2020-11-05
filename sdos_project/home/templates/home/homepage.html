@@ -9,10 +9,26 @@ Homepage
 {% block content %}
 <div class="jumbotron jumbotron-fluid" style="background: none; margin-top: 20vh;">
 	<center>
-		<div class="container">
-			<h1 class="display-2">Mentoring Platform</h1>
-			<p class="lead">A place to learn and grow!</p>
-		</div>
+		{% if user.is_authenticated %}
+
+			<h1 class="display-4">
+				Hi <b>{{ user.username }}</b>!
+			</h1>
+			{% if user.account.is_mentor %}
+				We are pleased to have you as a mentor
+			{% else %}
+				We are pleased to have you as a mentee
+			{% endif %}
+		
+		{% else %}
+
+			<div class="container">
+				<h1 class="display-2">Mentoring Platform</h1>
+				<br/>
+				<p class="lead">A place to learn and grow!</p>
+			</div>
+
+		{% endif %}			
 	</center>
 </div>
 {% endblock content %}

@@ -1,16 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "home/base.html" %}
+{% load crispy_forms_tags %}
 
-<head>
-	<title>Register as a Mentee</title>
-</head>
 
-<body>
-	<form method="POST">
-		{% csrf_token %}
-		{{ form.as_p }}
-		<button type="submit">Sign Up as a Mentee</button>
-	</form>
-</body>
+{% block title %}
+Register
+{% endblock title %}
 
-</html>
+
+{% block content %}
+
+<div class="container" style="margin-top: 5vh;">
+	<div class="row justify-content-center">
+		<div class="col-5">
+			<center>
+				<h1 class="display-3">Be a Mentee</h1>
+			</center>
+			<br />
+
+			<form method="POST" action="{% url 'register_mentee' %}">
+				{% csrf_token %}
+				
+				{{ form|crispy }}
+				
+				<center>
+					<input type="submit" class="btn btn-success col-6"></input>
+				</center>
+			</form>
+
+			<div class="pt-3">
+				<small class="text-muted">
+					Already Have An Account? <a class="ml-2" href="{% url 'login' %}">Login</a>
+				</small>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}
