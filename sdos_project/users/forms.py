@@ -10,18 +10,16 @@ class UserRegisterForm(UserCreationForm):
 		# model that will be affected is the user model, i.e. at form.save(), it will update the User model
 		model = User
 		# fields needed in form in this order
-		fields = ('username', 'email', 'password1', 'password2')
+		fields = ("username", "email", "password1", "password2")
 
 
 class MentorRegisterForm(forms.ModelForm):
-
 	class Meta:
 		model = Mentor
-		fields = []
+		fields = "__all__"
+
 
 class MenteeRegisterForm(forms.ModelForm):
-
 	class Meta:
 		model = Mentee
-		fields = []
-		
+		fields = "__all__"
