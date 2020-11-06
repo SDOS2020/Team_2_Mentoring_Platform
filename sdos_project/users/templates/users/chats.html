@@ -1,0 +1,42 @@
+{% extends "home/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+{% block title %}
+Chat
+{% endblock title %}
+
+
+{% block content %}
+
+<div class="container" style="margin-top: 10vh;">
+	<div class="row justify-content-center">
+		<div class="col-6">
+			<center>
+				<h1 class="display-3">Chat with users</h1>
+			</center>
+			<br />
+
+			<div id="vue-chat">
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}
+
+
+{% block javascript %}
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+{# <script src="{% static 'vue-advanced-chat/dist/vue-advanced-chat.min.js' %}"></script> #}
+
+<script>
+const app = new Vue({
+	delimiters: ["[[", "]]"],
+});
+	
+app.$mount("#vue-chat");
+</script>
+
+{% endblock javascript %}
