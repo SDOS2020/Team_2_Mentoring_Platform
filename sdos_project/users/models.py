@@ -28,8 +28,8 @@ class Account(models.Model):
 	PREFER_NOT_TO_SAY = '-'
 
 	GENDER_CHOICES = [
-		(MALE, 'MALE'),
-		(FEMALE, 'FEMALE'),
+		(MALE, 'Male'),
+		(FEMALE, 'Female'),
 		(PREFER_NOT_TO_SAY, 'Prefer not to say'),
 	]
 
