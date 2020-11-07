@@ -115,10 +115,43 @@ class Mentee(models.Model):
 		return self.account.user.username
 
 
-class MentorMentee(models.Model):
+class MyMentee(models.Model):
 	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
 	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
 
 	def __str__(self):
 		return self.mentor.account.user.username + ' -> ' + self.mentee.account.user.username
+
+
+"""
+	For performance gains
+"""
+class MyMentor(models.Model):
+	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
+	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return self.mentee.account.user.username + ' -> ' + self.mentor.account.user.username
+
+
+"""
+	For a mentor to view menteeship requests
+"""
+class PendingMenteeshipRequest(models.Model):
+	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
+	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return self.mentor.account.user.username + ' -> ' + self.mentee.account.user.username
+
+
+"""
+	For a mentee to view mentorship requests
+"""
+class PendingMentorshipRequest(models.Model):
+	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
+	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return self.mentee.account.user.username + ' -> ' + self.mentor.account.user.username
 
