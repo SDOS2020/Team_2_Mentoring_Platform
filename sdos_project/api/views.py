@@ -33,19 +33,19 @@ def search_users(request):
 
 @login_required
 def get_user_requests(request):
-	current_user = request.user
-	print(current_user)
+	user = request.user
+	print(user)
 
 	user_requests = []
 	
-	if current_user.account.is_mentor:
-		for user_request in MenteeSentRequest.objects.filter(mentor=current_user.account.mentor):
+	if user.account.is_mentor:
+		for user_request in MenteeSentRequest.objects.filter(mentor=user.account.mentor):
 			user_requests.append({
 				'id': user_request.id,
 				'username': user_request.mentee.account.user.username
 			})
 	else:
-		for user_request in MentorSentRequest.objects.filter(mentor=current_user.account.mentor):
+		for user_request in MentorSentRequest.objects.filter(mentee=user.account.mentee):
 			user_requests.append({
 				'id': user_request.id,
 				'username': user_request.mentor.account.user.username
