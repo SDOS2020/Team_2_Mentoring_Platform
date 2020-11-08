@@ -137,7 +137,7 @@ class MyMentor(models.Model):
 """
 	For a mentor to view menteeship requests
 """
-class PendingMenteeshipRequest(models.Model):
+class MentorSentRequest(models.Model):
 	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
 	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
 
@@ -148,7 +148,7 @@ class PendingMenteeshipRequest(models.Model):
 """
 	For a mentee to view mentorship requests
 """
-class PendingMentorshipRequest(models.Model):
+class MenteeSentRequest(models.Model):
 	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
 	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
 

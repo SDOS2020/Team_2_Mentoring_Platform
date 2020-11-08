@@ -7,8 +7,8 @@ from .models import (
 	Mentee, 
 	MyMentee, 
 	MyMentor, 
-	PendingMenteeshipRequest, 
-	PendingMentorshipRequest
+	MenteeSentRequest, 
+	MentorSentRequest
 )
 
 
@@ -20,5 +20,5 @@ admin.site.register(Mentor)
 admin.site.register(Mentee)
 admin.site.register(MyMentee)
 admin.site.register(MyMentor)
-admin.site.register(PendingMenteeshipRequest)
-admin.site.register(PendingMentorshipRequest)
+admin.site.register(MenteeSentRequest)
+admin.site.register(MentorSentRequest)

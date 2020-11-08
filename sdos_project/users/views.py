@@ -69,3 +69,7 @@ def search_users(request):
 @login_required
 def chat_user(request):
 	return render(request, "users/chats.html")
+
+@login_required
+def my_requests(request):
+	return render(request, "users/my_requests.html")
