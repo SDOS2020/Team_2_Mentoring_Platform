@@ -3,6 +3,7 @@ from django.contrib import messages
 from .forms import UserRegisterForm
 from .models import Account, Mentor, Mentee
 from django.contrib.auth.decorators import login_required
+from users.models import User
 
 
 def register_mentor(request):
@@ -61,5 +62,16 @@ def register_mentee(request):
 
 
 @login_required
-def profile(request):
-	return render(request, "users/profile.html")
+def profile(request, username):
+	requested_user = User.objects.get(username=username)
+	return render(request, "users/dist/profile.html", {'requested_user': requested_user})
+
+
+@login_required
+def search_users(request):
+	return render(request, "users/search_users.html")
+
+
+@login_required
+def chat_user(request):
+	return render(request, "users/chats.html")
