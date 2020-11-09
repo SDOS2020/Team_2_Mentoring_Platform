@@ -7,5 +7,5 @@ urlpatterns = [
 	path("get_user_requests/", api_views.get_user_requests, name="get_user_requests"),
 	path("accept_request/", api_views.accept_request, name="accept_request"),
 	path("reject_request/", api_views.reject_request, name="reject_request"),
-	path("send_mentorship_request/", api_views.send_mentorship_request, name="send_mentorship_request"),
+	path("send_request/", api_views.send_request, name="send_request"),
 ]
