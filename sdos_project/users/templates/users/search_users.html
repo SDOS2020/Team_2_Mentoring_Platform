@@ -47,24 +47,35 @@ Find users
 				<ul class="list-group">
 					<a href="#" v-for="result in searchResults" v-bind:key="result.id">
 						<li class="list-group-item">
-							[[ result.username ]]
-							<span class="text-muted" v-if="result.is_mentor">
-								<i>@ Mentor</i>
-							</span>
-							<span class="text-muted" v-else>
-								<i>@ Mentee</i>
-							</span>
+							<div style="float: left;">
+								[[ result.username ]]
+								<span class="text-muted" v-if="result.is_mentor">
+									<i>@ Mentor</i>
+								</span>
+								<span class="text-muted" v-else>
+									<i>@ Mentee</i>
+								</span>
+							</div>
+							<div align="right" v-if="result.status === 0">
+								<button class="btn"></button>
+							</div>
 							<div align="right" v-if="result.status === 1">
-								<button v-on:click="sendRequest(result.username)"> Request Mentorship </button>
+								<button class="btn btn-sm btn-primary" v-on:click="sendRequest(result.username)"> Request Mentorship </button>
 							</div>
 							<div align="right" v-if="result.status === 2">
-								<button> Pending Request </button>
+								<button class="btn btn-sm btn-primary" v-on:click="sendRequest(result.username)"> Request Menteeship </button>
 							</div>
 							<div align="right" v-if="result.status === 3">
-								<button> Mentee </button>
+								<button class="btn btn-sm btn-warning" disabled> Pending Request </button>
 							</div>
 							<div align="right" v-if="result.status === 4">
-								<button> Mentor </button>
+								<button class="btn btn-sm btn-secondary" disabled> Request Received </button>
+							</div>
+							<div align="right" v-if="result.status === 5">
+								<button class="btn btn-sm btn-info" disabled> Mentee </button>
+							</div>
+							<div align="right" v-if="result.status === 6">
+								<button class="btn btn-sm btn-info" disabled> Mentor </button>
 							</div>
 						</li>
 					</a>
@@ -80,7 +91,7 @@ Find users
 		methods: {
 			searchUsers() {
 				if (this.searchQuery.length === 0) {
-					this.searchResults = []
+					this.searchResults = [];
 					return ;
 				}
 
@@ -109,7 +120,7 @@ Find users
 				});
 			},
 			sendRequest(username) {
-				let request_url = "http://127.0.0.1:8000/api/send_mentorship_request";
+				let request_url = "http://127.0.0.1:8000/api/send_request";
 
 				axios.get(request_url, {
 					'params': {
@@ -120,7 +131,7 @@ Find users
 					console.log("[SUCCESS]");
 					for (result of this.searchResults) {
 						if (result.username === username) {
-							result.status = 2;
+							result.status = 3;
 							break;
 						}
 					}
