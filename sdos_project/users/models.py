@@ -1,7 +1,7 @@
 from django.db import models
 from django.core import validators
 from django.contrib.auth.models import AbstractUser
-
+from django.utils.translation import gettext_lazy as _
 
 # Top most - for authentication purpose only
 class User(AbstractUser):
@@ -12,6 +12,9 @@ class Admin(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
+"""
+	The main class that stores all the common information for a mentor and a mentee
+"""
 class Account(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	age = models.IntegerField(
@@ -80,6 +83,9 @@ class Account(models.Model):
 		return self.user.username
 
 
+"""
+	The mentor class, stores attributes specific to a mentor
+"""
 class Mentor(models.Model):
 	account = models.OneToOneField(Account, on_delete=models.CASCADE)
 	mentorship_duration = models.IntegerField(
@@ -91,7 +97,6 @@ class Mentor(models.Model):
 		]
 	)
 
-	mentee_types = models.TextField(max_length=512, null=True)
 	mentee_group_size = models.IntegerField(
 		default=1,
 		validators=[
@@ -104,8 +109,10 @@ class Mentor(models.Model):
 	def __str__(self):
 		return self.account.user.username
 
-# add 2 tables Types of Mentee, Types of Mentor
 
+"""
+	The mentee class, stores attributes specific to a mentee
+"""
 class Mentee(models.Model):
 	account = models.OneToOneField(Account, on_delete=models.CASCADE)
 	needs_mentoring = models.BooleanField(default=True)
@@ -116,6 +123,44 @@ class Mentee(models.Model):
 		return self.account.user.username
 
 
+"""
+	The different type of users that can exist. These types are accessed in the types of mentee a mentor
+	needs, and also the types of mentor a mentee needs.
+"""
+class Types(models.TextChoices):
+	BTECH = 'B', _('BTech')
+	PHD = 'P', _('PhD')
+	COMPUTER_SCIENCE = 'CSE'
+	FACULTY = 'F'
+	ELECTRONICS_AND_COMMUNICATION = 'ECE'
+
+
+"""
+	This table stores the preferences of the Mentor i.e. the type of mentees he/she is looking for
+"""
+class TypesOfMentee(models.Model):
+	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
+	mentee_type = models.CharField(max_length=3, choices=Types.choices, null=True)
+
+	def __str__(self):
+		return self.mentor.account.user.username + ' has preference: ' + self.get_mentee_type_display()
+
+
+"""
+	This table stores the preferences of the Mentee i.e. the type of mentors he/she is looking for
+"""
+class TypesOfMentor(models.Model):
+	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
+	mentor_type = models.CharField(max_length=3, choices=Types.choices, null=True)
+
+	def __str__(self):
+		return self.mentee.account.user.username + ' has preference: ' + self.get_mentor_type_display()
+
+
+"""
+	Stores the mentees assigned to a mentor, you can get the mentees assigned to a mentor by 
+	querying, MyMentee.objects.filter(mentor='current-mentor')
+"""
 class MyMentee(models.Model):
 	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
 	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
@@ -126,6 +171,8 @@ class MyMentee(models.Model):
 
 """
 	For performance gains
+	Stores the mentors assigned to a mentee, you can get the mentors assigned to a mentee by 
+	querying, MyMentor.objects.filter(mentee='current-mentee')
 """
 class MyMentor(models.Model):
 	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
