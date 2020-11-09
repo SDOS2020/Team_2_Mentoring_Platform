@@ -61,9 +61,12 @@ Find users
 								<button> Pending Request </button>
 							</div>
 							<div align="right" v-if="result.status === 3">
-								<button> Mentee </button>
+								<button> Request Received </button>
 							</div>
 							<div align="right" v-if="result.status === 4">
+								<button> Mentee </button>
+							</div>
+							<div align="right" v-if="result.status === 5">
 								<button> Mentor </button>
 							</div>
 						</li>
