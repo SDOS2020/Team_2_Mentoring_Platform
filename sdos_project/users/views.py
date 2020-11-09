@@ -7,6 +7,9 @@ from users.models import User
 
 
 def register_mentor(request):
+	if request.user.is_authenticated:
+		return redirect('homepage')
+	
 	if request.method == "POST":
 		form = UserRegisterForm(request.POST)
 		if form.is_valid():
@@ -20,8 +23,6 @@ def register_mentor(request):
 			mentor = Mentor(account=account)
 			mentor.save()
 
-			username = form.cleaned_data.get("username")
-			messages.success(request, f"Mentor account created for {username}!")
 			return redirect("login")
 	else:
 		form = UserRegisterForm()
@@ -34,6 +35,9 @@ def register_mentor(request):
 
 
 def register_mentee(request):
+	if request.user.is_authenticated:
+		return redirect('homepage')
+	
 	if request.method == "POST":
 		form = UserRegisterForm(request.POST)
 		if form.is_valid():
@@ -48,8 +52,6 @@ def register_mentee(request):
 			mentee = Mentee(account=account)
 			mentee.save()
 
-			username = form.cleaned_data.get("username")
-			messages.success(request, f"Mentee account created for {username}!")
 			return redirect("login")
 	else:
 		form = UserRegisterForm()
@@ -75,3 +77,8 @@ def search_users(request):
 @login_required
 def chat_user(request):
 	return render(request, "users/chats.html")
+
+
+@login_required
+def my_requests(request):
+	return render(request, "users/my_requests.html")
