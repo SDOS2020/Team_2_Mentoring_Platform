@@ -59,6 +59,8 @@ def search_users(request):
 	return JsonResponse(shortlist, safe=False)
 
 
+# TODO : 1. avoid duplicate requests, 
+# TODO : 2. check if the person is already a mentor / mentee
 @login_required
 def send_mentorship_request(request):
 	user = request.user
@@ -96,6 +98,8 @@ def get_user_requests(request):
 	return JsonResponse(user_requests, safe=False)
 
 
+# TODO : 1. avoid duplicate requests, 
+# TODO : 2. check if the request already exists
 @login_required
 def accept_request(request):
 	user = request.user
@@ -117,6 +121,9 @@ def accept_request(request):
 	
 	return JsonResponse({"success": True}, safe=False)
 
+
+# TODO : 1. avoid duplicate requests, 
+# TODO : 2. check if the request already exists
 @login_required
 def reject_request(request):
 	user = request.user
