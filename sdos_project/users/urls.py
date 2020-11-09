@@ -5,7 +5,7 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
 	# When user is logged out
-	path("login/", auth_views.LoginView.as_view(template_name="users/login.html"), name="login"),
+	path("login/", auth_views.LoginView.as_view(template_name="users/login.html", redirect_authenticated_user=True), name="login"),
 	path("register_mentor/", user_views.register_mentor, name="register_mentor"),
 	path("register_mentee/", user_views.register_mentee, name="register_mentee"),
 

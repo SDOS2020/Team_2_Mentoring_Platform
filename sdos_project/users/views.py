@@ -6,6 +6,9 @@ from django.contrib.auth.decorators import login_required
 
 
 def register_mentor(request):
+	if request.user.is_authenticated:
+		return redirect('homepage')
+	
 	if request.method == "POST":
 		form = UserRegisterForm(request.POST)
 		if form.is_valid():
@@ -31,6 +34,9 @@ def register_mentor(request):
 
 
 def register_mentee(request):
+	if request.user.is_authenticated:
+		return redirect('homepage')
+	
 	if request.method == "POST":
 		form = UserRegisterForm(request.POST)
 		if form.is_valid():
