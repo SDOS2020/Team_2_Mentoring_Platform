@@ -45,10 +45,14 @@ Find users
 				</div>
 
 				<ul class="list-group">
-					<a href="#" v-for="result in searchResults" v-bind:key="result.id">
+          <!-- Change a to something else -->
+					<a v-for="result in searchResults" v-bind:key="result.id">
 						<li class="list-group-item">
 							<div style="float: left;">
-								[[ result.username ]]
+                <a :href="'//127.0.0.1:8000/users/profile/' + result.name">
+								  [[ result.username ]]
+                </a>
+                &nbsp
 								<span class="text-muted" v-if="result.is_mentor">
 									<i>@ Mentor</i>
 								</span>
@@ -85,7 +89,7 @@ Find users
 		data() {
 			return {
 				searchQuery: "",
-				searchResults: [],
+				searchResults: []
 			};
 		},
 		methods: {
