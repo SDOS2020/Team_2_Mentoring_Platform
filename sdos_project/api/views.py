@@ -14,21 +14,63 @@ from django.contrib.auth.decorators import login_required
 # TODO: Filters
 @login_required
 def search_users(request):
+	user = request.user
 	pattern = request.GET.get('pattern')
 	print(Mentor.objects.all())
 	print(Mentee.objects.all())
 	
 	shortlist = []
 
+	# Status codes
+	NOT_ALLOWED = 0
+	REQUEST_MENTORSHIP = 1
+	PENDING_REQUEST = 2
+	MY_MENTEE = 3
+	MY_MENTOR = 4
+
 	for account in Account.objects.all():
+		status = NOT_ALLOWED
+		if account.is_mentor != user.account.is_mentor:
+			if user.account.is_mentor:
+				# current user is a mentor, other user is a mentee
+				if MyMentee.objects.filter(mentor=user.account.mentor, mentee=account.mentee).exists():
+					status = MY_MENTEE
+				elif MentorSentRequest.objects.filter(mentor=user.account.mentor, mentee=account.mentee).exists():
+					status = PENDING_REQUEST
+				else:
+					status = REQUEST_MENTORSHIP
+			else:
+				# current user is a mentee, other user is a mentor
+				if MyMentor.objects.filter(mentor=account.mentor, mentee=user.account.mentee).exists():
+					status = MY_MENTOR
+				elif MenteeSentRequest.objects.filter(mentor=account.mentor, mentee=user.account.mentee).exists():
+					status = PENDING_REQUEST
+				else:
+					status = REQUEST_MENTORSHIP
+
 		if pattern.lower() in account.user.username.lower():
 			shortlist.append({
 				'id': account.id,
-				'name': account.user.username,
-				'is_mentor': account.is_mentor
+				'username': account.user.username,
+				'is_mentor': account.is_mentor,
+				'status': status
 			})
 
 	return JsonResponse(shortlist, safe=False)
+
+
+@login_required
+def send_mentorship_request(request):
+	user = request.user
+	requestee = request.GET.get('requestee')
+	requestee = User.objects.get(username=requestee)
+
+	if user.account.is_mentor:
+		MentorSentRequest.objects.create(mentor=user.account.mentor, mentee=requestee.account.mentee)
+	else:
+		MenteeSentRequest.objects.create(mentee=user.account.mentee, mentor=requestee.account.mentor)
+	
+	return JsonResponse({"success" : True})
 
 
 @login_required

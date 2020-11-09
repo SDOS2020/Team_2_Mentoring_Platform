@@ -47,13 +47,25 @@ Find users
 				<ul class="list-group">
 					<a href="#" v-for="result in searchResults" v-bind:key="result.id">
 						<li class="list-group-item">
-							[[ result.name ]]
+							[[ result.username ]]
 							<span class="text-muted" v-if="result.is_mentor">
 								<i>@ Mentor</i>
 							</span>
 							<span class="text-muted" v-else>
 								<i>@ Mentee</i>
 							</span>
+							<div align="right" v-if="result.status === 1">
+								<button v-on:click="sendRequest(result.username)"> Request Mentorship </button>
+							</div>
+							<div align="right" v-if="result.status === 2">
+								<button> Pending Request </button>
+							</div>
+							<div align="right" v-if="result.status === 3">
+								<button> Mentee </button>
+							</div>
+							<div align="right" v-if="result.status === 4">
+								<button> Mentor </button>
+							</div>
 						</li>
 					</a>
 				</ul>
@@ -62,12 +74,13 @@ Find users
 		data() {
 			return {
 				searchQuery: "",
-				searchResults: []
+				searchResults: [],
 			};
 		},
 		methods: {
 			searchUsers() {
 				if (this.searchQuery.length === 0) {
+					this.searchResults = []
 					return ;
 				}
 
@@ -93,6 +106,28 @@ Find users
 					console.log("[ERROR]");
 					console.log(error);
 					this.searchResults = [];
+				});
+			},
+			sendRequest(username) {
+				let request_url = "http://127.0.0.1:8000/api/send_mentorship_request";
+
+				axios.get(request_url, {
+					'params': {
+						'requestee': username
+					}
+				})
+				.then(response => {
+					console.log("[SUCCESS]");
+					for (result of this.searchResults) {
+						if (result.username === username) {
+							result.status = 2;
+							break;
+						}
+					}
+				})
+				.catch(error => {
+					console.log("[ERROR]");
+					console.log(error);
 				});
 			}
 		}

@@ -104,6 +104,7 @@ class Mentor(models.Model):
 	def __str__(self):
 		return self.account.user.username
 
+# add 2 tables Types of Mentee, Types of Mentor
 
 class Mentee(models.Model):
 	account = models.OneToOneField(Account, on_delete=models.CASCADE)
