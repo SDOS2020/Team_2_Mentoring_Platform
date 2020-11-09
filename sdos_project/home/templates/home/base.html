@@ -49,6 +49,12 @@
 						Find users
 					</a>
 				</li>
+
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'my_requests' %}">
+						Requests
+					</a>
+				</li>
 			
 			{% else %}
 			
@@ -135,7 +141,6 @@
 	integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s"
 	crossorigin="anonymous"></script>
 
-<!-- JavaScript (VueJS) -->
 {% block javascript %}{% endblock javascript %}
 
 </body>

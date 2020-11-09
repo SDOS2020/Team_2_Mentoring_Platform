@@ -14,5 +14,7 @@ urlpatterns = [
 	path("profile/", user_views.profile, name="profile"),
 	path("search_users/", user_views.search_users, name="search_users"),
 	path("chat_user/", user_views.chat_user, name="chat"),
+	path("my_requests/", user_views.my_requests, name="my_requests"),
+
 ]
 
