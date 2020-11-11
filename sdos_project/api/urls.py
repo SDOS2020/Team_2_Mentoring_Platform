@@ -8,4 +8,6 @@ urlpatterns = [
 	path("accept_request/", api_views.accept_request, name="accept_request"),
 	path("reject_request/", api_views.reject_request, name="reject_request"),
 	path("send_request/", api_views.send_request, name="send_request"),
+	path("get_mentors/", api_views.get_mentors, name="get_mentors"),
+	path("get_mentees/", api_views.get_mentees, name="get_mentees"),
 ]

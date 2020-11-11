@@ -1,49 +1,46 @@
 {% extends "home/base.html" %}
-{% load crispy_forms_tags %}
 {% load static %}
 
 
 {% block title %}
-Find users
+My Mentors
 {% endblock title %}
 
 
 {% block content %}
-
 <div class="container" style="margin-top: 10vh;">
 	<div class="row justify-content-center">
 		<div class="col-md-6">
 			<center>
 				<h1 class="display-3">
-					Search for users
+					My Mentees
 				</h1>
 			</center>
 			<br />
 
-			<div id="vue-search-users">
-				<search-users />
+			<div id="vue-my-mentees">
+				<my-mentees />
 			</div>
 		</div>
 	</div>
 </div>
-
 {% endblock content %}
 
 
 {% block javascript %}
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="{% static 'users/vue_components/search_users.js' %}"></script>
+<script src="{% static 'users/vue_components/show_mentees.js' %}"></script>
 
 <script>
 	const app = new Vue({
 		delimiters: ["[[", "]]"],
 		components: {
-			"search-users": SearchUsers,
+			"my-mentees": ShowMentees,
 		},
 	});
 
-	app.$mount("#vue-search-users");
+	app.$mount("#vue-my-mentees");
 </script>
 
 {% endblock javascript %}

@@ -82,3 +82,13 @@ def chat_user(request):
 @login_required
 def my_requests(request):
 	return render(request, "users/my_requests.html")
+
+
+@login_required
+def my_mentors(request):
+	return render(request, "users/my_mentors.html")
+
+
+@login_required
+def my_mentees(request):
+	return render(request, "users/my_mentees.html")
