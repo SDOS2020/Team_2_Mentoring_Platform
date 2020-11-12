@@ -7,7 +7,8 @@ from users.models import (
 	MenteeSentRequest, 
 	MentorSentRequest, 
 	MyMentee, 
-	MyMentor)
+	MyMentor
+)
 
 from django.contrib.auth.decorators import login_required
 
@@ -254,3 +255,42 @@ def reject_request(request):
 	
 	return JsonResponse({"success" : False})
 	
+
+@login_required
+def get_mentors(request):
+	user = request.user
+	mentors = MyMentor.objects.filter(mentee=user.account.mentee)
+
+	mentor_ids = []
+	for mentor in mentors:
+		mentor_ids.append({
+			'id': mentor.id,
+			'username': mentor.mentor.account.user.username
+		})
+	
+	response = {
+		'mentors': mentor_ids,
+		'success': True
+	}
+
+	return JsonResponse(response, safe=False)
+
+
+@login_required
+def get_mentees(request):
+	user = request.user
+	mentees = MyMentee.objects.filter(mentor=user.account.mentor)
+
+	mentee_ids = []
+	for mentee in mentees:
+		mentee_ids.append({
+			'id': mentee.id,
+			'username': mentee.mentee.account.user.username
+		})
+
+	response = {
+		'mentees': mentee_ids,
+		'success': True
+	}
+
+	return JsonResponse(response, safe=False)
