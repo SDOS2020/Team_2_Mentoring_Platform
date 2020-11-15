@@ -124,40 +124,6 @@ class Mentee(models.Model):
 
 
 """
-	The different type of users that can exist. These types are accessed in the types of mentee a mentor
-	needs, and also the types of mentor a mentee needs.
-"""
-class Types(models.TextChoices):
-	BTECH = 'B', _('BTech')
-	PHD = 'P', _('PhD')
-	COMPUTER_SCIENCE = 'CSE'
-	FACULTY = 'F'
-	ELECTRONICS_AND_COMMUNICATION = 'ECE'
-
-
-"""
-	This table stores the preferences of the Mentor i.e. the type of mentees he/she is looking for
-"""
-class TypesOfMentee(models.Model):
-	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
-	mentee_type = models.CharField(max_length=3, choices=Types.choices, null=True)
-
-	def __str__(self):
-		return self.mentor.account.user.username + ' has preference: ' + self.get_mentee_type_display()
-
-
-"""
-	This table stores the preferences of the Mentee i.e. the type of mentors he/she is looking for
-"""
-class TypesOfMentor(models.Model):
-	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
-	mentor_type = models.CharField(max_length=3, choices=Types.choices, null=True)
-
-	def __str__(self):
-		return self.mentee.account.user.username + ' has preference: ' + self.get_mentor_type_display()
-
-
-"""
 	Stores the mentees assigned to a mentor, you can get the mentees assigned to a mentor by 
 	querying, MyMentee.objects.filter(mentor='current-mentor')
 """
@@ -202,4 +168,76 @@ class MenteeSentRequest(models.Model):
 
 	def __str__(self):
 		return self.mentee.account.user.username + ' -> ' + self.mentor.account.user.username
+
+"""
+	The different type of users that can exist. These types are accessed in the types of mentee a mentor
+	needs, and also the types of mentor a mentee needs.
+"""
+class Roles(models.IntegerChoices):
+	undergraduate = 1, _('Btech')
+	graduate = 2, _('Mtech')
+	post_graduate = 3, _('PhD')
+	faculty = 4, _('Faculty')
+	developer = 5, _('Developer')
+
+
+"""
+	The different fields of users that can exist. 
+"""
+class Fields(models.IntegerChoices):
+	computer_science = 1, _('CS')
+	electronics_and_communication = 2, _('ECE')
+	computer_science_and_design = 3, _('CSD')
+
+
+"""
+	Stores the mentors qualifications, their role (current / past), their fields(current / past)
+"""
+class MentorRoleField(models.Model):
+	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
+	role = models.IntegerField(choices=Roles.choices, null=True)
+	field = models.IntegerField(choices=Fields.choices, null=True)
+
+	def __str__(self):
+		return self.mentor.account.user.username + ' -> ' + self.get_role_display() + ' -> ' + self.get_field_display()
+
+
+"""
+	Stores the mentees qualifications, their role (current / past), their fields(current / past)
+"""
+class MenteeRoleField(models.Model):
+	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
+	role = models.IntegerField(choices=Roles.choices, null=True)
+	field = models.IntegerField(choices=Fields.choices, null=True)
+
+	def __str__(self):
+		return self.mentor.account.user.username + ' -> ' + self.get_role_display() + ' -> ' + self.get_field_display()
+
+
+"""
+	Stores what the mentors expect from mentees in terms of their
+	qualifications, their role (current / past), their fields(current / past)
+"""
+class MentorExpectedRoleField(models.Model):
+	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
+	role = models.IntegerField(choices=Roles.choices, null=True)
+	field = models.IntegerField(choices=Fields.choices, null=True)
+
+	def __str__(self):
+		return self.mentor.account.user.username + ' -> ' + self.get_role_display() + ' -> ' + self.get_field_display()
+
+
+"""
+	Stores what the mentees expect from mentors in terms of their
+	qualifications, their role (current / past), their fields(current / past)
+
+	NOTE: this might be deleted later on...
+"""
+class MenteeExpectedRoleField(models.Model):
+	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
+	role = models.IntegerField(choices=Roles.choices, null=True)
+	field = models.IntegerField(choices=Fields.choices, null=True)
+
+	def __str__(self):
+		return self.mentor.account.user.username + ' -> ' + self.get_role_display() + ' -> ' + self.get_field_display()
 
