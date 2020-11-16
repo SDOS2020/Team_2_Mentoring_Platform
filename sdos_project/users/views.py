@@ -5,6 +5,7 @@ from .models import Account, Mentor, Mentee
 from django.contrib.auth.decorators import login_required
 from users.models import User
 
+from .decorators import mentee_required
 
 def register_mentor(request):
 	if request.user.is_authenticated:
@@ -92,3 +93,9 @@ def my_mentors(request):
 @login_required
 def my_mentees(request):
 	return render(request, "users/my_mentees.html")
+
+
+@login_required
+@mentee_required
+def my_recommendations(request):
+	return render(request, "users/my_recommendations.html")

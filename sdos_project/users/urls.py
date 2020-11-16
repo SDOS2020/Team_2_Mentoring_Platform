@@ -17,4 +17,5 @@ urlpatterns = [
 	path("my_requests/", user_views.my_requests, name="my_requests"),
 	path("my_mentors/", user_views.my_mentors, name="my_mentors"),
 	path("my_mentees/", user_views.my_mentees, name="my_mentees"),
+	path("my_recommendations/", user_views.my_recommendations, name="my_recommendations"),
 ]

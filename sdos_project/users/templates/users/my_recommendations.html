@@ -1,0 +1,45 @@
+{% extends "home/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+{% block title %}
+Find users
+{% endblock title %}
+
+
+{% block content %}
+
+<div class="container" style="margin-top: 10vh;">
+	<div class="row justify-content-center">
+		<div class="col-6">
+			<center>
+				<h1 class="display-3">Recommendations</h1>
+			</center>
+			<br />
+			<div id="vue-my-recommendations">
+				<my-recommendations />
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}
+
+
+{% block javascript %}
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="{% static 'users/vue_components/my_recommendations.js' %}"></script>
+
+<script>
+	const app = new Vue({
+		delimiters: ["[[", "]]"],
+		components: {
+			"my-recommendations": Recommendations,
+		},
+	});
+
+	app.$mount("#vue-my-recommendations");
+</script>
+{% endblock javascript %}

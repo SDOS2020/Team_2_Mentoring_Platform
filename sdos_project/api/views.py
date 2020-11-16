@@ -355,6 +355,8 @@ def reject_request(request):
 @login_required
 def get_mentors(request):
 	user = request.user
+	# TODO: get a list of mentors only and not a list of mentor / mentee
+	# SUGGESTED EDIT: mentors = map(lambda x: x.mentor, mentors)
 	mentors = MyMentor.objects.filter(mentee=user.account.mentee)
 
 	mentor_ids = []
@@ -386,6 +388,24 @@ def get_mentees(request):
 
 	response = {
 		'mentees': mentee_ids,
+		'success': True
+	}
+
+	return JsonResponse(response, safe=False)
+
+
+@login_required
+def get_recommendations(request):
+	mentors = []
+	for mentor in Mentor.objects.all():
+		mentors.append(
+			{
+				"id": mentor.id,
+				"username": mentor.account.user.username
+			}
+		)
+	response = {
+		'recommendations': mentors,
 		'success': True
 	}
 
