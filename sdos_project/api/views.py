@@ -109,9 +109,9 @@ def search_users(request):
 			status = NOT_ALLOWED
 
 			if account.is_mentor != user.account.is_mentor:
+				# current user is a mentor, other user is a mentee
 				if not mentees_allowed:
 					continue
-				# current user is a mentor, other user is a mentee
 
 				if not filter_mentee(account.mentee, filters):
 					continue
@@ -126,6 +126,9 @@ def search_users(request):
 					status = REQUEST_MENTEESHIP
 			else:
 				if not mentors_allowed:
+					continue
+
+				if not filter_mentor(account.mentor, filters):
 					continue
 
 			if pattern.lower() in account.user.username.lower():
@@ -157,6 +160,9 @@ def search_users(request):
 					status = REQUEST_MENTORSHIP
 			else:
 				if not mentees_allowed:
+					continue
+
+				if not filter_mentee(account.mentee, filters):
 					continue
 
 			if pattern.lower() in account.user.username.lower():
