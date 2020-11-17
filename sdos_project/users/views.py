@@ -3,9 +3,9 @@ from django.contrib import messages
 from .forms import UserRegisterForm, EditDetailsForm, EditNameForm
 from .models import Account, Mentor, Mentee
 from django.contrib.auth.decorators import login_required
-from users.models import User
-
+from users.models import User, Roles, Fields
 from .decorators import mentee_required
+
 
 def register_mentor(request):
 	if request.user.is_authenticated:

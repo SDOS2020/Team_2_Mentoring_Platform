@@ -169,6 +169,7 @@ class MenteeSentRequest(models.Model):
 	def __str__(self):
 		return self.mentee.account.user.username + ' -> ' + self.mentor.account.user.username
 
+
 """
 	The different type of users that can exist. These types are accessed in the types of mentee a mentor
 	needs, and also the types of mentor a mentee needs.
@@ -188,6 +189,9 @@ class Fields(models.IntegerChoices):
 	computer_science = 1, _('CS')
 	electronics_and_communication = 2, _('ECE')
 	computer_science_and_design = 3, _('CSD')
+	computer_science_and_mathematics = 4, _('CSAM')
+	computer_science_and_social_sciences = 5, _('CSSS')
+	computer_science_and_artificial_intelligence = 6, _('CSAI')
 
 
 """
@@ -211,7 +215,7 @@ class MenteeRoleField(models.Model):
 	field = models.IntegerField(choices=Fields.choices, null=True)
 
 	def __str__(self):
-		return self.mentor.account.user.username + ' -> ' + self.get_role_display() + ' -> ' + self.get_field_display()
+		return self.mentee.account.user.username + ' -> ' + self.get_role_display() + ' -> ' + self.get_field_display()
 
 
 """
@@ -239,5 +243,5 @@ class MenteeExpectedRoleField(models.Model):
 	field = models.IntegerField(choices=Fields.choices, null=True)
 
 	def __str__(self):
-		return self.mentor.account.user.username + ' -> ' + self.get_role_display() + ' -> ' + self.get_field_display()
+		return self.mentee.account.user.username + ' -> ' + self.get_role_display() + ' -> ' + self.get_field_display()
 

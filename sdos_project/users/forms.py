@@ -7,7 +7,7 @@ from django.core import validators
 
 class UserRegisterForm(UserCreationForm):
 	email = forms.EmailField()
-	
+
 	first_name = forms.CharField(
 		max_length=50,
 		required=True,

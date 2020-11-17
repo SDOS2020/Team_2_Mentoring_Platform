@@ -1,9 +1,12 @@
 const SearchUsers = {
 	delimiters: ["[[", "]]"],
+	components: {
+		"tags-input": VoerroTagsInput,
+	},
 	template: `
 	<div>
 		<div class="input-group mb-3">
-			<input type="text" class="form-control" maxlength="25" v-model="searchQuery" v-on:keyup="searchUsers">
+			<input type="text" class="form-control" maxlength="25" v-model="search_query" v-on:keyup="searchUsers">
 			<div class="input-group-append">
 				<button class="btn btn-outline-secondary" type="button" v-on:click="searchUsers">Search</button>
 			</div>
@@ -16,6 +19,19 @@ const SearchUsers = {
 			<label for="mentee-search">Mentees</label>
 		</div>
 
+
+		<!-- Tags -->
+		<tags-input element-id="search-tags"
+			v-model="selected_tags"
+			v-bind:existing-tags="existing_tags"
+			v-bind:typeahead="true"
+			v-on:tags-updated="tags_updated"
+		>
+		</tags-input>
+
+
+		<br />
+
 		<div style="height: 100%; overflow-y: scroll;">
 			<table class="table table-hover">
 				<thead style="background-color: white;">
@@ -27,7 +43,7 @@ const SearchUsers = {
 					</tr>
 				</thead>
 				<tbody>
-					<tr v-for="(result, index) in searchResults" v-bind:key="result.id">
+					<tr v-for="(result, index) in search_results" v-bind:key="result.id">
 						<td>
 							[[ index + 1 ]]
 						</td>
@@ -78,8 +94,8 @@ const SearchUsers = {
 	`,
 	data() {
 		return {
-			searchQuery: "",
-			searchResults: [],
+			search_query: "",
+			search_results: [],
 			filters: [
 				{
 					Role: 'null',
@@ -87,13 +103,32 @@ const SearchUsers = {
 				}
 			],
 			mentors_allowed: true,
-			mentees_allowed: true
+			mentees_allowed: false,
+
+			// Role Tags
+			existing_tags: [],
+			selected_tags: [],
 		};
 	},
+	created() {
+		let request_url = "http://127.0.0.1:8000/api/get_tags/";
+
+		axios.get(request_url)
+		.then(response => {
+			this.existing_tags = response.data.tags;
+		})
+		.catch(error => {
+			console.log("[ERROR]");
+			console.log(error);
+		});
+	},
 	methods: {
+		tags_updated() {
+			this.searchUsers();
+		},
 		searchUsers() {
-			if (this.searchQuery.length === 0) {
-				this.searchResults = [];
+			if (this.search_query.length === 0) {
+				this.search_results = [];
 				return;
 			}
 
@@ -101,8 +136,9 @@ const SearchUsers = {
 
 			axios.get(request_url, {
 				'params': {
-					'pattern': this.searchQuery,
-					'filters': JSON.stringify(this.filters),
+					'pattern': this.search_query,
+					// 'filters': JSON.stringify(this.filters),
+					'filters': JSON.stringify(this.selected_tags),
 					'mentors_allowed': this.mentors_allowed,
 					'mentees_allowed': this.mentees_allowed,
 				}
@@ -112,16 +148,16 @@ const SearchUsers = {
 				if (response.data.length > 30) {
 					console.log("Too many results: " + response.data.length);
 					console.log("Showing only top 30");
-					this.searchResults = response.data.slice(0, 30);
+					this.search_results = response.data.slice(0, 30);
 				}
 				else {
-					this.searchResults = response.data;
+					this.search_results = response.data;
 				}
 			})
 			.catch(error => {
 				console.log("[ERROR]");
 				console.log(error);
-				this.searchResults = [];
+				this.search_results = [];
 			});
 		},
 		sendRequest(username) {
@@ -134,7 +170,7 @@ const SearchUsers = {
 			})
 			.then(response => {
 				console.log("[SUCCESS]");
-				for (result of this.searchResults) {
+				for (result of this.search_results) {
 					if (result.username === username) {
 						result.status = 3;
 						break;
