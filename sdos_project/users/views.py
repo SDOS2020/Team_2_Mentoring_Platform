@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm, EditDetailsForm, EditNameForm
 from .models import Account, Mentor, Mentee
 from django.contrib.auth.decorators import login_required
 from users.models import User
@@ -10,7 +10,7 @@ from .decorators import mentee_required
 def register_mentor(request):
 	if request.user.is_authenticated:
 		return redirect('homepage')
-	
+
 	if request.method == "POST":
 		form = UserRegisterForm(request.POST)
 		if form.is_valid():
@@ -27,7 +27,7 @@ def register_mentor(request):
 			return redirect("login")
 	else:
 		form = UserRegisterForm()
-	
+
 	context = {
 		"form" : form
 	}
@@ -38,7 +38,7 @@ def register_mentor(request):
 def register_mentee(request):
 	if request.user.is_authenticated:
 		return redirect('homepage')
-	
+
 	if request.method == "POST":
 		form = UserRegisterForm(request.POST)
 		if form.is_valid():
@@ -99,3 +99,49 @@ def my_mentees(request):
 @mentee_required
 def my_recommendations(request):
 	return render(request, "users/my_recommendations.html")
+
+
+@login_required
+def edit_profile(request):
+
+	initial_dict_name_form = {
+		"first_name": request.user.first_name,
+		"last_name": request.user.last_name,
+	}
+
+	initial_dict_details_form = {
+		"introduction": request.user.account.introduction,
+		"education": request.user.account.education,
+		"experience": request.user.account.experience
+	}
+
+	if request.method == "POST":
+
+		name_form = EditNameForm(request.POST or None, initial = initial_dict_name_form)
+		details_form = EditDetailsForm(request.POST or None, initial = initial_dict_details_form)
+
+		if name_form.is_valid() and details_form.is_valid():
+			user = request.user
+			user.first_name = name_form.cleaned_data["first_name"]
+			user.last_name = name_form.cleaned_data["last_name"]
+
+			user.account.introduction = details_form.cleaned_data["introduction"]
+			user.account.education = details_form.cleaned_data["education"]
+			user.account.experience = details_form.cleaned_data["experience"]
+
+			user.save()
+			user.account.save()
+
+
+
+			return redirect("homepage")
+	else:
+		name_form = EditNameForm(request.POST or None, initial = initial_dict_name_form)
+		details_form = EditDetailsForm(request.POST or None, initial = initial_dict_details_form)
+
+	context = {
+		"name_form" : name_form,
+		"details_form": details_form
+	}
+
+	return render(request, "users/edit_profile.html", context)
