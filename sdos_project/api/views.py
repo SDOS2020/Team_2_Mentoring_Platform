@@ -7,10 +7,73 @@ from users.models import (
 	MenteeSentRequest, 
 	MentorSentRequest, 
 	MyMentee, 
-	MyMentor
+	MyMentor,
+	Roles,
+	Fields,
+	MentorRoleField,
+	MenteeRoleField,
+	MentorExpectedRoleField,
+	MenteeExpectedRoleField,
 )
 
 from django.contrib.auth.decorators import login_required
+import json
+
+def filter_mentor(mentor, filters):
+
+	for f in filters:
+		role = f['Role']
+		field = f['Field']
+
+		if role != 'null':
+			role = next(filter(lambda x: x[-1] == role, Roles.choices))[0]
+		if field != 'null':
+			field = next(filter(lambda x: x[-1] == field, Fields.choices))[0]
+
+		if role == 'null' and field == 'null':
+			return True
+		elif role == 'null':
+			# Definitely field exists
+			if MentorRoleField.objects.filter(mentor=mentor, field=field).exists():
+				return True
+		elif field == 'null':
+			# Definitely role exists
+			if MentorRoleField.objects.filter(mentor=mentor, role=role).exists():
+				return True
+		else:
+			# Both role and field exist
+			if MentorRoleField.objects.filter(mentor=mentor, role=role, field=field).exists():
+				return True
+	
+	return False
+
+def filter_mentee(mentee, filters):
+
+	for f in filters:
+		role = f['Role']
+		field = f['Field']
+
+		if role != 'null':
+			role = next(filter(lambda x: x[-1] == role, Roles.choices))[0]
+		if field != 'null':
+			field = next(filter(lambda x: x[-1] == field, Fields.choices))[0]
+
+		if role == 'null' and field == 'null':
+			return True
+		elif role == 'null':
+			# Definitely field exists
+			if MenteeRoleField.objects.filter(mentee=mentee, field=field).exists():
+				return True
+		elif field == 'null':
+			# Definitely role exists
+			if MenteeRoleField.objects.filter(mentee=mentee, role=role).exists():
+				return True
+		else:
+			# Both role and field exist
+			if MenteeRoleField.objects.filter(mentee=mentee, role=role, field=field).exists():
+				return True
+	
+	return False
 
 
 # TODO: Filters
@@ -18,9 +81,17 @@ from django.contrib.auth.decorators import login_required
 def search_users(request):
 	user = request.user
 	pattern = request.GET.get('pattern')
+	filters = json.loads(request.GET.get('filters'))
+	mentors_allowed = request.GET.get('mentors_allowed') == 'true'
+	mentees_allowed = request.GET.get('mentees_allowed') == 'true'
+
 	print(Mentor.objects.all())
 	print(Mentee.objects.all())
-	
+	print(filters)
+	print(pattern)
+	print(mentors_allowed)
+	print(mentees_allowed)
+
 	shortlist = []
 
 	# Status codes
@@ -36,8 +107,15 @@ def search_users(request):
 		# current user is mentor
 		for account in Account.objects.all():
 			status = NOT_ALLOWED
+
 			if account.is_mentor != user.account.is_mentor:
 				# current user is a mentor, other user is a mentee
+				if not mentees_allowed:
+					continue
+
+				if not filter_mentee(account.mentee, filters):
+					continue
+
 				if MyMentee.objects.filter(mentor=user.account.mentor, mentee=account.mentee).exists():
 					status = MY_MENTEE
 				elif MentorSentRequest.objects.filter(mentor=user.account.mentor, mentee=account.mentee).exists():
@@ -46,7 +124,13 @@ def search_users(request):
 					status = REQUEST_RECEIVED
 				else:
 					status = REQUEST_MENTEESHIP
-			
+			else:
+				if not mentors_allowed:
+					continue
+
+				if not filter_mentor(account.mentor, filters):
+					continue
+
 			if pattern.lower() in account.user.username.lower():
 				shortlist.append({
 					'id': account.id,
@@ -60,6 +144,12 @@ def search_users(request):
 			status = NOT_ALLOWED
 			if account.is_mentor != user.account.is_mentor:
 				# current user is a mentee, other user is a mentor
+				if not mentors_allowed:
+					continue
+
+				if not filter_mentor(account.mentor, filters):
+					continue
+
 				if MyMentor.objects.filter(mentor=account.mentor, mentee=user.account.mentee).exists():
 					status = MY_MENTOR
 				elif MenteeSentRequest.objects.filter(mentor=account.mentor, mentee=user.account.mentee).exists():
@@ -68,6 +158,12 @@ def search_users(request):
 					status = REQUEST_RECEIVED
 				else:
 					status = REQUEST_MENTORSHIP
+			else:
+				if not mentees_allowed:
+					continue
+
+				if not filter_mentee(account.mentee, filters):
+					continue
 
 			if pattern.lower() in account.user.username.lower():
 				shortlist.append({
@@ -259,6 +355,8 @@ def reject_request(request):
 @login_required
 def get_mentors(request):
 	user = request.user
+	# TODO: get a list of mentors only and not a list of mentor / mentee
+	# SUGGESTED EDIT: mentors = map(lambda x: x.mentor, mentors)
 	mentors = MyMentor.objects.filter(mentee=user.account.mentee)
 
 	mentor_ids = []
@@ -290,6 +388,24 @@ def get_mentees(request):
 
 	response = {
 		'mentees': mentee_ids,
+		'success': True
+	}
+
+	return JsonResponse(response, safe=False)
+
+
+@login_required
+def get_recommendations(request):
+	mentors = []
+	for mentor in Mentor.objects.all():
+		mentors.append(
+			{
+				"id": mentor.id,
+				"username": mentor.account.user.username
+			}
+		)
+	response = {
+		'recommendations': mentors,
 		'success': True
 	}
 

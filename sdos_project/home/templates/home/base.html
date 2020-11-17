@@ -90,32 +90,38 @@
 		{% if user.is_authenticated %}
 			<div class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-					aria-expanded="false" style="text-align: right; width: 12rem; color: white">
+					aria-expanded="false" style="text-align: right; width: 13rem; color: white">
 					<i class="fas fa-user" style="color: white"></i>
 				</a>
 
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin-left: 2rem; width: 80%;">
 					<a class="dropdown-item" href='http://127.0.0.1:8000/users/profile/{{ user.username }}' style="text-align: right;">
-						Profile
+						My Profile
 					</a>
 
 					{% if user.account.is_mentor %}
 
 						<a class="dropdown-item" href="{% url 'my_mentees' %}" style="text-align: right;">
-							My Mentees
+							Mentees
 						</a>
 					
 					{% else %}
 
 						<a class="dropdown-item" href="{% url 'my_mentors' %}" style="text-align: right;">
-							My Mentors
+							Mentors
 						</a>
 
 					{% endif %}
 					
 					<a class="dropdown-item" href="{% url 'my_requests' %}" style="text-align: right;">
-						My Requests
+						Requests
 					</a>
+					
+					{% if user.account.is_mentee %}
+						<a class="dropdown-item" href="{% url 'my_recommendations' %}" style="text-align: right;">
+							Suggestions
+						</a>
+					{% endif %}
 
 					<a class="dropdown-item" href="#" style="text-align: right;">
 						Settings

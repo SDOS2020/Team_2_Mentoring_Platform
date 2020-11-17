@@ -9,6 +9,13 @@ const SearchUsers = {
 			</div>
 		</div>
 
+		<div>
+			<input type="checkbox" v-model="mentors_allowed" value="Mentors" id="mentor-search" v-on:change="searchUsers">
+			<label for="mentor-search">Mentors</label>
+			<input type="checkbox" v-model="mentees_allowed" value="Mentees" id="mentee-search" v-on:change="searchUsers">
+			<label for="mentee-search">Mentees</label>
+		</div>
+
 		<div style="height: 100%; overflow-y: scroll;">
 			<table class="table table-hover">
 				<thead style="background-color: white;">
@@ -72,7 +79,15 @@ const SearchUsers = {
 	data() {
 		return {
 			searchQuery: "",
-			searchResults: []
+			searchResults: [],
+			filters: [
+				{
+					Role: 'null',
+					Field: 'null'
+				}
+			],
+			mentors_allowed: true,
+			mentees_allowed: true
 		};
 	},
 	methods: {
@@ -86,7 +101,10 @@ const SearchUsers = {
 
 			axios.get(request_url, {
 				'params': {
-					'pattern': this.searchQuery
+					'pattern': this.searchQuery,
+					'filters': JSON.stringify(this.filters),
+					'mentors_allowed': this.mentors_allowed,
+					'mentees_allowed': this.mentees_allowed,
 				}
 			})
 			.then(response => {
