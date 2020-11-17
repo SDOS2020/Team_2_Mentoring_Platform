@@ -1,0 +1,21 @@
+{% extends "home/base.html" %}
+{% load static %}
+
+
+{% block title %}
+My Mentor
+{% endblock title %}
+
+
+{% block content %}
+<div class="jumbotron jumbotron-fluid" style="background: none; padding: 0;"></div>
+	<center>
+		<h1 class="display-2">
+			{{ mentor }} - {{ user.username }}
+		</h1>
+		<p class="lead">
+			Mentor - Mentee Page
+		</p>
+	</center>
+</div>
+{% endblock content %}

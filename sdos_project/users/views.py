@@ -9,7 +9,7 @@ from .decorators import mentee_required
 
 def register_mentor(request):
 	if request.user.is_authenticated:
-		return redirect('homepage')
+		return redirect("homepage")
 
 	if request.method == "POST":
 		form = UserRegisterForm(request.POST)
@@ -37,7 +37,7 @@ def register_mentor(request):
 
 def register_mentee(request):
 	if request.user.is_authenticated:
-		return redirect('homepage')
+		return redirect("homepage")
 
 	if request.method == "POST":
 		form = UserRegisterForm(request.POST)
@@ -67,7 +67,7 @@ def register_mentee(request):
 @login_required
 def profile(request, username):
 	requested_user = User.objects.get(username=username)
-	return render(request, "users/dist/profile.html", {'requested_user': requested_user})
+	return render(request, "users/dist/profile.html", {"requested_user": requested_user})
 
 
 @login_required
@@ -131,10 +131,8 @@ def edit_profile(request):
 
 			user.save()
 			user.account.save()
-
-
-
 			return redirect("homepage")
+
 	else:
 		name_form = EditNameForm(request.POST or None, initial = initial_dict_name_form)
 		details_form = EditDetailsForm(request.POST or None, initial = initial_dict_details_form)
