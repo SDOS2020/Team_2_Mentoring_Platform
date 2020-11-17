@@ -1,4 +1,6 @@
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+import json
 from users.models import (
 	User,
 	Account, 
@@ -16,63 +18,103 @@ from users.models import (
 	MenteeExpectedRoleField,
 )
 
-from django.contrib.auth.decorators import login_required
-import json
+
+@login_required
+def get_tags(request):
+	tags = []
+
+	i = 0
+	# Add (role, NULL)
+	for role in Roles.choices:
+		r = str(role[-1])
+		tags.append({
+			'key': i,
+			'role': r,
+			'field': None,
+			'value': r
+		})
+
+		i += 1
+
+	# Add (NULL, field)
+	for field in Fields.choices:
+		f = str(field[-1])
+		tags.append({
+			'key': i,
+			'role': None,
+			'field': f,
+			'value': f
+		})
+
+		i += 1
+
+	# Add (role, field)
+	for role in Roles.choices:
+		r = str(role[-1])
+		for field in Fields.choices:
+			f = str(field[-1])
+			tags.append({
+				'key': i,
+				'role': r,
+				'field': f,
+				'value': r + ' ' + f
+			})
+
+			i += 1
+
+	response = {
+		'success': True,
+		'tags': tags
+	}
+
+	return JsonResponse(response, safe=False)
+
+
+def get_role_id(role: str):
+	return next(filter(lambda x: x[-1] == role, Roles.choices))[0] if role else None
+
+
+def get_field_id(field: str):
+	return next(filter(lambda x: x[-1] == field, Fields.choices))[0] if field else None
+
 
 def filter_mentor(mentor, filters):
+	if not filters:  # If no filter is applied
+		return True
 
 	for f in filters:
-		role = f['Role']
-		field = f['Field']
+		role, field = get_role_id(f['role']), get_field_id(f['field'])
+		options = dict()
 
-		if role != 'null':
-			role = next(filter(lambda x: x[-1] == role, Roles.choices))[0]
-		if field != 'null':
-			field = next(filter(lambda x: x[-1] == field, Fields.choices))[0]
+		if role:
+			options['role'] = role
 
-		if role == 'null' and field == 'null':
+		if field:
+			options['field'] = field
+
+		if MentorRoleField.objects.filter(mentor=mentor, **options).exists():
 			return True
-		elif role == 'null':
-			# Definitely field exists
-			if MentorRoleField.objects.filter(mentor=mentor, field=field).exists():
-				return True
-		elif field == 'null':
-			# Definitely role exists
-			if MentorRoleField.objects.filter(mentor=mentor, role=role).exists():
-				return True
-		else:
-			# Both role and field exist
-			if MentorRoleField.objects.filter(mentor=mentor, role=role, field=field).exists():
-				return True
-	
+
 	return False
 
+
 def filter_mentee(mentee, filters):
+	if not filters:  # If no filter is applied
+		return True
 
 	for f in filters:
-		role = f['Role']
-		field = f['Field']
+		role, field = get_role_id(f['role']), get_field_id(f['field'])
+		options = dict()
 
-		if role != 'null':
-			role = next(filter(lambda x: x[-1] == role, Roles.choices))[0]
-		if field != 'null':
-			field = next(filter(lambda x: x[-1] == field, Fields.choices))[0]
+		if role:
+			options['role'] = role
 
-		if role == 'null' and field == 'null':
+		if field:
+			options['field'] = field
+
+		if MenteeRoleField.objects.filter(mentee=mentee, **options).exists():
 			return True
-		elif role == 'null':
-			# Definitely field exists
-			if MenteeRoleField.objects.filter(mentee=mentee, field=field).exists():
-				return True
-		elif field == 'null':
-			# Definitely role exists
-			if MenteeRoleField.objects.filter(mentee=mentee, role=role).exists():
-				return True
-		else:
-			# Both role and field exist
-			if MenteeRoleField.objects.filter(mentee=mentee, role=role, field=field).exists():
-				return True
-	
+
 	return False
 
 

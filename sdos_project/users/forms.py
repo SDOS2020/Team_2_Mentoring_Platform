@@ -5,11 +5,12 @@ from django.contrib.auth.forms import UserCreationForm
 
 class UserRegisterForm(UserCreationForm):
 	email = forms.EmailField()
-	
+
 	first_name = forms.CharField(
 		max_length=50,
 		required=True,
 	)
+
 	last_name = forms.CharField(
 		max_length=50,
 		required=True,
