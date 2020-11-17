@@ -89,16 +89,22 @@
 
 		{% if user.is_authenticated %}
 			<div class="nav-item dropdown">
+
 				<a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
 					aria-expanded="false" style="text-align: right; width: 12rem; color: white">
+					
 					<i class="fas fa-user" style="color: white"></i>
 				</a>
 			
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin-left: 2rem; width: 80%;">
 					<a class="dropdown-item" href='//127.0.0.1:8000/users/profile/{{ user.username }}' style="text-align: right;">
-						Profile
+						View Profile
 					</a>
-					
+
+					<a class="dropdown-item" href="{% url 'edit_profile' %}" style="text-align: right;">
+						Edit Profile
+					</a>
+
 					{% if user.account.is_mentor %}
 
 						<a class="dropdown-item" href="#" style="text-align: right;">
