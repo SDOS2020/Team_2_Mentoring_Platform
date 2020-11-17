@@ -32,6 +32,7 @@ INSTALLED_APPS = [
 	# Custom apps
 	'users',
 	'home',
+	'mentor_mentee',
 
 	# Crispy Forms
 	'crispy_forms',

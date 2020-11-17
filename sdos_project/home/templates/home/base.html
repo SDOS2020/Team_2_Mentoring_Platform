@@ -24,7 +24,7 @@
 <!-- <nav class="navbar navbar-expand-lg navbar-fixed-top navbar-dark" style="background-color: #7c60bf" > -->
 <nav id="baseNav" class="navbar navbar-expand-lg navbar-fixed-top navbar-dark">
 	<a class="navbar-brand" href="{% url 'homepage' %}">
-		<strong>@ {{ user.username }}</strong>
+		<strong>SDOS</strong>
 	</a>
 
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -92,7 +92,8 @@
 
 				<a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
 					aria-expanded="false" style="text-align: right; width: 13rem; color: white">
-					<i class="fas fa-user" style="color: white"></i>
+					<i class="fas fa-user" style="color: white"></i> &nbsp
+					<span>{{ user.first_name }}</span>
 				</a>
 
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin-left: 2rem; width: 80%;">

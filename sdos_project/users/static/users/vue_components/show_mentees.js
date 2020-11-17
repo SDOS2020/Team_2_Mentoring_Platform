@@ -7,6 +7,7 @@ const ShowMentees = {
 				<tr>
 					<th scope="col">#</th>
 					<th scope="col">Username</th>
+					<th scope="col">Actions</th>
 				</tr>
 			</thead>
 
@@ -17,8 +18,14 @@ const ShowMentees = {
 					</td>
 
 					<td>
-						<a :href="'//127.0.0.1:8000/users/profile/' + mentee.username">
+						<a v-bind:href="'http://127.0.0.1:8000/users/profile/' + mentee.username">
 							[[ mentee.username ]]
+						</a>
+					</td>
+
+					<td>
+						<a class="btn btn-sm btn-primary" v-bind:href="'http://127.0.0.1:8000/mentor_mentee/my_mentee/' + mentee.username">
+							Mentor-Mentee page
 						</a>
 					</td>
 				</tr>
