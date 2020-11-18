@@ -1,0 +1,64 @@
+{% extends "home/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+{% block title %}
+Settings
+{% endblock title %}
+
+
+{% block content %}
+
+<div class="container" style="margin-top: 10vh;">
+	<center>
+		{% if user.account.is_mentor %}	
+			<h1 class="display-3">
+				Mentorship Settings
+			</h1>
+
+		{% else %}	
+			<h1 class="display-3">
+				Menteeship Settings
+			</h1>
+		
+		{% endif %}
+
+		<br/>
+	
+		<div id="vue-role-settings" style="width: 50vw;">
+			{% if user.account.is_mentor %}	
+				<mentor-settings csrf="{{ csrf_token }}"/>
+			{% else %}	
+				<mentee-settings csrf="{{ csrf_token }}"/>
+			{% endif %}
+		</div> 
+
+
+	</center>
+</div>
+
+{% endblock content %}
+
+
+{% block javascript %}
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@voerro/vue-tagsinput@2.4.3/dist/voerro-vue-tagsinput.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@voerro/vue-tagsinput@2.4.3/dist/style.css">
+<script src="{% static 'users/vue_components/mentor_settings.js' %}"></script>
+<script src="{% static 'users/vue_components/mentee_settings.js' %}"></script>
+
+<script>
+	const app = new Vue({
+		delimiters: ["[[", "]]"],
+		components: {
+			"mentor-settings": MentorSettings,
+			"mentee-settings": MenteeSettings,
+		},
+	});
+
+	app.$mount("#vue-role-settings");
+</script>
+
+{% endblock javascript %}
