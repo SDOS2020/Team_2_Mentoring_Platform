@@ -96,12 +96,6 @@ const SearchUsers = {
 		return {
 			search_query: "",
 			search_results: [],
-			filters: [
-				{
-					Role: 'null',
-					Field: 'null'
-				}
-			],
 			mentors_allowed: true,
 			mentees_allowed: false,
 
@@ -137,7 +131,6 @@ const SearchUsers = {
 			axios.get(request_url, {
 				'params': {
 					'pattern': this.search_query,
-					// 'filters': JSON.stringify(this.filters),
 					'filters': JSON.stringify(this.selected_tags),
 					'mentors_allowed': this.mentors_allowed,
 					'mentees_allowed': this.mentees_allowed,

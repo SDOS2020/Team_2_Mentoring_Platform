@@ -70,6 +70,29 @@ def get_tags(request):
 	return JsonResponse(response, safe=False)
 
 
+@login_required
+def get_my_tags(request):
+	my_tags = []
+
+	if request.user.account.is_mentor:
+		my_tags = MentorExpectedRoleField.objects.filter(mentor=request.user.account.mentor)
+	else:
+		my_tags = MenteeExpectedRoleField.objects.filter(mentee=request.user.account.mentee)
+
+	my_tags = [{
+		'role': my_tag.get_role_display(), 
+		'field': my_tag.get_field_display(),
+		'value': my_tag.get_role_display() + ' ' + my_tag.get_field_display(),
+	} for my_tag in my_tags]
+	
+	response = {
+		'success': True,
+		'my_tags': my_tags
+	}
+
+	return JsonResponse(response, safe=False)
+
+
 def get_role_id(role: str):
 	return next(filter(lambda x: x[-1] == role, Roles.choices))[0] if role else None
 
@@ -452,3 +475,72 @@ def get_recommendations(request):
 	}
 
 	return JsonResponse(response, safe=False)
+
+
+@login_required
+def update_my_tags(request):
+	updated_tags = json.loads(request.body.decode('utf-8'))['updated_tags']
+
+	if request.user.account.is_mentor:
+		MentorExpectedRoleField.objects.filter(mentor=request.user.account.mentor).delete()
+		for tag in updated_tags:
+			MentorExpectedRoleField.objects.create(mentor=request.user.account.mentor, role=get_role_id(tag['role']), field=get_field_id(tag['field']))
+
+	else:
+		MenteeExpectedRoleField.objects.filter(mentee=request.user.account.mentee).delete()
+		for tag in updated_tags:
+			MenteeExpectedRoleField.objects.create(mentee=request.user.account.mentee, role=get_role_id(tag['role']), field=get_field_id(tag['field']))
+
+
+	return JsonResponse({'success': True})
+
+@login_required
+def update_settings(request):
+	user = request.user
+
+	if user.account.is_mentor:	
+		mentorship_duration = json.loads(request.body.decode('utf-8'))['mentorship_duration']
+		is_open_to_mentorship = json.loads(request.body.decode('utf-8'))['is_open_to_mentorship']
+
+		user.account.mentor.mentorship_duration = mentorship_duration
+		user.account.mentor.is_open_to_mentorship = is_open_to_mentorship
+		user.account.mentor.save()
+
+
+	else:
+		needs_mentoring = json.loads(request.body.decode('utf-8'))['needs_mentoring']
+		needs_urgent_mentoring = json.loads(request.body.decode('utf-8'))['needs_urgent_mentoring']
+
+		user.account.mentee.needs_mentoring = needs_mentoring
+		user.account.mentee.needs_urgent_mentoring = needs_urgent_mentoring
+		user.account.mentee.save()
+
+	return JsonResponse({'success': True})
+
+
+@login_required
+def get_settings(request):
+	user = request.user
+	
+	if user.account.is_mentor:
+		mentorship_duration = user.account.mentor.mentorship_duration
+		is_open_to_mentorship = user.account.mentor.is_open_to_mentorship
+		
+		response = {
+			'success': True,
+			'mentorship_duration': mentorship_duration,
+			'is_open_to_mentorship': is_open_to_mentorship
+		}
+
+	else:
+		needs_mentoring = user.account.mentee.needs_mentoring
+		needs_urgent_mentoring = user.account.mentee.needs_urgent_mentoring
+
+		response = {
+			'success': True,
+			'needs_mentoring': needs_mentoring,
+			'needs_urgent_mentoring': needs_urgent_mentoring
+		}
+
+	return JsonResponse(response)
+

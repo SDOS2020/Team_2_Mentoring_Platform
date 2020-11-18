@@ -94,6 +94,10 @@ def my_mentors(request):
 def my_mentees(request):
 	return render(request, "users/my_mentees.html")
 
+@login_required
+def settings(request):
+	return render(request, "users/settings.html")
+
 
 @login_required
 @mentee_required
