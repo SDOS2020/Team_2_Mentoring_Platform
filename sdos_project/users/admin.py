@@ -13,6 +13,7 @@ from .models import (
 	MenteeRoleField,
 	MentorExpectedRoleField,
 	MenteeExpectedRoleField,
+	Message,
 )
 
 
@@ -30,3 +31,4 @@ admin.site.register(MentorRoleField)
 admin.site.register(MenteeRoleField)
 admin.site.register(MentorExpectedRoleField)
 admin.site.register(MenteeExpectedRoleField)
+admin.site.register(Message)

@@ -84,6 +84,19 @@ class Account(models.Model):
 
 
 """
+	Table to store the chat messages among users.
+"""
+class Message(models.Model):
+	sender = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='message_sender')
+	reciever = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='message_reciever')
+	content = models.TextField(max_length=512, null=True)
+	time_posted = models.DateTimeField(auto_now_add=True)
+
+	def __str__(self):
+		return self.sender.user.username + ' sent a message to ' + self.reciever.user.username
+
+
+"""
 	The mentor class, stores attributes specific to a mentor
 """
 class Mentor(models.Model):
