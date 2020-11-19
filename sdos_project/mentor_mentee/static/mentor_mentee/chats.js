@@ -1,11 +1,16 @@
 const ChatWindow = {
 	delimiters: ["[[", "]]"],
 	template: `
-	<div class="col-md-6">
-		<div class="card-header">
-			<font size="5">Chat with <b>[[ receiver ]]</b></font>
+	<div>
+		<div class="card-header" style="border-radius: 10px 10px 0 0; background-color: lightgrey;">
+			<center>
+				<font size="4">
+					Chat with <b>[[ receiver ]]</b>
+				</font>
+			</center>
 		</div>
-		<div class="msger-chat" style="height: 65vh; overflow-y: scroll; border: 2px solid #ddd;" id="chat-table">
+
+		<div class="msger-chat" style="height: 50vh; overflow-y: scroll; border: 2px solid #ddd;" id="chat-table">
 			<table class="table table-borderless">
 				<tbody>
 					<tr v-for="message in messages">
@@ -42,7 +47,7 @@ const ChatWindow = {
 			</table>
 		</div>
 			
-		<div class="input-group mb-3 card-footer">
+		<div class="input-group card-footer">
 			<input type="text" class="form-control" v-model="message_to_send" placeholder="Type a message...">
 			<div class="input-group-append">
 				<button class="btn btn-outline-success" type="button" v-on:click="send_message">Send</button>
@@ -59,7 +64,6 @@ const ChatWindow = {
 
 	props: {
 		receiver: {required: true},
-		sender: {required: true},
 		csrf: {required: true}
 	},
 
@@ -85,7 +89,6 @@ const ChatWindow = {
 				return;
 			}
 
-
 			let msg = {
 				'content': this.message_to_send,
 				'receiver': this.receiver,
@@ -93,12 +96,15 @@ const ChatWindow = {
 
 			let request_url = "http://127.0.0.1:8000/api/send_message/";
 
-			axios.post(request_url, 
-				{'message': msg}, 
-				{headers: {'X-CSRFTOKEN': this.csrf}})
-			.then(response => {
-				console.log('Success!!!!');
+			axios.post(request_url, {
+				'message': msg
+			},
+			{
+				headers: {
+					'X-CSRFTOKEN': this.csrf
+				}
 			})
+			.then(response => {})
 			.catch(error => {
 				console.log("[ERROR]");
 				console.log(error);
@@ -106,17 +112,11 @@ const ChatWindow = {
 
 			this.message_to_send = "";
 			this.scroll_to_bottom();
-
 		},
 
 		scroll_to_bottom() {
 			let elem = document.getElementById("chat-table");
 			elem.scrollTop = elem.scrollHeight;
 		}
-		
 	},
-
-	updated() {
-		
-	}
 };

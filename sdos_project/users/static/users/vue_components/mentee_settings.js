@@ -5,48 +5,48 @@ const MenteeSettings = {
 	},
 	template: `
 	<div>
-			<table class="table">
-				<tbody>
-					<tr>
-						<td>
-							<p class="lead">
-								What kind of mentors are you looking for?
-							</p>
-						</td>
-						<td>
-							<tags-input element-id="settings-tags"
+		<table class="table">
+			<tbody>
+				<tr>
+					<td>
+						<p class="lead">
+							What kind of mentors are you looking for?
+						</p>
+					</td>
+					<td style="width: 30vw;">
+						<tags-input element-id="settings-tags"
 							v-model="selected_tags"
 							v-bind:existing-tags="existing_tags"
 							v-bind:typeahead="true"
-							>
-							</tags-input>
-						</td>
-					</tr>
+						>
+						</tags-input>
+					</td>
+				</tr>
 
-					<tr>
-						<td>
-							<p class="lead">
-								Are you ready to be a mentee?
-							</p>
-						</td>
-						<td>
-							<input v-model="needs_mentoring" type="checkbox" id="needs_mentoring" name="needs_mentoring">
-						</td>
-					</tr>
+				<tr>
+					<td>
+						<p class="lead">
+							Are you ready to be a mentee?
+						</p>
+					</td>
+					<td>
+						<input v-model="needs_mentoring" type="checkbox" id="needs_mentoring" name="needs_mentoring">
+					</td>
+				</tr>
 
-					<tr>
-						<td>
-							<p class="lead">
-								Do you need urgent mentorship?
-							</p>
-						</td>
-						<td>
-							<input v-model="needs_urgent_mentoring" type="checkbox" id="needs_urgent_mentoring" name="needs_urgent_mentoring">
-						</td>
-					</tr>
+				<tr>
+					<td>
+						<p class="lead">
+							Do you need urgent mentorship?
+						</p>
+					</td>
+					<td>
+						<input v-model="needs_urgent_mentoring" type="checkbox" id="needs_urgent_mentoring" name="needs_urgent_mentoring">
+					</td>
+				</tr>
 
-				</tbody>
-			</table>
+			</tbody>
+		</table>
 
 		<table>
 			<tr>

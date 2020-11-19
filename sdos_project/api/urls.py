@@ -21,7 +21,9 @@ urlpatterns = [
 	path("get_settings/", api_views.get_settings, name="get_settings"),
 	path("update_settings/", api_views.update_settings, name="update_settings"),
 
+	# My Mentor-Mentee specific page
 	path("get_messages/<str:chatter_username>/", api_views.get_messages, name="get_messages"),
 	path("send_message/", api_views.send_message, name="send_message"),
-
+	path("get_meetings/<str:guest_name>", api_views.get_meetings, name="get_meetings"),
+	path("add_meeting/", api_views.add_meeting, name="add_meeting"),
 ]

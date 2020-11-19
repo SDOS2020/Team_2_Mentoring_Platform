@@ -14,6 +14,7 @@ from .models import (
 	MentorExpectedRoleField,
 	MenteeExpectedRoleField,
 	Message,
+	Meeting,
 )
 
 
@@ -32,3 +33,4 @@ admin.site.register(MenteeRoleField)
 admin.site.register(MentorExpectedRoleField)
 admin.site.register(MenteeExpectedRoleField)
 admin.site.register(Message)
+admin.site.register(Meeting)

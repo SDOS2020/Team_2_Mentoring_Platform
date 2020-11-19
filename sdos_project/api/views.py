@@ -1,6 +1,8 @@
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 import json
+from datetime import datetime
+from django.utils.timezone import make_aware # Naive to native
 from users.models import (
 	User,
 	Account, 
@@ -17,6 +19,7 @@ from users.models import (
 	MentorExpectedRoleField,
 	MenteeExpectedRoleField,
 	Message,
+	Meeting,
 )
 
 
@@ -552,7 +555,7 @@ def get_messages(request, chatter_username):
 	
 	messages_sent = Message.objects.filter(sender=request.user.account, receiver=chatter_user.account)
 	messages_received = Message.objects.filter(receiver=request.user.account, sender=chatter_user.account)
-	
+
 	messages = [{'sender': msg.sender.user.username, 'content': msg.content, 'timestamp': msg.time_posted, 'by_me': True} for msg in messages_sent] + \
 	[{'sender': msg.sender.user.username, 'content': msg.content, 'timestamp': msg.time_posted, 'by_me': False} for msg in messages_received]
 
@@ -562,12 +565,13 @@ def get_messages(request, chatter_username):
 		time = messages[i]['timestamp'].strftime("%H:%M")
 		messages[i]['timestamp'] = time
 
-
 	response = {
 		'success': True,
 		'messages': messages,
 	}
+	
 	return JsonResponse(response, safe=False)
+
 
 @login_required
 def send_message(request):
@@ -580,8 +584,60 @@ def send_message(request):
 	return JsonResponse({'success': True})
 
 
+@login_required
+def get_meetings(request, guest_name):
+	user = request.user
+
+	if not guest_name:
+		print('[ERROR] guest_name is None')
+		return JsonResponse({'success': False})
+
+	guest = User.objects.filter(username=guest_name).first()
+
+	meeting_created_by_me = Meeting.objects.filter(creator=user.account, guest=guest.account).all()
+	meeting_created_for_me = Meeting.objects.filter(creator=guest.account, guest=user.account).all()
+
+	fields = ('title', 'agenda', 'time', 'meeting_url')
+	meetings = [dict((field, getattr(meeting, field)) for field in fields) for meeting in meeting_created_by_me] + \
+		[dict((field, getattr(meeting, field)) for field in fields) for meeting in meeting_created_for_me]
+
+	meetings.sort(key=lambda x: x['time'])
+
+	for i in range(len(meetings)):
+		meetings[i]['day'] = meetings[i]['time'].strftime('%a')
+		meetings[i]['date'] = meetings[i]['time'].strftime('%d %b')
+		meetings[i]['time'] = meetings[i]['time'].strftime('%H:%M')
+
+	response = {
+		'success': True,
+		'meetings': meetings,
+	}
+
+	return JsonResponse(response)
 
 
+@login_required
+def add_meeting(request):
+	user = request.user
+	req = json.loads(request.body)
+	guest_name = req.get('guest_name')
 
+	if not guest_name:
+		print('[ERROR] guest_name is None')
+		return JsonResponse({'success': False})
 
+	guest = User.objects.filter(username=guest_name).first()
+	req['time'] = make_aware(datetime.strptime(req['time'], '%Y-%m-%dT%H:%M'))
 
+	Meeting.objects.create(creator=user.account,
+							guest=guest.account,
+							title=req['title'],
+							agenda=req['agenda'],
+							time=req['time'],
+							meeting_url=req['meeting_url'])
+
+	response = {
+		'success': True
+	}
+
+	return JsonResponse(response)

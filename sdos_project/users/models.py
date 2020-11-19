@@ -84,19 +84,6 @@ class Account(models.Model):
 
 
 """
-	Table to store the chat messages among users.
-"""
-class Message(models.Model):
-	sender = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='message_sender')
-	receiver = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='message_receiver')
-	content = models.TextField(max_length=512, null=True)
-	time_posted = models.DateTimeField(auto_now_add=True)
-
-	def __str__(self):
-		return self.sender.user.username + ' messaged ' + self.receiver.user.username
-
-
-"""
 	The mentor class, stores attributes specific to a mentor
 """
 class Mentor(models.Model):
@@ -258,3 +245,27 @@ class MenteeExpectedRoleField(models.Model):
 	def __str__(self):
 		return self.mentee.account.user.username + ' -> ' + self.get_role_display() + ' -> ' + self.get_field_display()
 
+
+"""
+	Table to store the chat messages among users.
+"""
+class Message(models.Model):
+	sender = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='message_sender')
+	receiver = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='message_receiver')
+	content = models.TextField(max_length=512, null=True)
+	time_posted = models.DateTimeField(auto_now_add=True)
+
+	def __str__(self):
+		return self.sender.user.username + ' messaged ' + self.receiver.user.username
+
+
+class Meeting(models.Model):
+	creator = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='meeting_creator')
+	guest = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='meeting_guest')
+	title = models.CharField(max_length=64, default="Untitled Meeting")
+	agenda = models.CharField(max_length=128, default="")
+	time = models.DateTimeField(auto_now_add=False)
+	meeting_url = models.CharField(max_length=128, default="https://www.meet.google.com")
+
+	def __str__(self):
+		return self.creator.user.username + ' created a meeting with ' + self.guest.user.username
