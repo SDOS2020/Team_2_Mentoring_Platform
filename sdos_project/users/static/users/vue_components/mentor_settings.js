@@ -5,49 +5,49 @@ const MentorSettings = {
 	},
 	template: `
 	<div>
-			<table class="table">
-				<tbody>
-					<tr>
-						<td>
-							<p class="lead">
-								What kind of mentees are you looking for?
-							</p>
-						</td>
-						<td>
-							<tags-input element-id="settings-tags"
+		<table class="table">
+			<tbody>
+				<tr>
+					<td>
+						<p class="lead">
+							What kind of mentees are you looking for?
+						</p>
+					</td>
+					<td style="width: 30vw;">
+						<tags-input element-id="settings-tags"
 							v-model="selected_tags"
 							v-bind:existing-tags="existing_tags"
 							v-bind:typeahead="true"
-							>
-							</tags-input>
-						</td>
-					</tr>
+						>
+						</tags-input>
+					</td>
+				</tr>
 
-					<tr>
-						<td>
-							<p class="lead">
-								What is your tentative mentorship duration?
-							</p>
-						</td>
-						<td>
-							<input v-model="mentorship_duration" type="range" id="mentorship_duration" name="mentorship_duration" min="1" max="24">
-							[[mentorship_duration]] months
-						</td>
-					</tr>
+				<tr>
+					<td>
+						<p class="lead">
+							What is your tentative mentorship duration?
+						</p>
+					</td>
+					<td>
+						<input v-model="mentorship_duration" type="range" id="mentorship_duration" name="mentorship_duration" min="1" max="24">
+						[[mentorship_duration]] months
+					</td>
+				</tr>
 
-					<tr>
-						<td>
-							<p class="lead">
-								Are you open to taking up new mentees?
-							</p>
-						</td>
-						<td>
-							<input v-model="is_open_to_mentorship" type="checkbox" id="is_open_for_mentoring" name="is_open_for_mentoring">
-						</td>
-					</tr>
+				<tr>
+					<td>
+						<p class="lead">
+							Are you open to taking up new mentees?
+						</p>
+					</td>
+					<td>
+						<input v-model="is_open_to_mentorship" type="checkbox" id="is_open_for_mentoring" name="is_open_for_mentoring">
+					</td>
+				</tr>
 
-				</tbody>
-			</table>
+			</tbody>
+		</table>
 
 		<table>
 			<tr>

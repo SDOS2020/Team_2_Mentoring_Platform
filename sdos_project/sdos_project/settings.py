@@ -115,6 +115,7 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+# Was set to False from True on Nov 20, 2020 at 2 AM, and set back to True minutes after
 
 
 # Static files (CSS, JavaScript, Images)

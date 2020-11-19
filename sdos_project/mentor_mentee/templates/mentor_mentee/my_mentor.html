@@ -8,32 +8,80 @@ My Mentor
 
 {% block header %}
 <link href="{% static 'mentor_mentee/chats.css' %}" rel="stylesheet" />
+
+<style>
+	#chatbox {
+		position: absolute;
+		bottom: 0;
+		right: 1rem;
+		margin-bottom: 0;
+		width: 30vw;
+	}
+
+	#meeting-table {
+		margin-left: 1rem;
+		margin-top: 0;
+		padding-top: 0;
+		width: 26rem;
+	}
+</style>
+
 {% endblock header %}
+
 
 {% block content %}
 
 <center>
-	<div id="chat-window" style="margin-top: 3rem;">
-		<chat-window receiver="{{ mentor }}" sender="{{ user.username }}" csrf="{{ csrf_token }}"/>
+	<div id="app" style="margin-top: 1rem;">
+		<table style="width: 98vw;" style="margin-left: 3rem;">
+			<tbody>
+				<tr>
+					<td id="meeting-table">
+						<show-meeting guest_name="{{ mentor }}"></show-meeting>
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td id="meeting-table">
+						<schedule-meeting guest_name="{{ mentor }}" csrf="{{ csrf_token }}"></schedule-meeting>
+						<br />
+						<show-meeting guest_name="{{ mentor }}"></show-meeting>
+						<schedule-meeting guest_name="{{ mentor }}" csrf="{{ csrf_token }}"></schedule-meeting>
+					</td>
+					<td>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<div id="chatbox">
+			<chat-window receiver="{{ mentor }}" sender="{{ user.username }}" csrf="{{ csrf_token }}"></chat-window>
+		</div>
 	</div>
 </center>
 
 {% endblock content %}
 
+
 {% block javascript %}
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="{% static 'mentor_mentee/chats.js' %}"></script>
+<script src="{% static 'mentor_mentee/show_meeting.js' %}"></script>
+<script src="{% static 'mentor_mentee/schedule_meeting.js' %}"></script>
 
 <script>
 	const app = new Vue({
 		delimiters: ["[[", "]]"],
 		components: {
 			"chat-window": ChatWindow,
+			"show-meeting": ShowMeeting,
+			"schedule-meeting": ScheduleMeeting,
 		},
 	});
 
-	app.$mount("#chat-window");
+	app.$mount("#app");
 </script>
 
 {% endblock javascript %}
