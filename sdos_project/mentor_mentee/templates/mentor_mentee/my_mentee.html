@@ -6,16 +6,34 @@
 My Mentee
 {% endblock title %}
 
+{% block header %}
+<link href="{% static 'mentor_mentee/chats.css' %}" rel="stylesheet" />
+{% endblock header %}
 
 {% block content %}
-<div class="jumbotron jumbotron-fluid" style="background: none; padding: 0;"></div>
+
 <center>
-	<h1 class="display-2">
-		{{ user.username }} - {{ mentee }}
-	</h1>
-	<p class="lead">
-		Mentor - Mentee Page
-	</p>
+	<div id="chat-window" style="margin-top: 3rem;">
+		<chat-window receiver="{{ mentee }}" sender="{{ user.username }}" csrf="{{ csrf_token }}"/>
+	</div>
 </center>
-</div>
+
 {% endblock content %}
+
+{% block javascript %}
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="{% static 'mentor_mentee/chats.js' %}"></script>
+
+<script>
+	const app = new Vue({
+		delimiters: ["[[", "]]"],
+		components: {
+			"chat-window": ChatWindow,
+		},
+	});
+
+	app.$mount("#chat-window");
+</script>
+
+{% endblock javascript %}

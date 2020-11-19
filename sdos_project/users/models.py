@@ -93,7 +93,7 @@ class Message(models.Model):
 	time_posted = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):
-		return self.sender.user.username + ' sent a message to ' + self.reciever.user.username
+		return self.sender.user.username + ' messaged ' + self.reciever.user.username
 
 
 """

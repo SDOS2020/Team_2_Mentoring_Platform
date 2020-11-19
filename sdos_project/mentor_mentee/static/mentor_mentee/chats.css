@@ -1,0 +1,98 @@
+:root {
+	--border: 2px solid #ddd;
+	--left-msg-bg: #ececec;
+	--right-msg-bg: #7575ab;
+}
+
+html {
+	box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+	margin: 0;
+	padding: 0;
+	box-sizing: inherit;
+}
+
+body {
+
+	font-family: Helvetica, sans-serif;
+}
+
+.msger {
+	display: flex;
+	flex-flow: column wrap;
+	justify-content: space-between;
+	width: 100%;
+	max-width: 867px;
+	margin: 25px 10px;
+	height: calc(100% - 50px);
+	border: var(--border);
+	border-radius: 5px;
+}
+
+.msger-chat {
+	background-image: url("https://mir-s3-cdn-cf.behance.net/project_modules/disp/2d9dd173426833.5c08f5634ff45.png");
+	background-color: #f5f5fa;
+	flex: 1;
+	overflow-y: auto;
+	padding: 10px;
+}
+.msger-chat::-webkit-scrollbar {
+	width: 6px;
+}
+.msger-chat::-webkit-scrollbar-track {
+	background: #ddd;
+}
+.msger-chat::-webkit-scrollbar-thumb {
+	background: #bdbdbd;
+}
+.msg {
+	display: flex;
+	align-items: flex-end;
+	margin-bottom: 10px;
+}
+.msg:last-of-type {
+	margin: 0;
+}
+
+.msg-bubble {
+	max-width: 450px;
+	padding: 15px;
+	border-radius: 15px;
+	background: var(--left-msg-bg);
+}
+.msg-info {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 10px;
+}
+.msg-info-name {
+	margin-right: 10px;
+	font-weight: bold;
+}
+.msg-info-time {
+	font-size: 0.85em;
+}
+
+.left-msg .msg-bubble {
+	border-bottom-left-radius: 0;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #505060;
+}
+
+.right-msg {
+	flex-direction: row-reverse;
+}
+.right-msg .msg-bubble {
+	background: var(--right-msg-bg);
+	color: #fff;
+	border-bottom-right-radius: 0;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #202030;
+}
