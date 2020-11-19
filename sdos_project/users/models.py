@@ -88,12 +88,12 @@ class Account(models.Model):
 """
 class Message(models.Model):
 	sender = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='message_sender')
-	reciever = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='message_reciever')
+	receiver = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='message_receiver')
 	content = models.TextField(max_length=512, null=True)
 	time_posted = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):
-		return self.sender.user.username + ' messaged ' + self.reciever.user.username
+		return self.sender.user.username + ' messaged ' + self.receiver.user.username
 
 
 """

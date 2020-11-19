@@ -13,7 +13,7 @@ const ChatWindow = {
 							<td>
 								<div class="msg-bubble">
 									<div class="msg-info">
-										<div class="msg-info-name">[[ message.sender ]]</div>
+										<div class="msg-info-name">You</div>
 										<div class="msg-info-time">[[ message.timestamp ]]</div>
 									</div>
 
