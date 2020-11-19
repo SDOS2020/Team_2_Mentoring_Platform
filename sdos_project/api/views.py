@@ -550,8 +550,8 @@ def get_settings(request):
 def get_messages(request, chatter_username):
 	chatter_user = User.objects.filter(username=chatter_username).first()
 	
-	messages_sent = Message.objects.filter(sender=request.user.account, reciever=chatter_user.account)
-	messages_received = Message.objects.filter(reciever=request.user.account, sender=chatter_user.account)
+	messages_sent = Message.objects.filter(sender=request.user.account, receiver=chatter_user.account)
+	messages_received = Message.objects.filter(receiver=request.user.account, sender=chatter_user.account)
 	
 	messages = [{'sender': msg.sender.user.username, 'content': msg.content, 'timestamp': msg.time_posted, 'by_me': True} for msg in messages_sent] + \
 	[{'sender': msg.sender.user.username, 'content': msg.content, 'timestamp': msg.time_posted, 'by_me': False} for msg in messages_received]
@@ -574,7 +574,7 @@ def send_message(request):
 	message = json.loads(request.body.decode('utf-8'))['message']
 	receiver_user = User.objects.filter(username=message['receiver']).first()
 	Message.objects.create(sender=request.user.account, 
-							reciever=receiver_user.account, 
+							receiver=receiver_user.account, 
 							content=message['content'])
 
 	return JsonResponse({'success': True})
