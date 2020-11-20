@@ -38,7 +38,7 @@ const ToDoComponent = {
 		`
 		<section class="todoapp">
 			<header class="header">
-				<h1>todos</h1>
+				<h1>Todos</h1>
 				<input
 					class="new-todo"
 					autofocus
@@ -46,6 +46,7 @@ const ToDoComponent = {
 					placeholder="What needs to be done?"
 					v-model="newTodo"
 					@keyup.enter="addTodo"
+					style="background-color: #404065 !important; color: #fff !important;"
 				/>
 			</header>
 			<section class="main" v-show="todos.length" v-cloak>
@@ -66,7 +67,7 @@ const ToDoComponent = {
 						>
 							<div class="view">
 								<input class="toggle" type="checkbox" v-model="todo.completed" />
-								<label @dblclick="editTodo(todo)">[[ todo.title ]]</label>
+								<label @dblclick="editTodo(todo)"><b>[[ todo.title ]]</b></label>
 								<button class="destroy" @click="removeTodo(todo)">
 									<font size="4"><i class="fas fa-trash"></i></font>
 								</button>
