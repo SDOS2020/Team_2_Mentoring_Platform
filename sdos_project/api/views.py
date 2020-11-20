@@ -641,3 +641,22 @@ def add_meeting(request):
 	}
 
 	return JsonResponse(response)
+
+
+@login_required
+def get_todos(request, username):
+	tasks = ['Eat food', 'Eat food again', 'Play football']
+
+	todos = [{'task': task, 'deadline': datetime.now(), 'is_complete': False} for task in tasks]
+	
+	for i in range(len(todos)):
+		todos[i]['deadline_day'] = todos[i]['deadline'].strftime('%a')
+		todos[i]['deadline_date'] = todos[i]['deadline'].strftime('%d %b')
+		todos[i]['deadline_time'] = todos[i]['deadline'].strftime('%H:%M')
+	
+	response = {
+		'success': True,
+		'todos': todos
+	}
+
+	return JsonResponse(response)
