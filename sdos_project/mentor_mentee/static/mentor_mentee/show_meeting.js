@@ -5,7 +5,7 @@ const ShowMeeting = {
 		<div class="card-header" style="border-radius: 10px 10px 0 0; background-color: lightgrey;">
 			<center>
 				<font size="4">
-					<b>My Meetings</b>
+					<b>Upcoming Meetings</b>
 				</font>
 			</center>
 		</div>

@@ -30,6 +30,9 @@ My Mentee
 
 
 {% block content %}
+<audio id="myAudio">
+	<source src="{% static 'mentor_mentee/send_message.ogg' %}" type="audio/ogg">
+</audio>
 
 <center>
 	<div id="app" style="margin-top: 1rem;">
@@ -44,10 +47,9 @@ My Mentee
 				</tr>
 				<tr>
 					<td id="meeting-table">
-						<schedule-meeting guest_name="{{ mentee }}" csrf="{{ csrf_token }}"></schedule-meeting>
+						<schedule-meeting guest_name="{{ mentee }}" csrf="{{ csrf_token }}">
+						</schedule-meeting>
 						<br/>
-						<show-meeting guest_name="{{ mentee }}"></show-meeting>
-						<schedule-meeting guest_name="{{ mentee }}" csrf="{{ csrf_token }}"></schedule-meeting>
 					</td>
 					<td>
 					</td>
@@ -55,7 +57,7 @@ My Mentee
 			</tbody>
 		</table>
 
-		<div id="chatbox">
+		<div id="chatbox" style="margin-bottom: 1rem;">
 			<chat-window receiver="{{ mentee }}" sender="{{ user.username }}" csrf="{{ csrf_token }}"></chat-window>
 		</div>
 	</div>

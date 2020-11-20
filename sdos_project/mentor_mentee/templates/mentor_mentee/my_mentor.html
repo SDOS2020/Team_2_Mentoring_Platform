@@ -31,6 +31,10 @@ My Mentor
 
 {% block content %}
 
+<audio id="myAudio">
+	<source src="{% static 'mentor_mentee/send_message.ogg' %}" type="audio/ogg">
+</audio>
+
 <center>
 	<div id="app" style="margin-top: 1rem;">
 		<table style="width: 98vw;" style="margin-left: 3rem;">
@@ -55,7 +59,7 @@ My Mentor
 			</tbody>
 		</table>
 
-		<div id="chatbox">
+		<div id="chatbox" style="margin-bottom: 1rem;">
 			<chat-window receiver="{{ mentor }}" sender="{{ user.username }}" csrf="{{ csrf_token }}"></chat-window>
 		</div>
 	</div>

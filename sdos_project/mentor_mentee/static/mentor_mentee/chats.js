@@ -48,7 +48,7 @@ const ChatWindow = {
 		</div>
 			
 		<div class="input-group card-footer">
-			<input type="text" class="form-control" v-model="message_to_send" placeholder="Type a message...">
+			<input @keyup.enter="send_message" type="text" class="form-control" v-model="message_to_send" placeholder="Type a message...">
 			<div class="input-group-append">
 				<button class="btn btn-outline-success" type="button" v-on:click="send_message">Send</button>
 			</div>
@@ -112,11 +112,17 @@ const ChatWindow = {
 
 			this.message_to_send = "";
 			this.scroll_to_bottom();
+			this.playAudio();
 		},
 
 		scroll_to_bottom() {
 			let elem = document.getElementById("chat-table");
 			elem.scrollTop = elem.scrollHeight;
-		}
+		},
+
+		playAudio() { 
+			var x = document.getElementById("myAudio"); 
+			x.play(); 
+		} 
 	},
 };

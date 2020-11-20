@@ -1,14 +1,22 @@
 {% extends "home/base.html" %}
 
+{% load static %}
+
 
 {% block title %}
 Homepage
 {% endblock title %}
 
+{% block header %}
+<link rel="stylesheet" type="text/css" href="{% static 'home/guttu.css' %}"/>
+{% endblock header %}
+
 
 {% block content %}
-<div class="jumbotron jumbotron-fluid" style="background: none; margin-top: 20vh;">
+
+<div class="jumbotron jumbotron-fluid" style="background: none; ">
 	<center>
+
 		{% if user.is_authenticated %}
 
 			<h1 class="display-4">
@@ -31,4 +39,36 @@ Homepage
 		{% endif %}			
 	</center>
 </div>
+
+{% if user.is_authenticated %}
+	<div id="app" style="margin-left: 3rem; margin-top: -3rem;">
+		<todo username='{{ user.username }}'/>
+	</div>
+{% endif %}
+
 {% endblock content %}
+
+
+{% block javascript %}
+<!-- <script src="https://unpkg.com/vue"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<style>
+	[v-cloak] {
+		display: none;
+	}
+</style>
+
+<script src="{% static 'home/todo_app.js' %}"></script>
+<script>
+	const app = new Vue({
+		delimiters: ["[[", "]]"],
+
+		components: {
+			'todo': ToDoComponent
+		},
+
+	});
+	app.$mount('#app');
+</script>
+{% endblock javascript %}
