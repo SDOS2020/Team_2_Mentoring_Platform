@@ -2,7 +2,7 @@ const ShowMeeting = {
 	delimiters: ["[[", "]]"],
 	template: `
 	<div>
-		<div class="card-header" style="border-radius: 10px 10px 0 0; background-color: lightgrey;">
+		<div class="card-header" style="border-radius: 10px 10px 0 0; background-color: lightgrey;" id="show-meetings-header">
 			<center>
 				<font size="4">
 					<b>Upcoming Meetings</b>
@@ -10,7 +10,7 @@ const ShowMeeting = {
 			</center>
 		</div>
 
-		<div style="height: 30vh; overflow-y: scroll;">
+		<div style="height: 30vh; overflow-y: scroll;" id="show-meetings-body">
 			<div v-if="meetings.length === 0" id="no-meetings-text">
 				<center style="margin-top: 5rem;">
 					No scheduled meetings
@@ -30,7 +30,7 @@ const ShowMeeting = {
 							</i>
 						</td>
 
-						<td colspan="2">
+						<td style="width: 75%;">
 							<a v-bind:href="meeting.meeting_url" target="blank" style="text-decoration: none; color: black;">
 								<b>[[ meeting.title ]]</b> &nbsp
 								
@@ -55,9 +55,7 @@ const ShowMeeting = {
 	},
 
 	props: {
-		guest_name: {
-			required: true
-		}
+		guest_name: null,
 	},
 
 	created() {

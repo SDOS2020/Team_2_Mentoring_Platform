@@ -588,14 +588,14 @@ def send_message(request):
 def get_meetings(request, guest_name):
 	user = request.user
 
-	if not guest_name:
-		print('[ERROR] guest_name is None')
-		return JsonResponse({'success': False})
+	if guest_name == "undefined":
+		meeting_created_by_me = Meeting.objects.filter(creator=user.account).all()
+		meeting_created_for_me = Meeting.objects.filter(guest=user.account).all()
 
-	guest = User.objects.filter(username=guest_name).first()
-
-	meeting_created_by_me = Meeting.objects.filter(creator=user.account, guest=guest.account).all()
-	meeting_created_for_me = Meeting.objects.filter(creator=guest.account, guest=user.account).all()
+	else:
+		guest = User.objects.filter(username=guest_name).first()
+		meeting_created_by_me = Meeting.objects.filter(creator=user.account, guest=guest.account).all()
+		meeting_created_for_me = Meeting.objects.filter(creator=guest.account, guest=user.account).all()
 
 	fields = ('title', 'agenda', 'time', 'meeting_url')
 	meetings = [dict((field, getattr(meeting, field)) for field in fields) for meeting in meeting_created_by_me] + \
@@ -638,25 +638,6 @@ def add_meeting(request):
 
 	response = {
 		'success': True
-	}
-
-	return JsonResponse(response)
-
-
-@login_required
-def get_todos(request, username):
-	tasks = ['Eat food', 'Eat food again', 'Play football']
-
-	todos = [{'task': task, 'deadline': datetime.now(), 'is_complete': False} for task in tasks]
-	
-	for i in range(len(todos)):
-		todos[i]['deadline_day'] = todos[i]['deadline'].strftime('%a')
-		todos[i]['deadline_date'] = todos[i]['deadline'].strftime('%d %b')
-		todos[i]['deadline_time'] = todos[i]['deadline'].strftime('%H:%M')
-	
-	response = {
-		'success': True,
-		'todos': todos
 	}
 
 	return JsonResponse(response)
