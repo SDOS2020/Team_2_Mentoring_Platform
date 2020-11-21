@@ -23,7 +23,16 @@ const ChatsCommon = {
 								class="list-group-item" 
 								style="cursor: pointer;"
 							>
-								[[ chatter.username ]]
+								<span class="d-none d-lg-block">
+									<img class="img-fluid img-profile rounded-circle mx-auto mb-2" 
+										src="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" 
+										alt="Profile Picture"
+										style="height: 2.5rem; width: 2.5rem; float: left" />
+								</span>
+
+								<div style="margin-top: 0.5rem;">
+									&nbsp &nbsp[[ chatter.first_name ]] [[ chatter.last_name ]]
+								</div>
 							</li>
 						</ul>
 					</td>
