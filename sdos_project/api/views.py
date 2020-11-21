@@ -476,6 +476,7 @@ def get_chatters(request):
 				'username': mentee.mentee.account.user.username,
 				"first_name": mentee.mentee.account.user.first_name,
 				"last_name": mentee.mentee.account.user.last_name,
+				"gender": mentee.mentee.account.gender,
 			})
 	else:
 		mentors = MyMentor.objects.filter(mentee=user.account.mentee)
@@ -485,7 +486,7 @@ def get_chatters(request):
 				'username': mentor.mentor.account.user.username,
 				'first_name': mentor.mentor.account.user.first_name,
 				'last_name': mentor.mentor.account.user.last_name,
-
+				'gender': mentor.mentor.account.gender,
 			})
 
 	print(chatters)

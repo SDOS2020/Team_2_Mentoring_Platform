@@ -23,9 +23,23 @@ const ChatsCommon = {
 								class="list-group-item" 
 								style="cursor: pointer;"
 							>
-								<span class="d-none d-lg-block">
+								<span class="d-none d-lg-block" v-if="chatter.gender === 'F'">
 									<img class="img-fluid img-profile rounded-circle mx-auto mb-2" 
-										src="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" 
+										v-bind:src="female_dp"
+										alt="Profile Picture"
+										style="height: 2.5rem; width: 2.5rem; float: left" />
+								</span>
+
+								<span class="d-none d-lg-block" v-else-if="chatter.gender === 'M'">
+									<img class="img-fluid img-profile rounded-circle mx-auto mb-2" 
+										v-bind:src="male_dp"
+										alt="Profile Picture"
+										style="height: 2.5rem; width: 2.5rem; float: left" />
+								</span>
+
+								<span class="d-none d-lg-block" v-else>
+									<img class="img-fluid img-profile rounded-circle mx-auto mb-2" 
+										v-bind:src="neutral_dp"
 										alt="Profile Picture"
 										style="height: 2.5rem; width: 2.5rem; float: left" />
 								</span>
@@ -47,7 +61,10 @@ const ChatsCommon = {
 	</div>
 	`,
 	props: {
-		csrf: {required: true}
+		csrf: {required: true},
+		male_dp: {required: true},
+		female_dp: {required: true},
+		neutral_dp: {required: true},
 	},
 	data() {
 		return {

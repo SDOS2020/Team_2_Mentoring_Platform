@@ -35,7 +35,14 @@ Chat
 
 <div style="margin-left: auto; margin-right: auto; width: 80vw;">
 	<div id="vue-chat" >
-		<chats-common csrf="{{ csrf_token }}"></chats-common>
+		<chats-common 
+			csrf="{{ csrf_token }}"
+			male_dp="{% static 'users/male.jpg' %}"
+			female_dp="{% static 'users/female.jpg' %}"
+			neutral_dp="{% static 'users/neutral.jpg' %}"
+		>
+		</chats-common>
+
 	</div>
 </div>
 
