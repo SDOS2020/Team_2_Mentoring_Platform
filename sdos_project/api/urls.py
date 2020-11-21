@@ -12,6 +12,7 @@ urlpatterns = [
 	
 	path("get_mentors/", api_views.get_mentors, name="get_mentors"),
 	path("get_mentees/", api_views.get_mentees, name="get_mentees"),
+	path("get_chatters/", api_views.get_chatters, name="get_chatters"),
 	path("get_recommendations/", api_views.get_recommendations, name="get_recommendations"),
 	
 	path("get_tags/", api_views.get_tags, name="get_tags"),

@@ -2,7 +2,15 @@ const ChatWindow = {
 	delimiters: ["[[", "]]"],
 	template: `
 	<div>
-		<div class="card-header" style="border-radius: 10px 10px 0 0; background-color: lightgrey;">
+		<div v-if="receiver === ''"class="card-header" style="border-radius: 10px 10px 0 0; background-color: lightgrey;">
+			<center>
+				<font size="4">
+					Select a contact to start chatting
+				</font>
+			</center>
+		</div>
+
+		<div v-else class="card-header" style="border-radius: 10px 10px 0 0; background-color: lightgrey;">
 			<center>
 				<font size="4">
 					Chat with <b>[[ receiver ]]</b>
@@ -47,7 +55,7 @@ const ChatWindow = {
 			</table>
 		</div>
 			
-		<div class="input-group card-footer">
+		<div v-if="receiver !== ''" class="input-group card-footer">
 			<input @keyup.enter="send_message" type="text" class="form-control" v-model="message_to_send" placeholder="Type a message...">
 			<div class="input-group-append">
 				<button class="btn btn-outline-success" type="button" v-on:click="send_message">Send</button>
