@@ -56,7 +56,7 @@ const ChatWindow = {
 		</div>
 			
 		<div v-if="receiver !== ''" class="input-group card-footer">
-			<input @keyup.enter="send_message" type="text" class="form-control" v-model="message_to_send" placeholder="Type a message...">
+			<input @keyup.enter="send_message" type="text" class="form-control" v-model="message_to_send" placeholder="Type a message..." id="message-input-textbox">
 			<div class="input-group-append">
 				<button class="btn btn-outline-success" type="button" v-on:click="send_message">Send</button>
 			</div>

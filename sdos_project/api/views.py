@@ -473,15 +473,22 @@ def get_chatters(request):
 		for mentee in mentees:
 			chatters.append({
 				'id': mentee.id,
-				'username': mentee.mentee.account.user.username
+				'username': mentee.mentee.account.user.username,
+				"first_name": mentee.mentee.account.user.first_name,
+				"last_name": mentee.mentee.account.user.last_name,
 			})
 	else:
 		mentors = MyMentor.objects.filter(mentee=user.account.mentee)
 		for mentor in mentors:
 			chatters.append({
 				'id': mentor.id,
-				'username': mentor.mentor.account.user.username
+				'username': mentor.mentor.account.user.username,
+				'first_name': mentor.mentor.account.user.first_name,
+				'last_name': mentor.mentor.account.user.last_name,
+
 			})
+
+	print(chatters)
 
 	response = {
 		'chatters': chatters,
@@ -497,7 +504,7 @@ def get_recommendations(request):
 		mentors.append(
 			{
 				"id": mentor.id,
-				"username": mentor.account.user.username
+				"username": mentor.account.user.username,
 			}
 		)
 	response = {
