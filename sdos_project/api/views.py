@@ -464,6 +464,33 @@ def get_mentees(request):
 
 
 @login_required
+def get_chatters(request):
+	user = request.user
+	chatters = []
+
+	if user.account.is_mentor:
+		mentees = MyMentee.objects.filter(mentor=user.account.mentor)
+		for mentee in mentees:
+			chatters.append({
+				'id': mentee.id,
+				'username': mentee.mentee.account.user.username
+			})
+	else:
+		mentors = MyMentor.objects.filter(mentee=user.account.mentee)
+		for mentor in mentors:
+			chatters.append({
+				'id': mentor.id,
+				'username': mentor.mentor.account.user.username
+			})
+
+	response = {
+		'chatters': chatters,
+		'success': True
+	}
+	return JsonResponse(response, safe=False)
+
+
+@login_required
 def get_recommendations(request):
 	mentors = []
 	for mentor in Mentor.objects.all():

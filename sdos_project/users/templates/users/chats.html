@@ -7,20 +7,35 @@
 Chat
 {% endblock title %}
 
+{% block header %}
+<link href="{% static 'mentor_mentee/chats.css' %}" rel="stylesheet" />
+
+<style>
+	.list-group .active {
+		background-color: #404065 !important;
+		border: none !important;
+
+	}
+</style>
+
+{% endblock header %}
+
 
 {% block content %}
 
-<div class="container" style="margin-top: 10vh;">
-	<div class="row justify-content-center">
-		<div class="col-6">
-			<center>
-				<h1 class="display-3">Chat with users</h1>
-			</center>
-			<br />
+<audio id="myAudio">
+	<source src="{% static 'mentor_mentee/send_message.ogg' %}" type="audio/ogg">
+</audio>
 
-			<div id="vue-chat">
-			</div>
-		</div>
+<center style="margin-top: 5vh; margin-bottom: 5vh;">
+	<h1 class="display-3">
+		My Chats
+	</h1>
+</center>
+
+<div style="margin-left: auto; margin-right: auto; width: 80vw;">
+	<div id="vue-chat" >
+		<chats-common csrf="{{ csrf_token }}"></chats-common>
 	</div>
 </div>
 
@@ -29,11 +44,18 @@ Chat
 
 {% block javascript %}
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="{% static 'mentor_mentee/chats.js' %}"></script>
+<script src="{% static 'users/vue_components/chats_common.js' %}"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
 {# <script src="{% static 'vue-advanced-chat/dist/vue-advanced-chat.min.js' %}"></script> #}
 
 <script>
 const app = new Vue({
 	delimiters: ["[[", "]]"],
+	components: {
+		"chats-common": ChatsCommon,
+	},
 });
 	
 app.$mount("#vue-chat");
