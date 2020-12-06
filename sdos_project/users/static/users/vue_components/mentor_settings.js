@@ -30,8 +30,13 @@ const MentorSettings = {
 						</p>
 					</td>
 					<td>
-						<input v-model="mentorship_duration" type="range" id="mentorship_duration" name="mentorship_duration" min="1" max="24">
-						[[mentorship_duration]] months
+						<select v-model="mentorship_duration" name="mentorship_duration" id="mentorship_duration">
+							<option value="3">3 Months</option>
+							<option value="6">6 Months</option>
+							<option value="9">9 Months</option>
+							<option value="12">12 Months</option>
+							<option value="15">15 Months</option>
+						</select>
 					</td>
 				</tr>
 
