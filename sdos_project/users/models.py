@@ -3,6 +3,7 @@ from django.core import validators
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 
+
 # Top most - for authentication purpose only
 class User(AbstractUser):
 	is_admin = models.BooleanField(default=False)
@@ -13,7 +14,7 @@ class Admin(models.Model):
 
 
 """
-	The main class that stores all the common information for a mentor and a mentee
+The main class that stores all the common information for a mentor and a mentee
 """
 class Account(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -269,3 +270,43 @@ class Meeting(models.Model):
 
 	def __str__(self):
 		return self.creator.user.username + ' created a meeting with ' + self.guest.user.username
+
+
+'''
+Reference: http://csrankings.org/
+'''
+class Areas(models.IntegerChoices):
+	artificial_intelligence              = _('Artificial Intelligence')
+	computer_vision                      = _('Computer Vision')
+	machine_learning_and_data_mining     = _('Machine Learning and Data Mining')
+	natural_language_processing          = _('Natural Language Processing')
+	the_web_and_information_retrieval    = _('The Web and Information Retrieval')
+	computer_architecture                = _('Computer Architecture')
+	computer_networks                    = _('Computer Networks')
+	computer_security                    = _('Computer Security')
+	databases                            = _('Databases')
+	design_automation                    = _('Design Automation')
+	embedded_and_real_time_systems       = _('Embedded and Real-Time Systems')
+	high_performance_computing           = _('High-Performance Computing')
+	mobile_computing                     = _('Mobile Computing')
+	measurement_and_performance_analysis = _('Measurement and Performance Analysis')
+	operating_systems                    = _('Operating Systems')
+	programming_languages                = _('Programming Languages')
+	software_engineering                 = _('Software Engineering')
+	algorithms_and_complexity            = _('Algorithms and Complexity')
+	cryptography                         = _('Cryptography')
+	logic_and_verification               = _('Logic and Verification')
+	computational_bio_and_bioinformatics = _('Computational Bio and Bioinformatics')
+	computer_graphics                    = _('Computer Graphics')
+	economics_and_computation            = _('Economics and Computation')
+	human_computer_interaction           = _('Human-Computer Interaction')
+	robotics                             = _('Robotics')
+	visualization                        = _('Visualization')
+
+
+class MentorArea(models.Model):
+	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
+	area = models.IntegerField(choices=Areas.choices, null=True)
+
+	def __str__(self):
+		return self.mentor.account.user.username + ' of area ' + self.get_area_display()

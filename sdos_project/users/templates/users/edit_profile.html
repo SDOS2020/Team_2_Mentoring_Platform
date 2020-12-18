@@ -20,7 +20,6 @@ Edit Profile
 			<form method="POST" action="{% url 'edit_profile' %}">
 				{% csrf_token %}
 
-				{{ name_form|crispy }}
 				{{ details_form|crispy }}
 
 				<center>

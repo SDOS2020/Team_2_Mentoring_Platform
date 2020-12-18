@@ -121,14 +121,10 @@ def edit_profile(request):
 
 	if request.method == "POST":
 
-		name_form = EditNameForm(request.POST or None, initial = initial_dict_name_form)
 		details_form = EditDetailsForm(request.POST or None, initial = initial_dict_details_form)
 
-		if name_form.is_valid() and details_form.is_valid():
+		if details_form.is_valid():
 			user = request.user
-			user.first_name = name_form.cleaned_data["first_name"]
-			user.last_name = name_form.cleaned_data["last_name"]
-
 			user.account.introduction = details_form.cleaned_data["introduction"]
 			user.account.education = details_form.cleaned_data["education"]
 			user.account.experience = details_form.cleaned_data["experience"]
@@ -138,11 +134,9 @@ def edit_profile(request):
 			return redirect("homepage")
 
 	else:
-		name_form = EditNameForm(request.POST or None, initial = initial_dict_name_form)
 		details_form = EditDetailsForm(request.POST or None, initial = initial_dict_details_form)
 
 	context = {
-		"name_form" : name_form,
 		"details_form": details_form
 	}
 
