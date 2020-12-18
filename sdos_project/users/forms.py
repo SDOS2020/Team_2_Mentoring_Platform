@@ -17,11 +17,17 @@ class UserRegisterForm(UserCreationForm):
 		required=True,
 	)
 
+	gender = forms.ChoiceField(
+		choices=Account.GENDER_CHOICES,
+		initial=Account.GENDER_CHOICES[-1],
+		required=True
+	)
+
 	class Meta:
 		# model that will be affected is the user model, i.e. at form.save(), it will update the User model
 		model = User
 		# fields needed in form in this order
-		fields = ("first_name", "last_name", "username", "email", "password1", "password2")
+		fields = ("first_name", "last_name", "gender", "username", "email", "password1", "password2")
 
 
 class MentorRegisterForm(forms.ModelForm):
