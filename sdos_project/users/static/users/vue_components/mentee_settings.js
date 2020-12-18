@@ -82,7 +82,7 @@ const MenteeSettings = {
 			console.log(error);
 		});
 
-		request_url = "http://127.0.0.1:8000/api/get_tags/";
+		request_url = "http://127.0.0.1:8000/api/get_mentee_tags/";
 
 		axios.get(request_url)
 		.then(response => {

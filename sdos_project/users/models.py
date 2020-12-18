@@ -175,12 +175,17 @@ class MenteeSentRequest(models.Model):
 	The different type of users that can exist. These types are accessed in the types of mentee a mentor
 	needs, and also the types of mentor a mentee needs.
 """
-class Roles(models.IntegerChoices):
-	undergraduate = 1, _('Btech')
-	graduate      = 2, _('Mtech')
-	post_graduate = 3, _('PhD')
-	faculty       = 4, _('Faculty')
-	developer     = 5, _('Developer')
+class MenteeRoles(models.IntegerChoices):
+	faculty       = 1, _('Faculty')
+	developer     = 2, _('Developer')
+	undergraduate = 3, _('BTech')
+	graduate      = 4, _('MTech')
+	post_graduate = 5, _('PhD')
+
+
+class MentorRoles(models.IntegerChoices):
+	faculty   = 1, _('Faculty')
+	developer = 2, _('Developer')
 
 
 """
@@ -200,7 +205,7 @@ class Fields(models.IntegerChoices):
 """
 class MentorRoleField(models.Model):
 	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
-	role = models.IntegerField(choices=Roles.choices, null=True)
+	role = models.IntegerField(choices=MentorRoles.choices, null=True)
 	field = models.IntegerField(choices=Fields.choices, null=True)
 
 	def __str__(self):
@@ -212,7 +217,7 @@ class MentorRoleField(models.Model):
 """
 class MenteeRoleField(models.Model):
 	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
-	role = models.IntegerField(choices=Roles.choices, null=True)
+	role = models.IntegerField(choices=MenteeRoles.choices, null=True)
 	field = models.IntegerField(choices=Fields.choices, null=True)
 
 	def __str__(self):
@@ -225,7 +230,7 @@ class MenteeRoleField(models.Model):
 """
 class MentorExpectedRoleField(models.Model):
 	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
-	role = models.IntegerField(choices=Roles.choices, null=True)
+	role = models.IntegerField(choices=MentorRoles.choices, null=True)
 	field = models.IntegerField(choices=Fields.choices, null=True)
 
 	def __str__(self):
@@ -240,7 +245,7 @@ class MentorExpectedRoleField(models.Model):
 """
 class MenteeExpectedRoleField(models.Model):
 	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
-	role = models.IntegerField(choices=Roles.choices, null=True)
+	role = models.IntegerField(choices=MenteeRoles.choices, null=True)
 	field = models.IntegerField(choices=Fields.choices, null=True)
 
 	def __str__(self):

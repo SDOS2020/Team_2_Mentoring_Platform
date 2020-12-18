@@ -83,7 +83,7 @@ const MentorSettings = {
 			console.log(error);
 		});
 
-		request_url = "http://127.0.0.1:8000/api/get_tags/";
+		request_url = "http://127.0.0.1:8000/api/get_mentor_tags/";
 
 		axios.get(request_url)
 		.then(response => {

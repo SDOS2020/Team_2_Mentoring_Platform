@@ -15,7 +15,8 @@ urlpatterns = [
 	path("get_chatters/", api_views.get_chatters, name="get_chatters"),
 	path("get_recommendations/", api_views.get_recommendations, name="get_recommendations"),
 	
-	path("get_tags/", api_views.get_tags, name="get_tags"),
+	path("get_mentor_tags/", api_views.get_mentor_tags, name="get_mentor_tags"),
+	path("get_mentee_tags/", api_views.get_mentee_tags, name="get_mentee_tags"),
 	path("get_my_tags/", api_views.get_my_tags, name="get_my_tags"),
 	path("update_my_tags/", api_views.update_my_tags, name="update_my_tags"),
 	
