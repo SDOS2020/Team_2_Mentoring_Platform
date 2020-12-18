@@ -1,10 +1,10 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
-from .models import User, Mentor, Mentee, Account, MentorArea
+from .models import Areas, Gender, Fields, User, MentorRoles, MenteeRoles, Account, MentorArea
 
 
-class UserRegisterForm(UserCreationForm):
+class MentorRegistrationForm(UserCreationForm):
 	email = forms.EmailField()
 
 	first_name = forms.CharField(
@@ -18,8 +18,95 @@ class UserRegisterForm(UserCreationForm):
 	)
 
 	gender = forms.ChoiceField(
-		choices=Account.GENDER_CHOICES,
-		initial=Account.GENDER_CHOICES[-1],
+		choices=Gender.choices,
+		initial=Gender.choices[-1],
+		required=True
+	)
+
+	age = forms.IntegerField(
+		min_value=16,
+		max_value=100,
+		required=True
+	)
+
+	field = forms.ChoiceField(
+		choices=Fields.choices,
+		initial=Fields.choices[-1],
+		required=True
+	)
+
+	role = forms.ChoiceField(
+		choices=MentorRoles.choices,
+		initial=MentorRoles.choices[-1],
+		required=True
+	)
+
+	area = forms.ChoiceField(
+		choices=Areas.choices,
+		initial=Areas.choices[-1],
+		required=True
+	)
+
+	subarea = forms.CharField(
+		max_length=64,
+		required=False,
+		initial=''
+	)
+
+	class Meta:
+		# model that will be affected is the user model, i.e. at form.save(), it will update the User model
+		model = User
+		# fields needed in form in this order
+		fields = (
+			"first_name",
+			"last_name",
+			"gender",
+			"age",
+			"username",
+			"email",
+			"role",
+			"field",
+			"area",
+			"subarea",
+			"password1",
+			"password2"
+		)
+
+
+class MenteeRegistrationForm(UserCreationForm):
+	email = forms.EmailField()
+
+	first_name = forms.CharField(
+		max_length=50,
+		required=True,
+	)
+
+	last_name = forms.CharField(
+		max_length=50,
+		required=True,
+	)
+
+	gender = forms.ChoiceField(
+		choices=Gender.choices,
+		initial=Gender.choices[-1],
+		required=True
+	)
+
+	age = forms.IntegerField(
+		min_value=16,
+		max_value=100,
+		required=True
+	)
+
+	field = forms.ChoiceField(
+		choices=Fields.choices,
+		initial=Fields.choices[-1],
+		required=True
+	)
+
+	role = forms.ChoiceField(
+		choices=MenteeRoles.choices,
+		initial=MenteeRoles.choices[-1],
 		required=True
 	)
 
@@ -27,19 +114,19 @@ class UserRegisterForm(UserCreationForm):
 		# model that will be affected is the user model, i.e. at form.save(), it will update the User model
 		model = User
 		# fields needed in form in this order
-		fields = ("first_name", "last_name", "gender", "username", "email", "password1", "password2")
+		fields = (
+			"first_name",
+			"last_name",
+			"gender",
+			"age",
+			"username",
+			"email",
+			"role",
+			"field",
+			"password1",
+			"password2"
+		)
 
-
-class MentorRegisterForm(forms.ModelForm):
-	class Meta:
-		model = Mentor
-		fields = "__all__"
-
-
-class MenteeRegisterForm(forms.ModelForm):
-	class Meta:
-		model = Mentee
-		fields = "__all__"
 
 
 class EditNameForm(forms.ModelForm):

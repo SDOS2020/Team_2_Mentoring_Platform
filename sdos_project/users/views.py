@@ -3,8 +3,8 @@ from django.contrib.auth.decorators import login_required
 
 from users.models import User
 from .decorators import mentee_required
-from .models import Account, Mentor, Mentee
-from .forms import UserRegisterForm, EditDetailsForm, EditAreasForm
+from .models import Account, Mentor, Mentee, MentorRoleField, MenteeRoleField
+from .forms import *
 
 
 def register_mentor(request):
@@ -12,21 +12,38 @@ def register_mentor(request):
 		return redirect("homepage")
 
 	if request.method == "POST":
-		form = UserRegisterForm(request.POST)
+		form = MentorRegistrationForm(request.POST)
 		if form.is_valid():
 			user = form.save()
-			account = Account(user=user)
+			account = Account(
+				user=user,
+				gender=form.cleaned_data['gender'],
+				age=form.cleaned_data['age'],
+				is_mentor = True
+			)
 
-			# Register as a mentor
-			account.is_mentor = True
 			account.save()
 
 			mentor = Mentor(account=account)
 			mentor.save()
 
+			mentor_role_field = MentorRoleField(
+				mentor=mentor,
+				role=form.cleaned_data['role'],
+				field=form.cleaned_data['field']
+			)
+			mentor_role_field.save()
+
+			mentor_area = MentorArea(
+				mentor=mentor,
+				area=form.cleaned_data['area'],
+				subarea=form.cleaned_data['subarea']
+			)
+			mentor_area.save()
+
 			return redirect("login")
 	else:
-		form = UserRegisterForm()
+		form = MentorRegistrationForm()
 
 	context = {
 		"form" : form
@@ -40,22 +57,32 @@ def register_mentee(request):
 		return redirect("homepage")
 
 	if request.method == "POST":
-		form = UserRegisterForm(request.POST)
+		form = MenteeRegistrationForm(request.POST)
 		if form.is_valid():
 
 			user = form.save()
-			account = Account(user=user)
+			account = Account(
+				user=user,
+				gender=form.cleaned_data['gender'],
+				age=form.cleaned_data['age'],
+				is_mentee=True
+			)
 
-			# Register as a mentee
-			account.is_mentee = True
 			account.save()
 
 			mentee = Mentee(account=account)
 			mentee.save()
 
+			mentee_role_field = MenteeRoleField(
+				mentee=mentee,
+				role=form.cleaned_data['role'],
+				field=form.cleaned_data['field']
+			)
+			mentee_role_field.save()
+
 			return redirect("login")
 	else:
-		form = UserRegisterForm()
+		form = MenteeRegistrationForm()
 
 	context = {
 		"form" : form,

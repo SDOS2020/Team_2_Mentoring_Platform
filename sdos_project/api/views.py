@@ -59,7 +59,7 @@ def __get_tags(Roles):
 Returns tags for mentor
 '''
 @login_required
-def get_mentor_tags():
+def get_mentor_tags(request):
 	response = {
 		'success': True,
 		'tags':  __get_tags(MentorRoles)
@@ -69,7 +69,7 @@ def get_mentor_tags():
 
 
 @login_required
-def get_mentee_tags():
+def get_mentee_tags(request):
 	response = {
 		'success': True,
 		'tags':  __get_tags(MenteeRoles)

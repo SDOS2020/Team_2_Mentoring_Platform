@@ -13,11 +13,18 @@ class Admin(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
+class Gender(models.IntegerChoices):
+	male 				= 1, _('Male')
+	female 				= 2, _('Female')
+	prefer_not_to_say 	= 3, _('Prefer not to say')
+
+
 """
 The main class that stores all the common information for a mentor and a mentee
 """
 class Account(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
+	
 	age = models.IntegerField(
 		null=True, 
 		validators=[
@@ -26,30 +33,7 @@ class Account(models.Model):
 		]
 	)
 
-
-	MALE = 'M'
-	FEMALE = 'F'
-	PREFER_NOT_TO_SAY = '-'
-
-	GENDER_CHOICES = [
-		(MALE, 'Male'),
-		(FEMALE, 'Female'),
-		(PREFER_NOT_TO_SAY, 'Prefer not to say'),
-	]
-
-	gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default=PREFER_NOT_TO_SAY)
-
-
-	STUDENT = 'S'
-	FACULTY = 'F'
-
-	DESIGNATION_CHOICES = [
-		(STUDENT, 'Student'),
-		(FACULTY, 'Faculty'),
-	]
-
-	designation = models.CharField(max_length=1, choices=DESIGNATION_CHOICES, null=True)
-
+	gender = models.CharField(max_length=1, choices=Gender.choices, default=Gender.choices[-1])
 
 	mobile = models.CharField(
 		max_length=10,
@@ -58,7 +42,6 @@ class Account(models.Model):
 			validators.MinLengthValidator(10),
 		]
 	)
-
 
 	introduction = models.TextField(max_length=512, null=True)
 	education = models.TextField(max_length=512, null=True)
@@ -75,7 +58,6 @@ class Account(models.Model):
 			validators.MaxValueValidator(5.0),
 		]
 	)
-
 	
 	is_mentor = models.BooleanField(default=False)
 	is_mentee = models.BooleanField(default=False)
@@ -171,11 +153,11 @@ class MenteeSentRequest(models.Model):
 		return self.mentee.account.user.username + ' -> ' + self.mentor.account.user.username
 
 
-"""
-	The different type of users that can exist. These types are accessed in the types of mentee a mentor
-	needs, and also the types of mentor a mentee needs.
-"""
 class MenteeRoles(models.IntegerChoices):
+	"""
+	The different type of users that can exist. These types are accessed in the 
+	types of mentee a mentor needs, and also the types of mentor a mentee needs.
+	"""
 	faculty       = 1, _('Faculty')
 	developer     = 2, _('Developer')
 	undergraduate = 3, _('BTech')
@@ -188,10 +170,8 @@ class MentorRoles(models.IntegerChoices):
 	developer = 2, _('Developer')
 
 
-"""
-	The different fields of users that can exist. 
-"""
 class Fields(models.IntegerChoices):
+	"""The different fields of users that can exist"""
 	computer_science                             = 1, _('CS')
 	electronics_and_communication                = 2, _('ECE')
 	computer_science_and_design                  = 3, _('CSD')
@@ -200,16 +180,16 @@ class Fields(models.IntegerChoices):
 	computer_science_and_artificial_intelligence = 6, _('CSAI')
 
 
-"""
-	Stores the mentors qualifications, their role (current / past), their fields(current / past)
-"""
 class MentorRoleField(models.Model):
+	"""
+	Stores the mentors qualifications, their role (current / past), their fields(current / past)
+	"""
 	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
 	role = models.IntegerField(choices=MentorRoles.choices, null=True)
 	field = models.IntegerField(choices=Fields.choices, null=True)
 
 	def __str__(self):
-		return self.mentor.account.user.username + ' -> ' + self.get_role_display() + ' -> ' + self.get_field_display()
+		return "{} -> {} -> {}".format(self.mentor.account.user.username, self.get_role_display(), self.get_field_display())
 
 
 """
@@ -221,7 +201,7 @@ class MenteeRoleField(models.Model):
 	field = models.IntegerField(choices=Fields.choices, null=True)
 
 	def __str__(self):
-		return self.mentee.account.user.username + ' -> ' + self.get_role_display() + ' -> ' + self.get_field_display()
+		return "{} -> {} -> {}".format(self.mentee.account.user.username, self.get_role_display(), self.get_field_display())
 
 
 """
@@ -315,4 +295,4 @@ class MentorArea(models.Model):
 	subarea = models.CharField(max_length=64, null=True)
 
 	def __str__(self):
-		return self.mentor.account.user.username + ' of area ' + self.get_area_display()
+		return "{} of area {}".format(self.mentor.account.user.username, self.get_area_display())
