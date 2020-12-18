@@ -1,8 +1,7 @@
 from django import forms
-from .models import User, Mentor, Mentee, Account
 from django.contrib.auth.forms import UserCreationForm
-from django.core import validators
 
+from .models import User, Mentor, Mentee, Account, MentorArea
 
 
 class UserRegisterForm(UserCreationForm):
@@ -38,44 +37,18 @@ class MenteeRegisterForm(forms.ModelForm):
 
 
 class EditNameForm(forms.ModelForm):
-
 	class Meta:
 		model = User
 		fields = ("first_name", "last_name")
 
 
 class EditDetailsForm(forms.ModelForm):
-
 	class Meta:
 		model = Account
 		fields = ("introduction", "education", "experience")
-		# fields = '__all__'
 
-	# first_name = forms.CharField(
-	# 	max_length=50,
-	# 	required=True,
-	# )
 
-	# last_name = forms.CharField(
-	# 	max_length=50,
-	# 	required=True,
-	# )
-
-	# introduction = forms.CharField(
-	# 	widget=forms.Textarea,
-	# 	max_length=512,
-	# 	required=True,
-	# )
-
-	# education = forms.CharField(
-	# 	widget=forms.Textarea,
-	# 	max_length=512,
-	# 	required=True,
-	# )
-
-	# experience = forms.CharField(
-	# 	widget=forms.Textarea,
-	# 	max_length=512,
-	# 	required=True,
-	# )
-
+class EditAreasForm(forms.ModelForm):
+	class Meta:
+		model = MentorArea
+		fields = ("area", "subarea")

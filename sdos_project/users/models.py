@@ -177,21 +177,21 @@ class MenteeSentRequest(models.Model):
 """
 class Roles(models.IntegerChoices):
 	undergraduate = 1, _('Btech')
-	graduate = 2, _('Mtech')
+	graduate      = 2, _('Mtech')
 	post_graduate = 3, _('PhD')
-	faculty = 4, _('Faculty')
-	developer = 5, _('Developer')
+	faculty       = 4, _('Faculty')
+	developer     = 5, _('Developer')
 
 
 """
 	The different fields of users that can exist. 
 """
 class Fields(models.IntegerChoices):
-	computer_science = 1, _('CS')
-	electronics_and_communication = 2, _('ECE')
-	computer_science_and_design = 3, _('CSD')
-	computer_science_and_mathematics = 4, _('CSAM')
-	computer_science_and_social_sciences = 5, _('CSSS')
+	computer_science                             = 1, _('CS')
+	electronics_and_communication                = 2, _('ECE')
+	computer_science_and_design                  = 3, _('CSD')
+	computer_science_and_mathematics             = 4, _('CSAM')
+	computer_science_and_social_sciences         = 5, _('CSSS')
 	computer_science_and_artificial_intelligence = 6, _('CSAI')
 
 
@@ -208,7 +208,7 @@ class MentorRoleField(models.Model):
 
 
 """
-	Stores the mentees qualifications, their role (current / past), their fields(current / past)
+	Stores the mentees qualifications, their role (current / past), their fields (current / past)
 """
 class MenteeRoleField(models.Model):
 	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
@@ -234,7 +234,7 @@ class MentorExpectedRoleField(models.Model):
 
 """
 	Stores what the mentees expect from mentors in terms of their
-	qualifications, their role (current / past), their fields(current / past)
+	qualifications, their role (current / past), their fields (current / past)
 
 	NOTE: this might be deleted later on...
 """
@@ -276,37 +276,38 @@ class Meeting(models.Model):
 Reference: http://csrankings.org/
 '''
 class Areas(models.IntegerChoices):
-	artificial_intelligence              = _('Artificial Intelligence')
-	computer_vision                      = _('Computer Vision')
-	machine_learning_and_data_mining     = _('Machine Learning and Data Mining')
-	natural_language_processing          = _('Natural Language Processing')
-	the_web_and_information_retrieval    = _('The Web and Information Retrieval')
-	computer_architecture                = _('Computer Architecture')
-	computer_networks                    = _('Computer Networks')
-	computer_security                    = _('Computer Security')
-	databases                            = _('Databases')
-	design_automation                    = _('Design Automation')
-	embedded_and_real_time_systems       = _('Embedded and Real-Time Systems')
-	high_performance_computing           = _('High-Performance Computing')
-	mobile_computing                     = _('Mobile Computing')
-	measurement_and_performance_analysis = _('Measurement and Performance Analysis')
-	operating_systems                    = _('Operating Systems')
-	programming_languages                = _('Programming Languages')
-	software_engineering                 = _('Software Engineering')
-	algorithms_and_complexity            = _('Algorithms and Complexity')
-	cryptography                         = _('Cryptography')
-	logic_and_verification               = _('Logic and Verification')
-	computational_bio_and_bioinformatics = _('Computational Bio and Bioinformatics')
-	computer_graphics                    = _('Computer Graphics')
-	economics_and_computation            = _('Economics and Computation')
-	human_computer_interaction           = _('Human-Computer Interaction')
-	robotics                             = _('Robotics')
-	visualization                        = _('Visualization')
+	algorithms_and_complexity            =  1, _('Algorithms and Complexity')
+	artificial_intelligence              =  2, _('Artificial Intelligence')
+	computational_bio_and_bioinformatics =  3, _('Computational Bio and Bioinformatics')
+	computer_architecture                =  4, _('Computer Architecture')
+	computer_graphics                    =  5, _('Computer Graphics')
+	computer_networks                    =  6, _('Computer Networks')
+	computer_security                    =  7, _('Computer Security')
+	computer_vision                      =  8, _('Computer Vision')
+	cryptography                         =  9, _('Cryptography')
+	databases                            = 10, _('Databases')
+	design_automation                    = 11, _('Design Automation')
+	economics_and_computation            = 12, _('Economics and Computation')
+	embedded_and_real_time_systems       = 13, _('Embedded and Real-Time Systems')
+	high_performance_computing           = 14, _('High-Performance Computing')
+	human_computer_interaction           = 15, _('Human-Computer Interaction')
+	logic_and_verification               = 16, _('Logic and Verification')
+	machine_learning_and_data_mining     = 17, _('Machine Learning and Data Mining')
+	measurement_and_performance_analysis = 18, _('Measurement and Performance Analysis')
+	mobile_computing                     = 19, _('Mobile Computing')
+	natural_language_processing          = 20, _('Natural Language Processing')
+	operating_systems                    = 21, _('Operating Systems')
+	programming_languages                = 22, _('Programming Languages')
+	robotics                             = 23, _('Robotics')
+	software_engineering                 = 24, _('Software Engineering')
+	the_web_and_information_retrieval    = 25, _('The Web and Information Retrieval')
+	visualization                        = 26, _('Visualization')
 
 
 class MentorArea(models.Model):
-	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
+	mentor = models.OneToOneField(Mentor, on_delete=models.CASCADE)
 	area = models.IntegerField(choices=Areas.choices, null=True)
+	subarea = models.CharField(max_length=64, null=True)
 
 	def __str__(self):
 		return self.mentor.account.user.username + ' of area ' + self.get_area_display()

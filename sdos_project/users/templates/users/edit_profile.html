@@ -20,6 +20,10 @@ Edit Profile
 			<form method="POST" action="{% url 'edit_profile' %}">
 				{% csrf_token %}
 
+				{% if user.account.is_mentor %}
+					{{ areas_form|crispy }}
+				{% endif %}
+
 				{{ details_form|crispy }}
 
 				<center>

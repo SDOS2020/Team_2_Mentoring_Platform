@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
-from django.contrib import messages
-from .forms import UserRegisterForm, EditDetailsForm, EditNameForm
-from .models import Account, Mentor, Mentee
 from django.contrib.auth.decorators import login_required
-from users.models import User, Roles, Fields
+
+from users.models import User
 from .decorators import mentee_required
+from .models import Account, Mentor, Mentee
+from .forms import UserRegisterForm, EditDetailsForm, EditAreasForm
 
 
 def register_mentor(request):
@@ -107,37 +107,53 @@ def my_recommendations(request):
 
 @login_required
 def edit_profile(request):
+	initial_areas = None
+	if request.user.account.is_mentor:
+		initial_areas = {
+			"area": request.user.account.mentor.mentorarea.area,
+			"subarea": request.user.account.mentor.mentorarea.subarea
+		}
 
-	initial_dict_name_form = {
-		"first_name": request.user.first_name,
-		"last_name": request.user.last_name,
-	}
-
-	initial_dict_details_form = {
+	initial_details = {
 		"introduction": request.user.account.introduction,
 		"education": request.user.account.education,
 		"experience": request.user.account.experience
 	}
 
+	areas_form, details_form = None, None
+
 	if request.method == "POST":
+		if request.user.account.is_mentor:
+			areas_form = EditAreasForm(request.POST, initial=initial_areas)
+	
+		details_form = EditDetailsForm(request.POST, initial=initial_details)
 
-		details_form = EditDetailsForm(request.POST or None, initial = initial_dict_details_form)
-
-		if details_form.is_valid():
+		if areas_form.is_valid() and details_form.is_valid():
 			user = request.user
+
+			if request.user.account.is_mentor:
+				user.account.mentor.mentorarea.area = areas_form.cleaned_data["area"]
+				user.account.mentor.mentorarea.subarea = areas_form.cleaned_data["subarea"]
+				user.account.mentor.mentorarea.save()
+
 			user.account.introduction = details_form.cleaned_data["introduction"]
 			user.account.education = details_form.cleaned_data["education"]
 			user.account.experience = details_form.cleaned_data["experience"]
-
-			user.save()
 			user.account.save()
+
 			return redirect("homepage")
 
-	else:
-		details_form = EditDetailsForm(request.POST or None, initial = initial_dict_details_form)
+	elif request.method == "GET":
+		if request.user.account.is_mentor:
+			areas_form = EditAreasForm(initial=initial_areas)
+			
+		details_form = EditDetailsForm(initial=initial_details)
 
 	context = {
 		"details_form": details_form
 	}
+
+	if request.user.account.is_mentor:
+		context["areas_form"] = areas_form
 
 	return render(request, "users/edit_profile.html", context)
