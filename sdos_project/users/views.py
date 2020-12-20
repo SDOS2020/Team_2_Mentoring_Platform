@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
-from django.contrib import messages
-from .forms import UserRegisterForm, EditDetailsForm, EditNameForm
-from .models import Account, Mentor, Mentee
 from django.contrib.auth.decorators import login_required
-from users.models import User, Roles, Fields
+
+from users.models import User
 from .decorators import mentee_required
+from .models import Account, Mentor, Mentee, MentorRoleField, MenteeRoleField
+from .forms import *
 
 
 def register_mentor(request):
@@ -12,21 +12,38 @@ def register_mentor(request):
 		return redirect("homepage")
 
 	if request.method == "POST":
-		form = UserRegisterForm(request.POST)
+		form = MentorRegistrationForm(request.POST)
 		if form.is_valid():
 			user = form.save()
-			account = Account(user=user)
+			account = Account(
+				user=user,
+				gender=form.cleaned_data['gender'],
+				age=form.cleaned_data['age'],
+				is_mentor = True
+			)
 
-			# Register as a mentor
-			account.is_mentor = True
 			account.save()
 
 			mentor = Mentor(account=account)
 			mentor.save()
 
+			mentor_role_field = MentorRoleField(
+				mentor=mentor,
+				role=form.cleaned_data['role'],
+				field=form.cleaned_data['field']
+			)
+			mentor_role_field.save()
+
+			mentor_area = MentorArea(
+				mentor=mentor,
+				area=form.cleaned_data['area'],
+				subarea=form.cleaned_data['subarea']
+			)
+			mentor_area.save()
+
 			return redirect("login")
 	else:
-		form = UserRegisterForm()
+		form = MentorRegistrationForm()
 
 	context = {
 		"form" : form
@@ -40,22 +57,32 @@ def register_mentee(request):
 		return redirect("homepage")
 
 	if request.method == "POST":
-		form = UserRegisterForm(request.POST)
+		form = MenteeRegistrationForm(request.POST)
 		if form.is_valid():
 
 			user = form.save()
-			account = Account(user=user)
+			account = Account(
+				user=user,
+				gender=form.cleaned_data['gender'],
+				age=form.cleaned_data['age'],
+				is_mentee=True
+			)
 
-			# Register as a mentee
-			account.is_mentee = True
 			account.save()
 
 			mentee = Mentee(account=account)
 			mentee.save()
 
+			mentee_role_field = MenteeRoleField(
+				mentee=mentee,
+				role=form.cleaned_data['role'],
+				field=form.cleaned_data['field']
+			)
+			mentee_role_field.save()
+
 			return redirect("login")
 	else:
-		form = UserRegisterForm()
+		form = MenteeRegistrationForm()
 
 	context = {
 		"form" : form,
@@ -107,43 +134,53 @@ def my_recommendations(request):
 
 @login_required
 def edit_profile(request):
+	initial_areas = None
+	if request.user.account.is_mentor:
+		initial_areas = {
+			"area": request.user.account.mentor.mentorarea.area,
+			"subarea": request.user.account.mentor.mentorarea.subarea
+		}
 
-	initial_dict_name_form = {
-		"first_name": request.user.first_name,
-		"last_name": request.user.last_name,
-	}
-
-	initial_dict_details_form = {
+	initial_details = {
 		"introduction": request.user.account.introduction,
 		"education": request.user.account.education,
 		"experience": request.user.account.experience
 	}
 
+	areas_form, details_form = None, None
+
 	if request.method == "POST":
+		if request.user.account.is_mentor:
+			areas_form = EditAreasForm(request.POST, initial=initial_areas)
+	
+		details_form = EditDetailsForm(request.POST, initial=initial_details)
 
-		name_form = EditNameForm(request.POST or None, initial = initial_dict_name_form)
-		details_form = EditDetailsForm(request.POST or None, initial = initial_dict_details_form)
-
-		if name_form.is_valid() and details_form.is_valid():
+		if areas_form.is_valid() and details_form.is_valid():
 			user = request.user
-			user.first_name = name_form.cleaned_data["first_name"]
-			user.last_name = name_form.cleaned_data["last_name"]
+
+			if request.user.account.is_mentor:
+				user.account.mentor.mentorarea.area = areas_form.cleaned_data["area"]
+				user.account.mentor.mentorarea.subarea = areas_form.cleaned_data["subarea"]
+				user.account.mentor.mentorarea.save()
 
 			user.account.introduction = details_form.cleaned_data["introduction"]
 			user.account.education = details_form.cleaned_data["education"]
 			user.account.experience = details_form.cleaned_data["experience"]
-
-			user.save()
 			user.account.save()
+
 			return redirect("homepage")
 
-	else:
-		name_form = EditNameForm(request.POST or None, initial = initial_dict_name_form)
-		details_form = EditDetailsForm(request.POST or None, initial = initial_dict_details_form)
+	elif request.method == "GET":
+		if request.user.account.is_mentor:
+			areas_form = EditAreasForm(initial=initial_areas)
+			
+		details_form = EditDetailsForm(initial=initial_details)
 
 	context = {
-		"name_form" : name_form,
 		"details_form": details_form
 	}
+
+	if request.user.account.is_mentor:
+		context["areas_form"] = areas_form
 
 	return render(request, "users/edit_profile.html", context)

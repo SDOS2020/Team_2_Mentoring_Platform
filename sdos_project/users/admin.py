@@ -1,21 +1,5 @@
 from django.contrib import admin
-from .models import (
-	User, 
-	Admin, 
-	Account, 
-	Mentor, 
-	Mentee, 
-	MyMentee, 
-	MyMentor, 
-	MenteeSentRequest, 
-	MentorSentRequest,
-	MentorRoleField,
-	MenteeRoleField,
-	MentorExpectedRoleField,
-	MenteeExpectedRoleField,
-	Message,
-	Meeting,
-)
+from .models import *
 
 
 # Register your models here.
@@ -34,3 +18,4 @@ admin.site.register(MentorExpectedRoleField)
 admin.site.register(MenteeExpectedRoleField)
 admin.site.register(Message)
 admin.site.register(Meeting)
+admin.site.register(MentorArea)

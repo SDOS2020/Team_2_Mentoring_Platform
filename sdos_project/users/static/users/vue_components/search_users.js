@@ -105,7 +105,7 @@ const SearchUsers = {
 		};
 	},
 	created() {
-		let request_url = "http://127.0.0.1:8000/api/get_tags/";
+		let request_url = "http://127.0.0.1:8000/api/get_mentor_tags/";
 
 		axios.get(request_url)
 		.then(response => {

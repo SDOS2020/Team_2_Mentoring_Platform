@@ -1,30 +1,16 @@
-from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required
 import json
 from datetime import datetime
+from django.http import JsonResponse
 from django.utils.timezone import make_aware # Naive to native
-from users.models import (
-	User,
-	Account, 
-	Mentor, 
-	Mentee, 
-	MenteeSentRequest, 
-	MentorSentRequest, 
-	MyMentee, 
-	MyMentor,
-	Roles,
-	Fields,
-	MentorRoleField,
-	MenteeRoleField,
-	MentorExpectedRoleField,
-	MenteeExpectedRoleField,
-	Message,
-	Meeting,
-)
+from django.contrib.auth.decorators import login_required
+
+from users.models import *
 
 
-@login_required
-def get_tags(request):
+'''
+Roles: Either MentorRoles or MenteeRoles
+'''
+def __get_tags(Roles):
 	tags = []
 
 	i = 0
@@ -66,9 +52,27 @@ def get_tags(request):
 
 			i += 1
 
+	return tags
+
+
+'''
+Returns tags for mentor
+'''
+@login_required
+def get_mentor_tags(request):
 	response = {
 		'success': True,
-		'tags': tags
+		'tags':  __get_tags(MentorRoles)
+	}
+
+	return JsonResponse(response, safe=False)
+
+
+@login_required
+def get_mentee_tags(request):
+	response = {
+		'success': True,
+		'tags':  __get_tags(MenteeRoles)
 	}
 
 	return JsonResponse(response, safe=False)
@@ -97,7 +101,7 @@ def get_my_tags(request):
 	return JsonResponse(response, safe=False)
 
 
-def get_role_id(role: str):
+def get_role_id(role: str, Roles):
 	return next(filter(lambda x: x[-1] == role, Roles.choices))[0] if role else None
 
 
@@ -106,11 +110,11 @@ def get_field_id(field: str):
 
 
 def filter_mentor(mentor, filters):
-	if not filters:  # If no filter is applied
+	if not filters:	# If no filter is applied
 		return True
 
 	for f in filters:
-		role, field = get_role_id(f['role']), get_field_id(f['field'])
+		role, field = get_role_id(f['role'], MentorRoles), get_field_id(f['field'])
 		options = dict()
 
 		if role:
@@ -126,11 +130,11 @@ def filter_mentor(mentor, filters):
 
 
 def filter_mentee(mentee, filters):
-	if not filters:  # If no filter is applied
+	if not filters:	# If no filter is applied
 		return True
 
 	for f in filters:
-		role, field = get_role_id(f['role']), get_field_id(f['field'])
+		role, field = get_role_id(f['role'], MenteeRoles), get_field_id(f['field'])
 		options = dict()
 
 		if role:

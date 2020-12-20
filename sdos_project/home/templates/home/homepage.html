@@ -12,8 +12,16 @@ Homepage
 <link rel="stylesheet" type="text/css" href="{% static 'home/bg.css' %}"/>
 <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
 <style>
-body	{
+html, body {
+	height: 100%;
+}
+
+body {
 	background-image: url("{% static 'home/bg.jpg' %}");
+	background-color: white;
+    background-size: auto 100%;
+    background-repeat: no-repeat;
+    background-position: left top;
 }
 
 [v-cloak] {
