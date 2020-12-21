@@ -26,7 +26,7 @@ def mentee_required(view_func):
 		user = request.user
 
 		if not user.account.is_mentee:
-			print("Hello There ol friend")
+			print("Decorator Redirected you to homepage")
 			return redirect("homepage")
 		
 		return view_func(*args, **kwargs)
