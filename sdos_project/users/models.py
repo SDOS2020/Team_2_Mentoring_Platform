@@ -296,3 +296,18 @@ class MentorArea(models.Model):
 
 	def __str__(self):
 		return "{} of area {}".format(self.mentor.account.user.username, self.get_area_display())
+
+class MentorshipRequestMessage(models.Model):
+	"""
+	Store the SOP, commitment, expectations of the mentee which is sent to the mentor at the time of requesting for
+	mentorship
+	"""
+	
+	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
+	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
+	sop = models.TextField(max_length=512, null=True)
+	expectations = models.TextField(max_length=256, null=True)
+	commitment = models.TextField(max_length=256, null=True)
+
+	def __str__(self):
+		return "{} sent a request to {}".format(self.mentee.account.user.username, self.mentor.account.user.username)
