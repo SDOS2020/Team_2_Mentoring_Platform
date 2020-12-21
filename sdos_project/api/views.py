@@ -328,7 +328,6 @@ def accept_request(request):
 	user = request.user
 	requestor = request.GET.get('requestor')
 	requestor = User.objects.get(username=requestor)
-	print('Got requestor:', requestor)
 
 	if user.account.is_mentor and requestor.account.is_mentee:
 		return accept_mentorship_request(user, requestor)
