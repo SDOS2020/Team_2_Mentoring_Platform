@@ -133,10 +133,6 @@ def send_mentorship_request(request):
 	expectations = request.GET.get('expectations')
 	commitment = request.GET.get('commitment')
 	
-	print('SOP', sop)
-	print('Expectations', expectations)
-	print('Commitment', commitment)
-
 	status = False
 	
 	if MenteeSentRequest.objects.filter(mentee=user.account.mentee, mentor=requestee.account.mentor).exists():
@@ -151,7 +147,7 @@ def send_mentorship_request(request):
 			sop=sop, expectations=expectations, commitment=commitment
 		)
 		MenteeSentRequest.objects.create(mentee=user.account.mentee, mentor=requestee.account.mentor)
-	
+
 	return JsonResponse({"success" : status})
 
 

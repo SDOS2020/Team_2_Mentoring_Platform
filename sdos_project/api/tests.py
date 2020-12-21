@@ -4,192 +4,192 @@ from users.models import *
 from .data_testing import *
 import json
 
-class RegistrationTestCases(TestCase):
-	@classmethod
-	def setUpClass(cls) -> None:
-		super().setUpClass()
-		logging.disable(logging.CRITICAL)
-		# signals.post_save.disconnect(receiver=)
+# class RegistrationTestCases(TestCase):
+# 	@classmethod
+# 	def setUpClass(cls) -> None:
+# 		super().setUpClass()
+# 		logging.disable(logging.CRITICAL)
+# 		# signals.post_save.disconnect(receiver=)
 
-	@classmethod
-	def tearDownClass(cls) -> None:
-		return super().tearDownClass()
+# 	@classmethod
+# 	def tearDownClass(cls) -> None:
+# 		return super().tearDownClass()
 
-	def test_single_mentor_valid(self):
-		response = self.client.post('/users/register_mentor/', data=VALID1)
-		self.assertEqual(response.status_code, 302)
+# 	def test_single_mentor_valid(self):
+# 		response = self.client.post('/users/register_mentor/', data=VALID1)
+# 		self.assertEqual(response.status_code, 302)
 
-	def test_single_mentee_valid(self):
-		response = self.client.post('/users/register_mentee/', data=VALID1)
-		self.assertEqual(response.status_code, 302)
+# 	def test_single_mentee_valid(self):
+# 		response = self.client.post('/users/register_mentee/', data=VALID1)
+# 		self.assertEqual(response.status_code, 302)
 
-	def test_single_mentor_invalid_username(self):
-		response = self.client.post('/users/register_mentor/', data=INVALID_USERNAME)
-		self.assertEqual(response.status_code, 200)
+# 	def test_single_mentor_invalid_username(self):
+# 		response = self.client.post('/users/register_mentor/', data=INVALID_USERNAME)
+# 		self.assertEqual(response.status_code, 200)
 
-	def test_single_mentee_invalid_username(self):
-		response = self.client.post('/users/register_mentee/', data=INVALID_USERNAME)
-		self.assertEqual(response.status_code, 200)
+# 	def test_single_mentee_invalid_username(self):
+# 		response = self.client.post('/users/register_mentee/', data=INVALID_USERNAME)
+# 		self.assertEqual(response.status_code, 200)
 
-	def test_single_mentor_passwords_not_same(self):
-		response = self.client.post('/users/register_mentor/', data=PASSWORDS_NOT_SAME)
-		self.assertEqual(response.status_code, 200)
+# 	def test_single_mentor_passwords_not_same(self):
+# 		response = self.client.post('/users/register_mentor/', data=PASSWORDS_NOT_SAME)
+# 		self.assertEqual(response.status_code, 200)
 
-	def test_single_mentee_passwords_not_same(self):
-		response = self.client.post('/users/register_mentee/', data=PASSWORDS_NOT_SAME)
-		self.assertEqual(response.status_code, 200)
+# 	def test_single_mentee_passwords_not_same(self):
+# 		response = self.client.post('/users/register_mentee/', data=PASSWORDS_NOT_SAME)
+# 		self.assertEqual(response.status_code, 200)
 
-	def test_single_mentor_invalid_password(self):
-		response = self.client.post('/users/register_mentor/', data=INVALID_PASSWORD)
-		self.assertEqual(response.status_code, 200)
+# 	def test_single_mentor_invalid_password(self):
+# 		response = self.client.post('/users/register_mentor/', data=INVALID_PASSWORD)
+# 		self.assertEqual(response.status_code, 200)
 
-	def test_single_mentee_invalid_password(self):
-		response = self.client.post('/users/register_mentee/', data=INVALID_PASSWORD)
-		self.assertEqual(response.status_code, 200)
+# 	def test_single_mentee_invalid_password(self):
+# 		response = self.client.post('/users/register_mentee/', data=INVALID_PASSWORD)
+# 		self.assertEqual(response.status_code, 200)
 
-	def test_single_mentor_invalid_email(self):
-		response = self.client.post('/users/register_mentor/', data=INVALID_EMAIL)
-		self.assertEqual(response.status_code, 200)
+# 	def test_single_mentor_invalid_email(self):
+# 		response = self.client.post('/users/register_mentor/', data=INVALID_EMAIL)
+# 		self.assertEqual(response.status_code, 200)
 
-	def test_single_mentee_invalid_email(self):
-		response = self.client.post('/users/register_mentee/', data=INVALID_EMAIL)
-		self.assertEqual(response.status_code, 200)
+# 	def test_single_mentee_invalid_email(self):
+# 		response = self.client.post('/users/register_mentee/', data=INVALID_EMAIL)
+# 		self.assertEqual(response.status_code, 200)
 
-	def test_multiple_create_mentors_valid(self):
-		response = self.client.post('/users/register_mentor/', data=VALID1)
-		response = self.client.post('/users/register_mentor/', data=VALID2)
-		self.assertEqual(response.status_code, 302)
+# 	def test_multiple_create_mentors_valid(self):
+# 		response = self.client.post('/users/register_mentor/', data=VALID1)
+# 		response = self.client.post('/users/register_mentor/', data=VALID2)
+# 		self.assertEqual(response.status_code, 302)
 
-	def test_multiple_create_mentees_valid(self):
-		response = self.client.post('/users/register_mentee/', data=VALID1)
-		response = self.client.post('/users/register_mentee/', data=VALID2)
-		self.assertEqual(response.status_code, 302)
+# 	def test_multiple_create_mentees_valid(self):
+# 		response = self.client.post('/users/register_mentee/', data=VALID1)
+# 		response = self.client.post('/users/register_mentee/', data=VALID2)
+# 		self.assertEqual(response.status_code, 302)
 
-	def test_multiple_mentors_with_non_unique_username(self):
-		response = self.client.post('/users/register_mentor/', data=VALID1)
-		response = self.client.post('/users/register_mentor/', data=VALID1)
-		self.assertEqual(response.status_code, 200)
+# 	def test_multiple_mentors_with_non_unique_username(self):
+# 		response = self.client.post('/users/register_mentor/', data=VALID1)
+# 		response = self.client.post('/users/register_mentor/', data=VALID1)
+# 		self.assertEqual(response.status_code, 200)
 
-	def test_multiple_mentees_with_non_unique_username(self):
-		response = self.client.post('/users/register_mentee/', data=VALID1)
-		response = self.client.post('/users/register_mentee/', data=VALID1)
-		self.assertEqual(response.status_code, 200)
+# 	def test_multiple_mentees_with_non_unique_username(self):
+# 		response = self.client.post('/users/register_mentee/', data=VALID1)
+# 		response = self.client.post('/users/register_mentee/', data=VALID1)
+# 		self.assertEqual(response.status_code, 200)
 
 
-class LoginTestCases(TestCase):
-	@classmethod
-	def setUpClass(cls) -> None:
-		super().setUpClass()
-		logging.disable(logging.CRITICAL)
-		# signals.post_save.disconnect(receiver=)
+# class LoginTestCases(TestCase):
+# 	@classmethod
+# 	def setUpClass(cls) -> None:
+# 		super().setUpClass()
+# 		logging.disable(logging.CRITICAL)
+# 		# signals.post_save.disconnect(receiver=)
 
-	@classmethod
-	def tearDownClass(cls) -> None:
-		return super().tearDownClass()
+# 	@classmethod
+# 	def tearDownClass(cls) -> None:
+# 		return super().tearDownClass()
 
-	def test_basic_login(self):
-		self.client.post('/users/register_mentee/', data=VALID1)
-		data = {
-			'username': 'ananya',
-			'password': 'pass4321'
-		}
+# 	def test_basic_login(self):
+# 		self.client.post('/users/register_mentee/', data=VALID1)
+# 		data = {
+# 			'username': 'ananya',
+# 			'password': 'pass4321'
+# 		}
 
-		response = self.client.post('/users/login/', data=data)
-		self.assertEqual(response.status_code, 302)
+# 		response = self.client.post('/users/login/', data=data)
+# 		self.assertEqual(response.status_code, 302)
 
-	def test_basic_login_wrong_password(self):
-		self.client.post('/users/register_mentee/', data=VALID1)
-		data = {
-			'username': 'ananya',
-			'password': 'pass'
-		}
+# 	def test_basic_login_wrong_password(self):
+# 		self.client.post('/users/register_mentee/', data=VALID1)
+# 		data = {
+# 			'username': 'ananya',
+# 			'password': 'pass'
+# 		}
 
-		response = self.client.post('/users/login/', data=data)
-		self.assertEqual(response.status_code, 200)
+# 		response = self.client.post('/users/login/', data=data)
+# 		self.assertEqual(response.status_code, 200)
 
-	def test_basic_login_incorrect_username(self):
-		self.client.post('/users/register_mentee/', data=VALID1)
-		data = {
-			'username': 'ananyaaaaaaa',
-			'password': 'pass4321'
-		}
+# 	def test_basic_login_incorrect_username(self):
+# 		self.client.post('/users/register_mentee/', data=VALID1)
+# 		data = {
+# 			'username': 'ananyaaaaaaa',
+# 			'password': 'pass4321'
+# 		}
 
-		response = self.client.post('/users/login/', data=data)
-		self.assertEqual(response.status_code, 200)
+# 		response = self.client.post('/users/login/', data=data)
+# 		self.assertEqual(response.status_code, 200)
 
-	def test_accessing_settings_while_logged_in(self):
-		self.client.post('/users/register_mentee/', data=VALID1)
-		data = {
-			'username': 'ananya',
-			'password': 'pass4321'
-		}
+# 	def test_accessing_settings_while_logged_in(self):
+# 		self.client.post('/users/register_mentee/', data=VALID1)
+# 		data = {
+# 			'username': 'ananya',
+# 			'password': 'pass4321'
+# 		}
 
-		response = self.client.post('/users/login/', data=data)
-		response = self.client.get('/users/settings/')
-		self.assertEqual(response.status_code, 200)
+# 		response = self.client.post('/users/login/', data=data)
+# 		response = self.client.get('/users/settings/')
+# 		self.assertEqual(response.status_code, 200)
 
-	def test_accessing_settings_while_logged_out(self):
-		response = self.client.get('/users/settings/')
-		self.assertEqual(response.status_code, 302)
+# 	def test_accessing_settings_while_logged_out(self):
+# 		response = self.client.get('/users/settings/')
+# 		self.assertEqual(response.status_code, 302)
 
-	def test_accessing_chats_while_logged_in(self):
-		self.client.post('/users/register_mentee/', data=VALID1)
-		data = {
-			'username': 'ananya',
-			'password': 'pass4321'
-		}
+# 	def test_accessing_chats_while_logged_in(self):
+# 		self.client.post('/users/register_mentee/', data=VALID1)
+# 		data = {
+# 			'username': 'ananya',
+# 			'password': 'pass4321'
+# 		}
 
-		response = self.client.post('/users/login/', data=data)
-		response = self.client.get('/users/chat_user/')
-		self.assertEqual(response.status_code, 200)
+# 		response = self.client.post('/users/login/', data=data)
+# 		response = self.client.get('/users/chat_user/')
+# 		self.assertEqual(response.status_code, 200)
 
-	def test_accessing_chats_while_logged_out(self):
-		response = self.client.get('/users/chat_user/')
-		self.assertEqual(response.status_code, 302)
+# 	def test_accessing_chats_while_logged_out(self):
+# 		response = self.client.get('/users/chat_user/')
+# 		self.assertEqual(response.status_code, 302)
 
-	def test_edit_profile_while_logged_in(self):
-		self.client.post('/users/register_mentee/', data=VALID1)
-		data = {
-			'username': 'ananya',
-			'password': 'pass4321'
-		}
+# 	def test_edit_profile_while_logged_in(self):
+# 		self.client.post('/users/register_mentee/', data=VALID1)
+# 		data = {
+# 			'username': 'ananya',
+# 			'password': 'pass4321'
+# 		}
 
-		response = self.client.post('/users/login/', data=data)
-		response = self.client.get('/users/edit_profile/')
-		self.assertEqual(response.status_code, 200)
+# 		response = self.client.post('/users/login/', data=data)
+# 		response = self.client.get('/users/edit_profile/')
+# 		self.assertEqual(response.status_code, 200)
 
-	def test_edit_profile_while_logged_out(self):
-		response = self.client.get('/users/edit_profile/')
-		self.assertEqual(response.status_code, 302)
+# 	def test_edit_profile_while_logged_out(self):
+# 		response = self.client.get('/users/edit_profile/')
+# 		self.assertEqual(response.status_code, 302)
 
-	def test_view_profile_while_logged_in(self):
-		self.client.post('/users/register_mentee/', data=VALID1)
-		data = {
-			'username': 'ananya',
-			'password': 'pass4321'
-		}
+# 	def test_view_profile_while_logged_in(self):
+# 		self.client.post('/users/register_mentee/', data=VALID1)
+# 		data = {
+# 			'username': 'ananya',
+# 			'password': 'pass4321'
+# 		}
 
-		response = self.client.post('/users/login/', data=data)
-		response = self.client.get('/users/profile/ananya/')
-		self.assertEqual(response.status_code, 200)
+# 		response = self.client.post('/users/login/', data=data)
+# 		response = self.client.get('/users/profile/ananya/')
+# 		self.assertEqual(response.status_code, 200)
 
-	def test_view_profile_while_logged_in_invalid_user(self):
-		self.client.post('/users/register_mentee/', data=VALID1)
-		data = {
-			'username': 'ananya',
-			'password': 'pass4321'
-		}
+# 	def test_view_profile_while_logged_in_invalid_user(self):
+# 		self.client.post('/users/register_mentee/', data=VALID1)
+# 		data = {
+# 			'username': 'ananya',
+# 			'password': 'pass4321'
+# 		}
 
-		response = self.client.post('/users/login/', data=data)
-		try:	
-			response = self.client.get('/users/profile/helle/')
-		except Exception as e:
-			s = 'User matching query does not exist.'
-			self.assertTrue(s in str(e))
+# 		response = self.client.post('/users/login/', data=data)
+# 		try:	
+# 			response = self.client.get('/users/profile/helle/')
+# 		except Exception as e:
+# 			s = 'User matching query does not exist.'
+# 			self.assertTrue(s in str(e))
 
-	def test_view_profile_while_logged_out(self):
-		response = self.client.get('/users/profile/ananya/')
-		self.assertEqual(response.status_code, 302)
+# 	def test_view_profile_while_logged_out(self):
+# 		response = self.client.get('/users/profile/ananya/')
+# 		self.assertEqual(response.status_code, 302)
 
 
 class IntegrationTestCases(TestCase):
@@ -229,12 +229,18 @@ class IntegrationTestCases(TestCase):
 		self.create_user(VALID2, role='MENTOR')
 
 		self.login_user('ananya', 'pass4321')
-		response = self.client.post('/api/send_request/?requestee=karan')
+		data = {
+			'requestee': 'karan',
+			'sop': 'Sir please please please',
+			'expectations': 'CGPA > 2',
+			'commitment': '0 years',
+		}
+		response = self.client.get('/api/send_mentorship_request/', data)
 		self.assertEqual(response.status_code, 200)
 		self.client.post('/users/logout/')
 		
 		self.login_user('karan', 'pass4321')
-		response = self.client.post('/api/accept_request/?requestor=ananya')
+		response = self.client.post('/api/accept_mentorship_request/?requestor=ananya')
 		self.assertEqual(response.status_code, 200)
 
 		response = self.client.get('/api/get_mentees/')
