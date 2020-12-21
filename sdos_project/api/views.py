@@ -207,36 +207,6 @@ def get_user_requests(request):
 	return JsonResponse(user_requests, safe=False)
 
 
-# user is a mentor, requestor is a mentee
-def accept_mentorship_request(user, requestor):
-	status = False
-
-	if MenteeSentRequest.objects.filter(mentor=user.account.mentor, mentee=requestor.account.mentee).exists():
-		# executes only if, requestor is not already a mentee of the user and it is the requestor that sent the 
-		# mentorship request to the user
-		MyMentee.objects.create(mentor=user.account.mentor, mentee=requestor.account.mentee)
-		MyMentor.objects.create(mentor=user.account.mentor, mentee=requestor.account.mentee)
-		MenteeSentRequest.objects.filter(mentor=user.account.mentor, mentee=requestor.account.mentee).delete()
-		status = True
-
-	return JsonResponse({"success" : status})
-
-
-# user is a mentee, requestor is a mentor
-def accept_menteeship_request(user, requestor):
-	status = False
-
-	if MentorSentRequest.objects.filter(mentee=user.account.mentee, mentor=requestor.account.mentor).exists():
-		# executes if mentor is not already the mentor of the mentee
-		# and if mentor actually sent a mentorship request to the mentee
-		MyMentor.objects.create(mentee=user.account.mentee, mentor=requestor.account.mentor)
-		MyMentee.objects.create(mentee=user.account.mentee, mentor=requestor.account.mentor)
-		MentorSentRequest.objects.filter(mentee=user.account.mentee, mentor=requestor.account.mentor).delete()
-		status = True
-
-	return JsonResponse({"success": status})
-
-
 # TODO : 1. avoid duplicate requests, 
 # TODO : 2. check if the request already exists
 # TODO : 3. check if the user and the requestor are of different type (mentor / mentee)
@@ -245,22 +215,19 @@ def accept_request(request):
 	user = request.user
 	requestor = request.GET.get('requestor')
 	requestor = User.objects.get(username=requestor)
-	print('Got requestor:', requestor)
 
-	if user.account.is_mentor and requestor.account.is_mentee:
-		return accept_mentorship_request(user, requestor)
-	
-	if user.account.is_mentee and requestor.account.is_mentor:
-		return accept_menteeship_request(user, requestor)
-	
-	return JsonResponse({"success" : False})
+	assert(user.account.is_mentor)
 
-
-# user is a mentee, requestor is a mentor
-def reject_menteeship_request(user, to_reject):
 	status = False
-
+	if MenteeSentRequest.objects.filter(mentor=user.account.mentor, mentee=requestor.account.mentee).exists():
+		# executes only if, requestor is not already a mentee of the user and it is the requestor that sent the 
+		# mentorship request to the user
+		MyMentee.objects.create(mentor=user.account.mentor, mentee=requestor.account.mentee)
+		MyMentor.objects.create(mentor=user.account.mentor, mentee=requestor.account.mentee)
+		MenteeSentRequest.objects.filter(mentor=user.account.mentor, mentee=requestor.account.mentee).delete()
+		status = True
 	
+	return JsonResponse({"success" : status})
 
 
 # TODO : 1. avoid duplicate requests, 
