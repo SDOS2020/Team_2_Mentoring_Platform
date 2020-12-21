@@ -256,28 +256,11 @@ def accept_request(request):
 	return JsonResponse({"success" : False})
 
 
-# user is a mentor, requestor is a mentee
-def reject_mentorship_request(user, requestor):
-	status = False
-
-	if MenteeSentRequest.objects.filter(mentor=user.account.mentor, mentee=requestor.account.mentee).exists():
-		# delete a request only if the request exists
-		MenteeSentRequest.objects.filter(mentor=user.account.mentor, mentee=requestor.account.mentee).delete()
-		status = True
-
-	return JsonResponse({"success" : status})
-
-
 # user is a mentee, requestor is a mentor
 def reject_menteeship_request(user, to_reject):
 	status = False
 
-	if MentorSentRequest.objects.filter(mentor=to_reject.account.mentor, mentee=user.account.mentee).exists():
-		# delete a request only if the request exists
-		MentorSentRequest.objects.filter(mentee=user.account.mentee, mentor=to_reject.account.mentor).delete()
-		status = True
-
-	return JsonResponse({"success" : status})
+	
 
 
 # TODO : 1. avoid duplicate requests, 
@@ -288,15 +271,16 @@ def reject_request(request):
 	user = request.user
 	to_reject = request.GET.get('requestor')
 	to_reject = User.objects.get(username=to_reject)
-	print('Got rejectee:', to_reject)
 
-	if user.account.is_mentor and to_reject.account.is_mentee:
-		return reject_mentorship_request(user, to_reject)
+	assert(user.account.is_mentor)
 
-	if user.account.is_mentee and to_reject.account.is_mentor:
-		return reject_menteeship_request(user, to_reject)
-	
-	return JsonResponse({"success" : False})
+	status = False
+	if MenteeSentRequest.objects.filter(mentor=user.account.mentor, mentee=to_reject.account.mentee).exists():
+		# delete a request only if the request exists
+		MenteeSentRequest.objects.filter(mentor=user.account.mentor, mentee=to_reject.account.mentee).delete()
+		status = True
+
+	return JsonResponse({"success" : status})
 	
 
 @login_required
