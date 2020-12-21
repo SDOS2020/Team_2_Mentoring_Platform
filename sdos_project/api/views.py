@@ -5,6 +5,8 @@ from django.utils.timezone import make_aware # Naive to native
 from django.contrib.auth.decorators import login_required
 
 from users.models import *
+from users.decorators import mentee_required
+
 
 
 '''
@@ -21,6 +23,7 @@ def __get_tags(Roles):
 			'key': i,
 			'role': r,
 			'field': None,
+			'area': None,
 			'value': r
 		})
 
@@ -33,24 +36,24 @@ def __get_tags(Roles):
 			'key': i,
 			'role': None,
 			'field': f,
+			'area': None,
 			'value': f
 		})
 
 		i += 1
 
-	# Add (role, field)
-	for role in Roles.choices:
-		r = str(role[-1])
-		for field in Fields.choices:
-			f = str(field[-1])
-			tags.append({
-				'key': i,
-				'role': r,
-				'field': f,
-				'value': r + ' ' + f
-			})
+	# Add (NULL, field)
+	for area in Areas.choices:
+		f = str(area[-1])
+		tags.append({
+			'key': i,
+			'role': None,
+			'field': None,
+			'area': f,
+			'value': f
+		})
 
-			i += 1
+		i += 1
 
 	return tags
 
@@ -108,20 +111,29 @@ def get_role_id(role: str, Roles):
 def get_field_id(field: str):
 	return next(filter(lambda x: x[-1] == field, Fields.choices))[0] if field else None
 
+def get_area_id(area: str):
+	return next(filter(lambda x: x[-1] == area, Areas.choices))[0] if area else None
+
 
 def filter_mentor(mentor, filters):
 	if not filters:	# If no filter is applied
 		return True
-
+	print('Filters:')
+	print(filters)
 	for f in filters:
-		role, field = get_role_id(f['role'], MentorRoles), get_field_id(f['field'])
+		role, field, area = get_role_id(f['role'], MentorRoles), get_field_id(f['field']), get_area_id(f['area'])
 		options = dict()
 
 		if role:
-			options['role'] = role
+			options['role'] = roles
 
 		if field:
 			options['field'] = field
+
+		if area:
+			if MentorArea.objects.filter(mentor=mentor, area=area).exists():
+				return True
+
 
 		if MentorRoleField.objects.filter(mentor=mentor, **options).exists():
 			return True
@@ -151,19 +163,10 @@ def filter_mentee(mentee, filters):
 
 # TODO: Filters
 @login_required
+@mentee_required
 def search_users(request):
 	user = request.user
-	pattern = request.GET.get('pattern')
 	filters = json.loads(request.GET.get('filters'))
-	mentors_allowed = request.GET.get('mentors_allowed') == 'true'
-	mentees_allowed = request.GET.get('mentees_allowed') == 'true'
-
-	print(Mentor.objects.all())
-	print(Mentee.objects.all())
-	print(filters)
-	print(pattern)
-	print(mentors_allowed)
-	print(mentees_allowed)
 
 	shortlist = []
 
@@ -176,75 +179,29 @@ def search_users(request):
 	MY_MENTEE = 5
 	MY_MENTOR = 6
 
-	if user.account.is_mentor:
-		# current user is mentor
-		for account in Account.objects.all():
-			status = NOT_ALLOWED
+	for account in Account.objects.all():
+		if account.is_mentee:
+			continue
+		
+		status = NOT_ALLOWED
+		if not filter_mentor(account.mentor, filters):
+			continue
 
-			if account.is_mentor != user.account.is_mentor:
-				# current user is a mentor, other user is a mentee
-				if not mentees_allowed:
-					continue
+		if MyMentor.objects.filter(mentor=account.mentor, mentee=user.account.mentee).exists():
+			status = MY_MENTOR
+		elif MenteeSentRequest.objects.filter(mentor=account.mentor, mentee=user.account.mentee).exists():
+			status = PENDING_REQUEST
+		elif MentorSentRequest.objects.filter(mentor=account.mentor, mentee=user.account.mentee).exists():
+			status = REQUEST_RECEIVED
+		else:
+			status = REQUEST_MENTORSHIP
 
-				if not filter_mentee(account.mentee, filters):
-					continue
-
-				if MyMentee.objects.filter(mentor=user.account.mentor, mentee=account.mentee).exists():
-					status = MY_MENTEE
-				elif MentorSentRequest.objects.filter(mentor=user.account.mentor, mentee=account.mentee).exists():
-					status = PENDING_REQUEST
-				elif MenteeSentRequest.objects.filter(mentor=user.account.mentor, mentee=account.mentee).exists():
-					status = REQUEST_RECEIVED
-				else:
-					status = REQUEST_MENTEESHIP
-			else:
-				if not mentors_allowed:
-					continue
-
-				if not filter_mentor(account.mentor, filters):
-					continue
-
-			if pattern.lower() in account.user.username.lower():
-				shortlist.append({
-					'id': account.id,
-					'username': account.user.username,
-					'is_mentor': account.is_mentor,
-					'status': status
-				})
-	else:
-		# current user is mentee
-		for account in Account.objects.all():
-			status = NOT_ALLOWED
-			if account.is_mentor != user.account.is_mentor:
-				# current user is a mentee, other user is a mentor
-				if not mentors_allowed:
-					continue
-
-				if not filter_mentor(account.mentor, filters):
-					continue
-
-				if MyMentor.objects.filter(mentor=account.mentor, mentee=user.account.mentee).exists():
-					status = MY_MENTOR
-				elif MenteeSentRequest.objects.filter(mentor=account.mentor, mentee=user.account.mentee).exists():
-					status = PENDING_REQUEST
-				elif MentorSentRequest.objects.filter(mentor=account.mentor, mentee=user.account.mentee).exists():
-					status = REQUEST_RECEIVED
-				else:
-					status = REQUEST_MENTORSHIP
-			else:
-				if not mentees_allowed:
-					continue
-
-				if not filter_mentee(account.mentee, filters):
-					continue
-
-			if pattern.lower() in account.user.username.lower():
-				shortlist.append({
-					'id': account.id,
-					'username': account.user.username,
-					'is_mentor': account.is_mentor,
-					'status': status
-				})
+		shortlist.append({
+			'id': account.id,
+			'username': account.user.username,
+			'is_mentor': account.is_mentor,
+			'status': status
+		})
 
 	return JsonResponse(shortlist, safe=False)
 

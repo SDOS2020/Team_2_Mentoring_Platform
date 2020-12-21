@@ -5,21 +5,6 @@ const SearchUsers = {
 	},
 	template: `
 	<div>
-		<div class="input-group mb-3">
-			<input type="text" class="form-control" maxlength="25" v-model="search_query" v-on:keyup="searchUsers">
-			<div class="input-group-append">
-				<button class="btn btn-outline-secondary" type="button" v-on:click="searchUsers">Search</button>
-			</div>
-		</div>
-
-		<div>
-			<input type="checkbox" v-model="mentors_allowed" value="Mentors" id="mentor-search" v-on:change="searchUsers">
-			<label for="mentor-search">Mentors</label>
-			<input type="checkbox" v-model="mentees_allowed" value="Mentees" id="mentee-search" v-on:change="searchUsers">
-			<label for="mentee-search">Mentees</label>
-		</div>
-
-
 		<!-- Tags -->
 		<tags-input element-id="search-tags"
 			v-model="selected_tags"
@@ -29,9 +14,7 @@ const SearchUsers = {
 		>
 		</tags-input>
 
-
 		<br />
-
 		<div style="height: 100%; overflow-y: scroll;">
 			<table class="table table-hover">
 				<thead style="background-color: white;">
@@ -94,12 +77,7 @@ const SearchUsers = {
 	`,
 	data() {
 		return {
-			search_query: "",
 			search_results: [],
-			mentors_allowed: true,
-			mentees_allowed: false,
-
-			// Role Tags
 			existing_tags: [],
 			selected_tags: [],
 		};
@@ -115,25 +93,19 @@ const SearchUsers = {
 			console.log("[ERROR]");
 			console.log(error);
 		});
+		this.searchUsers();
+
 	},
 	methods: {
 		tags_updated() {
 			this.searchUsers();
 		},
 		searchUsers() {
-			if (this.search_query.length === 0) {
-				this.search_results = [];
-				return;
-			}
-
 			let request_url = "http://127.0.0.1:8000/api/search_users";
 
 			axios.get(request_url, {
 				'params': {
-					'pattern': this.search_query,
 					'filters': JSON.stringify(this.selected_tags),
-					'mentors_allowed': this.mentors_allowed,
-					'mentees_allowed': this.mentees_allowed,
 				}
 			})
 			.then(response => {
