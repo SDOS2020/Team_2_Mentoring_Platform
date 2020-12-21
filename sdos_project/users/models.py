@@ -172,7 +172,7 @@ class MentorRoles(models.IntegerChoices):
 
 class Fields(models.IntegerChoices):
 	"""The different fields of users that can exist"""
-	computer_science                             = 1, _('CS')
+	computer_science                             = 1, _('CSE')
 	electronics_and_communication                = 2, _('ECE')
 	computer_science_and_design                  = 3, _('CSD')
 	computer_science_and_mathematics             = 4, _('CSAM')

@@ -98,6 +98,7 @@ def profile(request, username):
 
 
 @login_required
+@mentee_required
 def search_users(request):
 	return render(request, "users/search_users.html")
 
