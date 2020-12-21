@@ -62,11 +62,56 @@ const SearchUsers = {
 
 						<td>
 							<div v-if="result.status === 0">
-								<button class="btn btn-sm btn-primary" v-on:click="send_request(result.username)"> Request Mentorship </button>
+								<button @click="clear_request()" class="btn btn-sm btn-primary" data-toggle="modal" :data-target="'#requestModal' + index" data-whatever="@mdo">
+									Request Mentorship
+								</button>
+
+
+								<div class="modal fade" :id="'requestModal' + index" tabindex="-1" role="dialog" :aria-labelledby="'requestModalLabel' + index" aria-hidden="true">
+									<div class="modal-dialog" role="document">
+										<div class="modal-content">
+
+											<div class="modal-header">
+												<h5 class="modal-title" :id="'requestModalLabel' + index">Request Mentorship</h5>
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+													<span aria-hidden="true">&times;</span>
+												</button>
+											</div>
+
+											<div class="modal-body">
+												<form>
+													<div class="form-group">
+														<label class="col-form-label">Purpose:</label>
+														<textarea v-model="request_sop" type="text" class="form-control" ></textarea>
+													</div>
+
+													<div class="form-group">
+														<label class="col-form-label">Expectations:</label>
+														<textarea v-model="request_expectations" class="form-control" ></textarea>
+													</div>
+
+													<div class="form-group">
+														<label class="col-form-label">Commitment:</label>
+														<textarea v-model="request_commitment" type="text" class="form-control"></textarea>
+													</div>
+												</form>
+											</div>
+
+											<div class="modal-footer">
+												<button v-on:click="send_request(result.username, index)" class="btn btn-success">Request</button>
+												<button id="close-button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
+
+
 							<div v-if="result.status === 1">
 								<button class="btn btn-sm btn-warning" disabled> Pending Request </button>
 							</div>
+
+							
 							<div v-if="result.status === 2">
 								<button class="btn btn-sm btn-info" disabled> Mentor </button>
 							</div>
@@ -88,6 +133,9 @@ const SearchUsers = {
 			selected_role: "",
 			selected_field: "",
 			selected_area: "",
+			request_sop: "",
+			request_expectations: "",
+			request_commitment: "",
 
 			search_results: [],
 		};
@@ -152,12 +200,15 @@ const SearchUsers = {
 			});
 		},
 
-		send_request(username) {
-			let request_url = "http://127.0.0.1:8000/api/send_request";
+		send_request(username, index) {
+			let request_url = "http://127.0.0.1:8000/api/send_mentorship_request";
 
 			axios.get(request_url, {
 				'params': {
-					'requestee': username
+					'requestee': username,
+					'sop': this.request_sop,
+					'expectations': this.request_expectations,
+					'commitment': this.request_commitment,
 				}
 			})
 			.then(response => {
@@ -173,6 +224,16 @@ const SearchUsers = {
 				console.log("[ERROR]");
 				console.log(error);
 			});
+			
+			$('#requestModal' + index).modal('hide');
+			$('body').removeClass('modal-open');
+			$('.modal-backdrop').remove();
+		},
+		clear_request() {
+			console.log('Clear kara toh baba');
+			this.request_sop = '';
+			this.request_expectations = '';
+			this.request_commitment = '';
 		}
 	}
 };

@@ -4,8 +4,10 @@ from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 
 
-# Top most - for authentication purpose only
 class User(AbstractUser):
+	"""
+	Top most - for authentication purpose only
+	"""
 	is_admin = models.BooleanField(default=False)
 
 
@@ -19,10 +21,10 @@ class Gender(models.IntegerChoices):
 	prefer_not_to_say 	= 3, _('Prefer not to say')
 
 
-"""
-The main class that stores all the common information for a mentor and a mentee
-"""
 class Account(models.Model):
+	"""
+	The main class that stores all the common information for a mentor and a mentee
+	"""
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	
 	age = models.IntegerField(
@@ -66,10 +68,10 @@ class Account(models.Model):
 		return self.user.username
 
 
-"""
-	The mentor class, stores attributes specific to a mentor
-"""
 class Mentor(models.Model):
+	"""
+	The mentor class, stores attributes specific to a mentor
+	"""
 	account = models.OneToOneField(Account, on_delete=models.CASCADE)
 	mentorship_duration = models.IntegerField(
 		default=6,
@@ -93,10 +95,10 @@ class Mentor(models.Model):
 		return self.account.user.username
 
 
-"""
-	The mentee class, stores attributes specific to a mentee
-"""
 class Mentee(models.Model):
+	"""
+	The mentee class, stores attributes specific to a mentee
+	"""
 	account = models.OneToOneField(Account, on_delete=models.CASCADE)
 	needs_mentoring = models.BooleanField(default=True)
 	needs_urgent_mentoring = models.BooleanField(default=False)
@@ -106,11 +108,11 @@ class Mentee(models.Model):
 		return self.account.user.username
 
 
-"""
+class MyMentee(models.Model):
+	"""
 	Stores the mentees assigned to a mentor, you can get the mentees assigned to a mentor by 
 	querying, MyMentee.objects.filter(mentor='current-mentor')
-"""
-class MyMentee(models.Model):
+	"""
 	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
 	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
 
@@ -118,12 +120,12 @@ class MyMentee(models.Model):
 		return self.mentor.account.user.username + ' -> ' + self.mentee.account.user.username
 
 
-"""
+class MyMentor(models.Model):
+	"""
 	For performance gains
 	Stores the mentors assigned to a mentee, you can get the mentors assigned to a mentee by 
 	querying, MyMentor.objects.filter(mentee='current-mentee')
-"""
-class MyMentor(models.Model):
+	"""
 	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
 	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
 
@@ -131,21 +133,10 @@ class MyMentor(models.Model):
 		return self.mentee.account.user.username + ' -> ' + self.mentor.account.user.username
 
 
-"""
-	For a mentor to view menteeship requests
-"""
-class MentorSentRequest(models.Model):
-	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
-	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
-
-	def __str__(self):
-		return self.mentor.account.user.username + ' -> ' + self.mentee.account.user.username
-
-
-"""
-	For a mentee to view mentorship requests
-"""
 class MenteeSentRequest(models.Model):
+	"""
+	For a mentee to view mentorship requests
+	"""
 	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
 	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
 
@@ -171,7 +162,9 @@ class MentorRoles(models.IntegerChoices):
 
 
 class Fields(models.IntegerChoices):
-	"""The different fields of users that can exist"""
+	"""
+	The different fields of users that can exist
+	"""
 	computer_science                             = 1, _('CSE')
 	electronics_and_communication                = 2, _('ECE')
 	computer_science_and_design                  = 3, _('CSD')
@@ -192,10 +185,10 @@ class MentorRoleField(models.Model):
 		return "{} -> {} -> {}".format(self.mentor.account.user.username, self.get_role_display(), self.get_field_display())
 
 
-"""
-	Stores the mentees qualifications, their role (current / past), their fields (current / past)
-"""
 class MenteeRoleField(models.Model):
+	"""
+	Stores the mentees qualifications, their role (current / past), their fields (current / past)
+	"""
 	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
 	role = models.IntegerField(choices=MenteeRoles.choices, null=True)
 	field = models.IntegerField(choices=Fields.choices, null=True)
@@ -204,11 +197,11 @@ class MenteeRoleField(models.Model):
 		return "{} -> {} -> {}".format(self.mentee.account.user.username, self.get_role_display(), self.get_field_display())
 
 
-"""
+class MentorExpectedRoleField(models.Model):
+	"""
 	Stores what the mentors expect from mentees in terms of their
 	qualifications, their role (current / past), their fields(current / past)
-"""
-class MentorExpectedRoleField(models.Model):
+	"""
 	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
 	role = models.IntegerField(choices=MentorRoles.choices, null=True)
 	field = models.IntegerField(choices=Fields.choices, null=True)
@@ -217,13 +210,13 @@ class MentorExpectedRoleField(models.Model):
 		return self.mentor.account.user.username + ' -> ' + self.get_role_display() + ' -> ' + self.get_field_display()
 
 
-"""
+class MenteeExpectedRoleField(models.Model):
+	"""
 	Stores what the mentees expect from mentors in terms of their
 	qualifications, their role (current / past), their fields (current / past)
 
 	NOTE: this might be deleted later on...
-"""
-class MenteeExpectedRoleField(models.Model):
+	"""
 	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
 	role = models.IntegerField(choices=MenteeRoles.choices, null=True)
 	field = models.IntegerField(choices=Fields.choices, null=True)
@@ -232,10 +225,10 @@ class MenteeExpectedRoleField(models.Model):
 		return self.mentee.account.user.username + ' -> ' + self.get_role_display() + ' -> ' + self.get_field_display()
 
 
-"""
-	Table to store the chat messages among users.
-"""
 class Message(models.Model):
+	"""
+	Table to store the chat messages among users.
+	"""
 	sender = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='message_sender')
 	receiver = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='message_receiver')
 	content = models.TextField(max_length=512, null=True)
@@ -257,10 +250,10 @@ class Meeting(models.Model):
 		return self.creator.user.username + ' created a meeting with ' + self.guest.user.username
 
 
-'''
-Reference: http://csrankings.org/
-'''
 class Areas(models.IntegerChoices):
+	'''
+	Reference: http://csrankings.org/
+	'''
 	algorithms_and_complexity            =  1, _('Algorithms and Complexity')
 	artificial_intelligence              =  2, _('Artificial Intelligence')
 	computational_bio_and_bioinformatics =  3, _('Computational Bio and Bioinformatics')
@@ -302,7 +295,7 @@ class MentorshipRequestMessage(models.Model):
 	Store the SOP, commitment, expectations of the mentee which is sent to the mentor at the time of requesting for
 	mentorship
 	"""
-	
+
 	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
 	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
 	sop = models.TextField(max_length=512, null=True)

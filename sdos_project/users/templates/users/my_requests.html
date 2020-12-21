@@ -78,7 +78,7 @@ Find users
 		},
 		methods: {
 			acceptRequest(username) {
-				let request_url = "http://127.0.0.1:8000/api/accept_request";
+				let request_url = "http://127.0.0.1:8000/api/accept_mentorship_request";
 
 				axios.get(
 					request_url,
@@ -98,7 +98,7 @@ Find users
 				});
 			},
 			rejectRequest(username) {
-				let request_url = "http://127.0.0.1:8000/api/reject_request";
+				let request_url = "http://127.0.0.1:8000/api/reject_mentorship_request";
 
 				axios.get(
 					request_url,
