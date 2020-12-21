@@ -1,19 +1,43 @@
 const SearchUsers = {
 	delimiters: ["[[", "]]"],
-	components: {
-		"tags-input": VoerroTagsInput,
-	},
 	template: `
 	<div>
-		<!-- Tags -->
-		<tags-input element-id="search-tags"
-			v-model="selected_tags"
-			v-bind:existing-tags="existing_tags"
-			v-bind:typeahead="true"
-			v-on:tags-updated="tags_updated"
-		>
-		</tags-input>
+		<!-- Filters -->
+		<table>
+			<tr>
+				<td>
+					<div class="form-group">
+						<select name="role" class="form-control"
+							v-model="selected_role" v-on:change="search_users"
+						>
+							<option v-for="role in roles">[[ role.value ]]</option>
+						</select>
+					</div>
+				</td>
 
+				<td>
+					<div class="form-group">
+						<select name="field" class="form-control"
+							v-model="selected_field" v-on:change="search_users"
+						>
+							<option v-for="field in fields">[[ field.value ]]</option>
+						</select>
+					</div>
+				</td>
+
+				<td>
+					<div class="form-group">
+						<select name="area" class="form-control"
+							v-model="selected_area" v-on:change="search_users"
+						>
+							<option v-for="area in areas">[[ area.value ]]</option>
+						</select>
+					</div>
+				</td>
+			</tr>
+		</table>
+
+		<!-- Search results -->
 		<br />
 		<div style="height: 100%; overflow-y: scroll;">
 			<table class="table table-hover">
@@ -21,7 +45,6 @@ const SearchUsers = {
 					<tr>
 						<th scope="col">#</th>
 						<th scope="col">Username</th>
-						<th scope="col">Role</th>
 						<th scope="col">Actions</th>
 					</tr>
 				</thead>
@@ -32,39 +55,19 @@ const SearchUsers = {
 						</td>
 
 						<td>
-							<a :href="'//127.0.0.1:8000/users/profile/' + result.username">
+							<a v-bind:href="'//127.0.0.1:8000/users/profile/' + result.username">
 								[[ result.username ]]
 							</a>
 						</td>
 
 						<td>
-							<button v-if="result.is_mentor" class="btn btn-sm btn-secondary" disabled>
-								Mentor
-							</button>
-							<button v-else class="btn btn-sm btn-secondary" disabled>
-								Mentee
-							</button>
-						</td>
-
-						<td>
 							<div v-if="result.status === 0">
+								<button class="btn btn-sm btn-primary" v-on:click="send_request(result.username)"> Request Mentorship </button>
 							</div>
 							<div v-if="result.status === 1">
-								<button class="btn btn-sm btn-primary" v-on:click="sendRequest(result.username)"> Request Mentorship </button>
-							</div>
-							<div v-if="result.status === 2">
-								<button class="btn btn-sm btn-primary" v-on:click="sendRequest(result.username)"> Request Menteeship </button>
-							</div>
-							<div v-if="result.status === 3">
 								<button class="btn btn-sm btn-warning" disabled> Pending Request </button>
 							</div>
-							<div v-if="result.status === 4">
-								<button class="btn btn-sm btn-secondary" disabled> Request Received </button>
-							</div>
-							<div v-if="result.status === 5">
-								<button class="btn btn-sm btn-info" disabled> Mentee </button>
-							</div>
-							<div v-if="result.status === 6">
+							<div v-if="result.status === 2">
 								<button class="btn btn-sm btn-info" disabled> Mentor </button>
 							</div>
 						</td>
@@ -75,49 +78,72 @@ const SearchUsers = {
 		</div>
 	</div>
 	`,
+	
 	data() {
 		return {
+			roles: [],
+			fields: [],
+			areas: [],
+			
+			selected_role: "",
+			selected_field: "",
+			selected_area: "",
+
 			search_results: [],
-			existing_tags: [],
-			selected_tags: [],
 		};
 	},
+	
 	created() {
-		let request_url = "http://127.0.0.1:8000/api/get_mentor_tags/";
+		let request_url = "http://127.0.0.1:8000/api/get_mentor_roles/";
 
 		axios.get(request_url)
 		.then(response => {
-			this.existing_tags = response.data.tags;
+			this.roles = response.data.roles;
 		})
 		.catch(error => {
 			console.log("[ERROR]");
 			console.log(error);
 		});
-		this.searchUsers();
 
+		this.selected_role = this.roles[0];
+
+		request_url = "http://127.0.0.1:8000/api/get_mentor_fields/";
+		axios.get(request_url)
+		.then(response => {
+			this.fields = response.data.fields;
+		})
+		.catch(error => {
+			console.log(error);
+		});
+
+		this.selected_field = this.fields[0];
+
+		request_url = "http://127.0.0.1:8000/api/get_mentor_areas/";
+		axios.get(request_url)
+		.then(response => {
+			this.areas = response.data.areas;
+		})
+		.catch(error => {
+			console.log(error);
+		});
+
+		this.selected_area = this.areas[0];
 	},
+	
 	methods: {
-		tags_updated() {
-			this.searchUsers();
-		},
-		searchUsers() {
+		search_users() {
 			let request_url = "http://127.0.0.1:8000/api/search_users";
 
 			axios.get(request_url, {
 				'params': {
-					'filters': JSON.stringify(this.selected_tags),
+					'role': this.selected_role,
+					'field': this.selected_field,
+					'area': this.selected_area
 				}
 			})
 			.then(response => {
 				console.log("[SUCCESS]");
-				if (response.data.length > 30) {
-					console.log("Too many results: " + response.data.length);
-					console.log("Showing only top 30");
-					this.search_results = response.data.slice(0, 30);
-				}
-				else {
-					this.search_results = response.data;
-				}
+				this.search_results = response.data;
 			})
 			.catch(error => {
 				console.log("[ERROR]");
@@ -125,7 +151,8 @@ const SearchUsers = {
 				this.search_results = [];
 			});
 		},
-		sendRequest(username) {
+
+		send_request(username) {
 			let request_url = "http://127.0.0.1:8000/api/send_request";
 
 			axios.get(request_url, {
@@ -137,7 +164,7 @@ const SearchUsers = {
 				console.log("[SUCCESS]");
 				for (result of this.search_results) {
 					if (result.username === username) {
-						result.status = 3;
+						result.status = 1; // Mark as PENDING_REQUEST
 						break;
 					}
 				}

@@ -8,97 +8,46 @@ from users.models import *
 from users.decorators import mentee_required
 
 
+def __get_choices(s: str, ChoiceClass):
+	res = [{
+		'key': -1,
+		'value': 'Any ' + s
+	}]
 
-'''
-Roles: Either MentorRoles or MenteeRoles
-'''
-def __get_tags(Roles):
-	tags = []
-
-	i = 0
-	# Add (role, NULL)
-	for role in Roles.choices:
-		r = str(role[-1])
-		tags.append({
+	for i, r in enumerate(ChoiceClass.choices):
+		res.append({
 			'key': i,
-			'role': r,
-			'field': None,
-			'area': None,
-			'value': r
+			'value': str(r[-1])
 		})
 
-		i += 1
-
-	# Add (NULL, field)
-	for field in Fields.choices:
-		f = str(field[-1])
-		tags.append({
-			'key': i,
-			'role': None,
-			'field': f,
-			'area': None,
-			'value': f
-		})
-
-		i += 1
-
-	# Add (NULL, field)
-	for area in Areas.choices:
-		f = str(area[-1])
-		tags.append({
-			'key': i,
-			'role': None,
-			'field': None,
-			'area': f,
-			'value': f
-		})
-
-		i += 1
-
-	return tags
+	return res
 
 
-'''
-Returns tags for mentor
-'''
 @login_required
-def get_mentor_tags(request):
+def get_mentor_roles(request):
 	response = {
 		'success': True,
-		'tags':  __get_tags(MentorRoles)
+		'roles': __get_choices('role', MentorRoles)
 	}
 
 	return JsonResponse(response, safe=False)
 
 
 @login_required
-def get_mentee_tags(request):
+def get_mentor_fields(request):
 	response = {
 		'success': True,
-		'tags':  __get_tags(MenteeRoles)
+		'fields': __get_choices('field', Fields)
 	}
 
 	return JsonResponse(response, safe=False)
 
 
 @login_required
-def get_my_tags(request):
-	my_tags = []
-
-	if request.user.account.is_mentor:
-		my_tags = MentorExpectedRoleField.objects.filter(mentor=request.user.account.mentor)
-	else:
-		my_tags = MenteeExpectedRoleField.objects.filter(mentee=request.user.account.mentee)
-
-	my_tags = [{
-		'role': my_tag.get_role_display(), 
-		'field': my_tag.get_field_display(),
-		'value': my_tag.get_role_display() + ' ' + my_tag.get_field_display(),
-	} for my_tag in my_tags]
-	
+def get_mentor_areas(request):
 	response = {
 		'success': True,
-		'my_tags': my_tags
+		'areas': __get_choices('area', Areas)
 	}
 
 	return JsonResponse(response, safe=False)
@@ -111,54 +60,28 @@ def get_role_id(role: str, Roles):
 def get_field_id(field: str):
 	return next(filter(lambda x: x[-1] == field, Fields.choices))[0] if field else None
 
+
 def get_area_id(area: str):
 	return next(filter(lambda x: x[-1] == area, Areas.choices))[0] if area else None
 
 
-def filter_mentor(mentor, filters):
-	if not filters:	# If no filter is applied
-		return True
-	print('Filters:')
-	print(filters)
-	for f in filters:
-		role, field, area = get_role_id(f['role'], MentorRoles), get_field_id(f['field']), get_area_id(f['area'])
-		options = dict()
+def filter_mentors(role: str, field: str, area: str):
+	role = get_role_id(role, MentorRoles)
+	field = get_field_id(field)
+	area = get_area_id(area)
 
-		if role:
-			options['role'] = roles
+	options = dict()
+	if role:
+		options['role'] = role
 
-		if field:
-			options['field'] = field
+	if field:
+		options['field'] = field
 
-		if area:
-			if MentorArea.objects.filter(mentor=mentor, area=area).exists():
-				return True
+	shortlist = [m.mentor for m in MentorRoleField.objects.filter(**options)]
+	if not area:
+		return shortlist
 
-
-		if MentorRoleField.objects.filter(mentor=mentor, **options).exists():
-			return True
-
-	return False
-
-
-def filter_mentee(mentee, filters):
-	if not filters:	# If no filter is applied
-		return True
-
-	for f in filters:
-		role, field = get_role_id(f['role'], MenteeRoles), get_field_id(f['field'])
-		options = dict()
-
-		if role:
-			options['role'] = role
-
-		if field:
-			options['field'] = field
-
-		if MenteeRoleField.objects.filter(mentee=mentee, **options).exists():
-			return True
-
-	return False
+	return [m for m in shortlist if m.mentorarea.area == area]
 
 
 # TODO: Filters
@@ -166,40 +89,34 @@ def filter_mentee(mentee, filters):
 @mentee_required
 def search_users(request):
 	user = request.user
-	filters = json.loads(request.GET.get('filters'))
+	role = request.GET.get('role')
+	field = request.GET.get('field')
+	area = request.GET.get('area')
 
-	shortlist = []
+	role = None if (role == 'Any role') else role
+	field = None if (field == 'Any field') else field
+	area = None if (area == 'Any area') else area
+
+	mentors = filter_mentors(role, field, area)
 
 	# Status codes
-	NOT_ALLOWED = 0
-	REQUEST_MENTORSHIP = 1
-	REQUEST_MENTEESHIP = 2
-	PENDING_REQUEST = 3
-	REQUEST_RECEIVED = 4
-	MY_MENTEE = 5
-	MY_MENTOR = 6
+	REQUEST_MENTORSHIP = 0
+	PENDING_REQUEST = 1
+	MY_MENTOR = 2
 
-	for account in Account.objects.all():
-		if account.is_mentee:
-			continue
-		
-		status = NOT_ALLOWED
-		if not filter_mentor(account.mentor, filters):
-			continue
-
-		if MyMentor.objects.filter(mentor=account.mentor, mentee=user.account.mentee).exists():
+	shortlist = []
+	for mentor in mentors:
+		if MyMentor.objects.filter(mentor=mentor, mentee=user.account.mentee).exists():
 			status = MY_MENTOR
-		elif MenteeSentRequest.objects.filter(mentor=account.mentor, mentee=user.account.mentee).exists():
+		elif MenteeSentRequest.objects.filter(mentor=mentor, mentee=user.account.mentee).exists():
 			status = PENDING_REQUEST
-		elif MentorSentRequest.objects.filter(mentor=account.mentor, mentee=user.account.mentee).exists():
-			status = REQUEST_RECEIVED
 		else:
 			status = REQUEST_MENTORSHIP
 
 		shortlist.append({
-			'id': account.id,
-			'username': account.user.username,
-			'is_mentor': account.is_mentor,
+			'id': mentor.account.id,
+			'username': mentor.account.user.username,
+			'is_mentor': mentor.account.is_mentor,
 			'status': status
 		})
 
@@ -290,36 +207,6 @@ def get_user_requests(request):
 	return JsonResponse(user_requests, safe=False)
 
 
-# user is a mentor, requestor is a mentee
-def accept_mentorship_request(user, requestor):
-	status = False
-
-	if MenteeSentRequest.objects.filter(mentor=user.account.mentor, mentee=requestor.account.mentee).exists():
-		# executes only if, requestor is not already a mentee of the user and it is the requestor that sent the 
-		# mentorship request to the user
-		MyMentee.objects.create(mentor=user.account.mentor, mentee=requestor.account.mentee)
-		MyMentor.objects.create(mentor=user.account.mentor, mentee=requestor.account.mentee)
-		MenteeSentRequest.objects.filter(mentor=user.account.mentor, mentee=requestor.account.mentee).delete()
-		status = True
-
-	return JsonResponse({"success" : status})
-
-
-# user is a mentee, requestor is a mentor
-def accept_menteeship_request(user, requestor):
-	status = False
-
-	if MentorSentRequest.objects.filter(mentee=user.account.mentee, mentor=requestor.account.mentor).exists():
-		# executes if mentor is not already the mentor of the mentee
-		# and if mentor actually sent a mentorship request to the mentee
-		MyMentor.objects.create(mentee=user.account.mentee, mentor=requestor.account.mentor)
-		MyMentee.objects.create(mentee=user.account.mentee, mentor=requestor.account.mentor)
-		MentorSentRequest.objects.filter(mentee=user.account.mentee, mentor=requestor.account.mentor).delete()
-		status = True
-
-	return JsonResponse({"success": status})
-
-
 # TODO : 1. avoid duplicate requests, 
 # TODO : 2. check if the request already exists
 # TODO : 3. check if the user and the requestor are of different type (mentor / mentee)
@@ -328,38 +215,18 @@ def accept_request(request):
 	user = request.user
 	requestor = request.GET.get('requestor')
 	requestor = User.objects.get(username=requestor)
-	print('Got requestor:', requestor)
 
-	if user.account.is_mentor and requestor.account.is_mentee:
-		return accept_mentorship_request(user, requestor)
-	
-	if user.account.is_mentee and requestor.account.is_mentor:
-		return accept_menteeship_request(user, requestor)
-	
-	return JsonResponse({"success" : False})
+	assert(user.account.is_mentor)
 
-
-# user is a mentor, requestor is a mentee
-def reject_mentorship_request(user, requestor):
 	status = False
-
 	if MenteeSentRequest.objects.filter(mentor=user.account.mentor, mentee=requestor.account.mentee).exists():
-		# delete a request only if the request exists
+		# executes only if, requestor is not already a mentee of the user and it is the requestor that sent the 
+		# mentorship request to the user
+		MyMentee.objects.create(mentor=user.account.mentor, mentee=requestor.account.mentee)
+		MyMentor.objects.create(mentor=user.account.mentor, mentee=requestor.account.mentee)
 		MenteeSentRequest.objects.filter(mentor=user.account.mentor, mentee=requestor.account.mentee).delete()
 		status = True
-
-	return JsonResponse({"success" : status})
-
-
-# user is a mentee, requestor is a mentor
-def reject_menteeship_request(user, requestor):
-	status = False
-
-	if MentorSentRequest.objects.filter(mentor=requestor.account.mentor, mentee=user.account.mentee).exists():
-		# delete a request only if the request exists
-		MentorSentRequest.objects.filter(mentee=user.account.mentee, mentor=requestor.account.mentor).delete()
-		status = True
-
+	
 	return JsonResponse({"success" : status})
 
 
@@ -369,17 +236,18 @@ def reject_menteeship_request(user, requestor):
 @login_required
 def reject_request(request):
 	user = request.user
-	requestor = request.GET.get('requestor')
-	requestor = User.objects.get(username=requestor)
-	print('Got requestor:', requestor)
+	to_reject = request.GET.get('requestor')
+	to_reject = User.objects.get(username=to_reject)
 
-	if user.account.is_mentor and requestor.account.is_mentee:
-		return reject_menteeship_request(user, requestor)
-	
-	if user.account.is_mentee and requestor.account.is_mentor:
-		return reject_mentorship_request(user, requestor)
-	
-	return JsonResponse({"success" : False})
+	assert(user.account.is_mentor)
+
+	status = False
+	if MenteeSentRequest.objects.filter(mentor=user.account.mentor, mentee=to_reject.account.mentee).exists():
+		# delete a request only if the request exists
+		MenteeSentRequest.objects.filter(mentor=user.account.mentor, mentee=to_reject.account.mentee).delete()
+		status = True
+
+	return JsonResponse({"success" : status})
 	
 
 @login_required
@@ -478,23 +346,6 @@ def get_recommendations(request):
 
 
 @login_required
-def update_my_tags(request):
-	updated_tags = json.loads(request.body.decode('utf-8'))['updated_tags']
-
-	if request.user.account.is_mentor:
-		MentorExpectedRoleField.objects.filter(mentor=request.user.account.mentor).delete()
-		for tag in updated_tags:
-			MentorExpectedRoleField.objects.create(mentor=request.user.account.mentor, role=get_role_id(tag['role']), field=get_field_id(tag['field']))
-
-	else:
-		MenteeExpectedRoleField.objects.filter(mentee=request.user.account.mentee).delete()
-		for tag in updated_tags:
-			MenteeExpectedRoleField.objects.create(mentee=request.user.account.mentee, role=get_role_id(tag['role']), field=get_field_id(tag['field']))
-
-
-	return JsonResponse({'success': True})
-
-@login_required
 def update_settings(request):
 	user = request.user
 
@@ -505,7 +356,6 @@ def update_settings(request):
 		user.account.mentor.mentorship_duration = mentorship_duration
 		user.account.mentor.is_open_to_mentorship = is_open_to_mentorship
 		user.account.mentor.save()
-
 
 	else:
 		needs_mentoring = json.loads(request.body.decode('utf-8'))['needs_mentoring']
