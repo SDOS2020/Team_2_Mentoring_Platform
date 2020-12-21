@@ -41,12 +41,13 @@ def register_mentor(request):
 			)
 			mentor_area.save()
 
+			# return render(request, "users/login.html")
 			return redirect("login")
 	else:
 		form = MentorRegistrationForm()
 
 	context = {
-		"form" : form
+		"form" : form,
 	}
 
 	return render(request, "users/register_mentor.html", context)
