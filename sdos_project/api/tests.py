@@ -229,12 +229,18 @@ class IntegrationTestCases(TestCase):
 		self.create_user(VALID2, role='MENTOR')
 
 		self.login_user('ananya', 'pass4321')
-		response = self.client.post('/api/send_request/?requestee=karan')
+		data = {
+			'requestee': 'karan',
+			'sop': 'Sir please please please',
+			'expectations': 'CGPA > 2',
+			'commitment': '0 years',
+		}
+		response = self.client.get('/api/send_mentorship_request/', data)
 		self.assertEqual(response.status_code, 200)
 		self.client.post('/users/logout/')
 		
 		self.login_user('karan', 'pass4321')
-		response = self.client.post('/api/accept_request/?requestor=ananya')
+		response = self.client.post('/api/accept_mentorship_request/?requestor=ananya')
 		self.assertEqual(response.status_code, 200)
 
 		response = self.client.get('/api/get_mentees/')
