@@ -104,12 +104,58 @@ def get_my_tags(request):
 	return JsonResponse(response, safe=False)
 
 
+def __get_choices(s: str, ChoiceClass):
+	res = [{
+		'key': -1,
+		'value': 'Any ' + s
+	}]
+
+	for i, r in enumerate(ChoiceClass.choices):
+		res.append({
+			'key': i,
+			'value': str(r[-1])
+		})
+
+	return res
+
+
+@login_required
+def get_mentor_roles(request):
+	response = {
+		'success': True,
+		'roles': __get_choices('role', MentorRoles)
+	}
+
+	return JsonResponse(response, safe=False)
+
+
+@login_required
+def get_mentor_fields(request):
+	response = {
+		'success': True,
+		'fields': __get_choices('field', Fields)
+	}
+
+	return JsonResponse(response, safe=False)
+
+
+@login_required
+def get_mentor_areas(request):
+	response = {
+		'success': True,
+		'areas': __get_choices('area', Areas)
+	}
+
+	return JsonResponse(response, safe=False)
+
+
 def get_role_id(role: str, Roles):
 	return next(filter(lambda x: x[-1] == role, Roles.choices))[0] if role else None
 
 
 def get_field_id(field: str):
 	return next(filter(lambda x: x[-1] == field, Fields.choices))[0] if field else None
+
 
 def get_area_id(area: str):
 	return next(filter(lambda x: x[-1] == area, Areas.choices))[0] if area else None
@@ -118,8 +164,7 @@ def get_area_id(area: str):
 def filter_mentor(mentor, filters):
 	if not filters:	# If no filter is applied
 		return True
-	print('Filters:')
-	print(filters)
+
 	for f in filters:
 		role, field, area = get_role_id(f['role'], MentorRoles), get_field_id(f['field']), get_area_id(f['area'])
 		options = dict()
@@ -161,45 +206,58 @@ def filter_mentee(mentee, filters):
 	return False
 
 
+def my_filter_mentor(role: str, field: str, area: str):
+	role = get_role_id(role, MentorRoles)
+	field = get_field_id(field)
+	area = get_area_id(area)
+
+	options = dict()
+	if role:
+		options['role'] = role
+
+	if field:
+		options['field'] = field
+
+	shortlist = [m.mentor for m in MentorRoleField.objects.filter(**options)]
+	if not area:
+		return shortlist
+
+	return [m for m in shortlist if m.mentorarea.area == area]
+
+
 # TODO: Filters
 @login_required
 @mentee_required
 def search_users(request):
 	user = request.user
-	filters = json.loads(request.GET.get('filters'))
+	role = request.GET.get('role')
+	field = request.GET.get('field')
+	area = request.GET.get('area')
 
-	shortlist = []
+	role = None if (role == 'Any role') else role
+	field = None if (field == 'Any field') else field
+	area = None if (area == 'Any area') else area
+
+	mentors = my_filter_mentor(role, field, area)
 
 	# Status codes
-	NOT_ALLOWED = 0
-	REQUEST_MENTORSHIP = 1
-	REQUEST_MENTEESHIP = 2
-	PENDING_REQUEST = 3
-	REQUEST_RECEIVED = 4
-	MY_MENTEE = 5
-	MY_MENTOR = 6
+	REQUEST_MENTORSHIP = 0
+	PENDING_REQUEST = 1
+	MY_MENTOR = 2
 
-	for account in Account.objects.all():
-		if account.is_mentee:
-			continue
-		
-		status = NOT_ALLOWED
-		if not filter_mentor(account.mentor, filters):
-			continue
-
-		if MyMentor.objects.filter(mentor=account.mentor, mentee=user.account.mentee).exists():
+	shortlist = []
+	for mentor in mentors:
+		if MyMentor.objects.filter(mentor=mentor, mentee=user.account.mentee).exists():
 			status = MY_MENTOR
-		elif MenteeSentRequest.objects.filter(mentor=account.mentor, mentee=user.account.mentee).exists():
+		elif MenteeSentRequest.objects.filter(mentor=mentor, mentee=user.account.mentee).exists():
 			status = PENDING_REQUEST
-		elif MentorSentRequest.objects.filter(mentor=account.mentor, mentee=user.account.mentee).exists():
-			status = REQUEST_RECEIVED
 		else:
 			status = REQUEST_MENTORSHIP
 
 		shortlist.append({
-			'id': account.id,
-			'username': account.user.username,
-			'is_mentor': account.is_mentor,
+			'id': mentor.account.id,
+			'username': mentor.account.user.username,
+			'is_mentor': mentor.account.is_mentor,
 			'status': status
 		})
 
