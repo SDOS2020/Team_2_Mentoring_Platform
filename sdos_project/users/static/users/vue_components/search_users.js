@@ -164,7 +164,7 @@ const SearchUsers = {
 				console.log("[SUCCESS]");
 				for (result of this.search_results) {
 					if (result.username === username) {
-						result.status = 3;
+						result.status = 1; // Mark as PENDING_REQUEST
 						break;
 					}
 				}

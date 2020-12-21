@@ -8,102 +8,6 @@ from users.models import *
 from users.decorators import mentee_required
 
 
-
-'''
-Roles: Either MentorRoles or MenteeRoles
-'''
-def __get_tags(Roles):
-	tags = []
-
-	i = 0
-	# Add (role, NULL)
-	for role in Roles.choices:
-		r = str(role[-1])
-		tags.append({
-			'key': i,
-			'role': r,
-			'field': None,
-			'area': None,
-			'value': r
-		})
-
-		i += 1
-
-	# Add (NULL, field)
-	for field in Fields.choices:
-		f = str(field[-1])
-		tags.append({
-			'key': i,
-			'role': None,
-			'field': f,
-			'area': None,
-			'value': f
-		})
-
-		i += 1
-
-	# Add (NULL, field)
-	for area in Areas.choices:
-		f = str(area[-1])
-		tags.append({
-			'key': i,
-			'role': None,
-			'field': None,
-			'area': f,
-			'value': f
-		})
-
-		i += 1
-
-	return tags
-
-
-'''
-Returns tags for mentor
-'''
-@login_required
-def get_mentor_tags(request):
-	response = {
-		'success': True,
-		'tags':  __get_tags(MentorRoles)
-	}
-
-	return JsonResponse(response, safe=False)
-
-
-@login_required
-def get_mentee_tags(request):
-	response = {
-		'success': True,
-		'tags':  __get_tags(MenteeRoles)
-	}
-
-	return JsonResponse(response, safe=False)
-
-
-@login_required
-def get_my_tags(request):
-	my_tags = []
-
-	if request.user.account.is_mentor:
-		my_tags = MentorExpectedRoleField.objects.filter(mentor=request.user.account.mentor)
-	else:
-		my_tags = MenteeExpectedRoleField.objects.filter(mentee=request.user.account.mentee)
-
-	my_tags = [{
-		'role': my_tag.get_role_display(), 
-		'field': my_tag.get_field_display(),
-		'value': my_tag.get_role_display() + ' ' + my_tag.get_field_display(),
-	} for my_tag in my_tags]
-	
-	response = {
-		'success': True,
-		'my_tags': my_tags
-	}
-
-	return JsonResponse(response, safe=False)
-
-
 def __get_choices(s: str, ChoiceClass):
 	res = [{
 		'key': -1,
@@ -161,52 +65,7 @@ def get_area_id(area: str):
 	return next(filter(lambda x: x[-1] == area, Areas.choices))[0] if area else None
 
 
-def filter_mentor(mentor, filters):
-	if not filters:	# If no filter is applied
-		return True
-
-	for f in filters:
-		role, field, area = get_role_id(f['role'], MentorRoles), get_field_id(f['field']), get_area_id(f['area'])
-		options = dict()
-
-		if role:
-			options['role'] = roles
-
-		if field:
-			options['field'] = field
-
-		if area:
-			if MentorArea.objects.filter(mentor=mentor, area=area).exists():
-				return True
-
-
-		if MentorRoleField.objects.filter(mentor=mentor, **options).exists():
-			return True
-
-	return False
-
-
-def filter_mentee(mentee, filters):
-	if not filters:	# If no filter is applied
-		return True
-
-	for f in filters:
-		role, field = get_role_id(f['role'], MenteeRoles), get_field_id(f['field'])
-		options = dict()
-
-		if role:
-			options['role'] = role
-
-		if field:
-			options['field'] = field
-
-		if MenteeRoleField.objects.filter(mentee=mentee, **options).exists():
-			return True
-
-	return False
-
-
-def my_filter_mentor(role: str, field: str, area: str):
+def filter_mentors(role: str, field: str, area: str):
 	role = get_role_id(role, MentorRoles)
 	field = get_field_id(field)
 	area = get_area_id(area)
@@ -238,7 +97,7 @@ def search_users(request):
 	field = None if (field == 'Any field') else field
 	area = None if (area == 'Any area') else area
 
-	mentors = my_filter_mentor(role, field, area)
+	mentors = filter_mentors(role, field, area)
 
 	# Status codes
 	REQUEST_MENTORSHIP = 0
@@ -536,23 +395,6 @@ def get_recommendations(request):
 
 
 @login_required
-def update_my_tags(request):
-	updated_tags = json.loads(request.body.decode('utf-8'))['updated_tags']
-
-	if request.user.account.is_mentor:
-		MentorExpectedRoleField.objects.filter(mentor=request.user.account.mentor).delete()
-		for tag in updated_tags:
-			MentorExpectedRoleField.objects.create(mentor=request.user.account.mentor, role=get_role_id(tag['role']), field=get_field_id(tag['field']))
-
-	else:
-		MenteeExpectedRoleField.objects.filter(mentee=request.user.account.mentee).delete()
-		for tag in updated_tags:
-			MenteeExpectedRoleField.objects.create(mentee=request.user.account.mentee, role=get_role_id(tag['role']), field=get_field_id(tag['field']))
-
-
-	return JsonResponse({'success': True})
-
-@login_required
 def update_settings(request):
 	user = request.user
 
@@ -563,7 +405,6 @@ def update_settings(request):
 		user.account.mentor.mentorship_duration = mentorship_duration
 		user.account.mentor.is_open_to_mentorship = is_open_to_mentorship
 		user.account.mentor.save()
-
 
 	else:
 		needs_mentoring = json.loads(request.body.decode('utf-8'))['needs_mentoring']
