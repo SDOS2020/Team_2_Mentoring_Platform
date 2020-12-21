@@ -27,7 +27,7 @@ const ChatWindow = {
 								<div class="msg-bubble">
 									<div class="msg-info">
 										<div class="msg-info-name">You</div>
-										<div class="msg-info-time">[[ message.timestamp ]]</div>
+										<div class="msg-info-time">[[ message.date ]], [[ message.timestamp ]]</div>
 									</div>
 
 									<div class="msg-text">
@@ -41,7 +41,7 @@ const ChatWindow = {
 								<div class="msg-bubble">
 									<div class="msg-info">
 										<div class="msg-info-name">[[ message.sender ]]</div>
-										<div class="msg-info-time">[[ message.timestamp ]]</div>
+										<div class="msg-info-time">[[ message.date ]], [[ message.timestamp ]]</div>
 									</div>
 
 									<div class="msg-text">

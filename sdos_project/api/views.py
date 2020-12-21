@@ -558,8 +558,12 @@ def get_messages(request, chatter_username):
 	messages = sorted(messages, key=lambda msg: msg['timestamp'])
 	
 	for i in range(len(messages)):
-		time = messages[i]['timestamp'].strftime("%H:%M")
+		timestamp = messages[i]['timestamp']
+		date = timestamp.strftime("%d %b")
+		time = timestamp.strftime("%H:%M")
 		messages[i]['timestamp'] = time
+		messages[i]['date'] = date
+
 
 	response = {
 		'success': True,
