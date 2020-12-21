@@ -45,4 +45,4 @@ jobs:
       run: python sdos_project/manage.py migrate
     - name: Run Tests
       run: |
-        python sdos_project/manage.py test
+        python sdos_project/manage.py test sdos_project
