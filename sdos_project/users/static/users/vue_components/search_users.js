@@ -201,6 +201,11 @@ const SearchUsers = {
 		},
 
 		send_request(username, index) {
+			if (this.request_sop.length < 10) {
+				alert('Please enter a purpose');
+				return;
+			}
+			
 			let request_url = "http://127.0.0.1:8000/api/send_mentorship_request";
 
 			axios.get(request_url, {

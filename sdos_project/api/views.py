@@ -162,9 +162,17 @@ def get_user_requests(request):
 	user_requests = []
 	
 	for user_request in MenteeSentRequest.objects.filter(mentor=user.account.mentor):
+
+		mrm = MentorshipRequestMessage.objects.filter(mentor=user.account.mentor, mentee=user_request.mentee)
+		assert(len(mrm) == 1)
+		mrm = mrm.first()
+		
 		user_requests.append({
 			'id': user_request.id,
-			'username': user_request.mentee.account.user.username
+			'username': user_request.mentee.account.user.username,
+			'sop': mrm.sop,
+			'expectations': mrm.expectations,
+			'commitment': mrm.commitment,
 		})
 	
 	return JsonResponse(user_requests, safe=False)
@@ -188,6 +196,7 @@ def accept_mentorship_request(request):
 		MyMentee.objects.create(mentor=user.account.mentor, mentee=requestor.account.mentee)
 		MyMentor.objects.create(mentor=user.account.mentor, mentee=requestor.account.mentee)
 		MenteeSentRequest.objects.filter(mentor=user.account.mentor, mentee=requestor.account.mentee).delete()
+		MentorshipRequestMessage.objects.filter(mentor=user.account.mentor, mentee=requestor.account.mentee).delete()
 		status = True
 	
 	return JsonResponse({"success" : status})
@@ -207,6 +216,7 @@ def reject_mentorship_request(request):
 	if MenteeSentRequest.objects.filter(mentor=user.account.mentor, mentee=to_reject.account.mentee).exists():
 		# delete a request only if the request exists
 		MenteeSentRequest.objects.filter(mentor=user.account.mentor, mentee=to_reject.account.mentee).delete()
+		MentorshipRequestMessage.objects.filter(mentor=user.account.mentor, mentee=to_reject.account.mentee).delete()
 		status = True
 
 	return JsonResponse({"success" : status})
