@@ -538,3 +538,39 @@ def add_meeting_summary(request):
 	}
 
 	return JsonResponse(response)
+
+@login_required
+def get_milestones(request):
+	mentor_name = request.GET.get('mentor')
+	mentee_name = request.GET.get('mentee')
+	
+	mentor = User.objects.get(username=mentor_name).account.mentor
+	mentee = User.objects.get(username=mentee_name).account.mentee
+
+	milestones = Milestone.objects.filter(mentor=mentor, mentee=mentee).all()
+	milestones = [milestone.content for milestone in milestones]
+
+	response = {
+		'milestones': milestones,
+		'success': True
+	}
+	return JsonResponse(response, safe=False)
+
+@login_required
+@mentor_required
+def add_milestone(request):
+	req = json.loads(request.body)
+
+	mentor_name = req.get('mentor')
+	mentee_name = req.get('mentee')
+	content = req.get('content')
+	
+	mentor = User.objects.get(username=mentor_name).account.mentor
+	mentee = User.objects.get(username=mentee_name).account.mentee
+
+	Milestone.objects.create(mentor=mentor, mentee=mentee, content=content)
+
+	return JsonResponse({'success': True})
+
+
+
