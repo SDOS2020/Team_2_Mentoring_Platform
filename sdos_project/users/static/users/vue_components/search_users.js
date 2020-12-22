@@ -218,6 +218,10 @@ const SearchUsers = {
 			})
 			.then(response => {
 				console.log("[SUCCESS]");
+				if (response.data.success === false) {
+					alert('You can have 3 mentors at max.');
+					return;
+				}
 				for (result of this.search_results) {
 					if (result.username === username) {
 						result.status = 1; // Mark as PENDING_REQUEST
