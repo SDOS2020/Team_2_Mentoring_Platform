@@ -41,14 +41,15 @@ My Mentee
 				<tr>
 					<td id="meeting-table">
 						<show-meeting guest_name="{{ mentee }}"></show-meeting>
+						<schedule-meeting guest_name="{{ mentee }}" csrf="{{ csrf_token }}"></schedule-meeting>
 					</td>
 					<td>
 					</td>
 				</tr>
 				<tr>
 					<td id="meeting-table">
-						<schedule-meeting guest_name="{{ mentee }}" csrf="{{ csrf_token }}">
-						</schedule-meeting>
+						<show-meeting-summary guest_name="{{ mentee }}"></show-meeting-summary>
+						<add-meeting-summary guest_name="{{ mentee }}" csrf="{{ csrf_token }}"></add-meeting-summary>
 						<br/>
 					</td>
 					<td>
@@ -72,6 +73,9 @@ My Mentee
 <script src="{% static 'mentor_mentee/chats.js' %}"></script>
 <script src="{% static 'mentor_mentee/show_meeting.js' %}"></script>
 <script src="{% static 'mentor_mentee/schedule_meeting.js' %}"></script>
+<script src="{% static 'mentor_mentee/display_summary.js' %}"></script>
+<script src="{% static 'mentor_mentee/show_meeting_summary.js' %}"></script>
+<script src="{% static 'mentor_mentee/add_meeting_summary.js' %}"></script>
 
 <script>
 	const app = new Vue({
@@ -80,6 +84,8 @@ My Mentee
 			"chat-window": ChatWindow,
 			"show-meeting": ShowMeeting,
 			"schedule-meeting": ScheduleMeeting,
+			"show-meeting-summary": ShowMeetingSummary,
+			"add-meeting-summary": AddMeetingSummary
 		},
 	});
 

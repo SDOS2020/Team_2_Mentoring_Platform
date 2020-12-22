@@ -27,28 +27,16 @@ const Requests = {
 							<div class="modal-body">
 								<table class="table">
 									<tr>
-										<td>
-											Purpose:
-										</td>
-										<td>
-											[[request.sop]]
-										</td>
+										<th>Purpose:</th>
+										<td>[[request.sop]]</td>
 									</tr>
 									<tr>
-										<td>
-											Mentee Expectations:
-										</td>
-										<td>
-											[[request.expectations]]
-										</td>
+										<th>Mentee Expectations:</th>
+										<td>[[request.expectations]]</td>
 									</tr>
 									<tr>
-										<td>
-											Mentee Commitment:
-										</td>
-										<td>
-											[[request.commitment]]
-										</td>
+										<th>Mentee Commitment:</th>
+										<td>[[request.commitment]]</td>
 									</tr>
 								</table>
 							</div>
@@ -76,15 +64,8 @@ const Requests = {
 			request_url
 		)
 		.then(response => {
-			console.log("[SUCCESS]");
-			if (response.data.length > 30) {
-				console.log("Too many results: " + response.data.length);
-				console.log("Showing only top 30");
-				this.requests = response.data.slice(0, 30);
-			}
-			else {
-				this.requests = response.data;
-			}
+			this.requests = response.data;
+			console.log(this.requests);
 		})
 		.catch(error => {
 			console.log("[ERROR]");

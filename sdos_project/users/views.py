@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
 from users.models import User
-from .decorators import mentee_required
+from .decorators import mentee_required, mentor_required
 from .models import Account, Mentor, Mentee, MentorRoleField, MenteeRoleField
 from .forms import *
 
@@ -110,18 +110,22 @@ def chat_user(request):
 
 
 @login_required
+@mentor_required
 def my_requests(request):
 	return render(request, "users/my_requests.html")
 
 
 @login_required
+@mentee_required
 def my_mentors(request):
 	return render(request, "users/my_mentors.html")
 
 
 @login_required
+@mentor_required
 def my_mentees(request):
 	return render(request, "users/my_mentees.html")
+
 
 @login_required
 def settings(request):

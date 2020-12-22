@@ -290,6 +290,7 @@ class MentorArea(models.Model):
 	def __str__(self):
 		return "{} of area {}".format(self.mentor.account.user.username, self.get_area_display())
 
+
 class MentorshipRequestMessage(models.Model):
 	"""
 	Store the SOP, commitment, expectations of the mentee which is sent to the mentor at the time of requesting for
@@ -303,4 +304,32 @@ class MentorshipRequestMessage(models.Model):
 	commitment = models.TextField(max_length=256, null=True)
 
 	def __str__(self):
-		return "{} sent a request to {}".format(self.mentee.account.user.username, self.mentor.account.user.username)
+		return "{} sent a request to {}".format(
+			self.mentee.account.user.username, self.mentor.account.user.username)
+
+
+class MeetingSummary(models.Model):
+	"""
+	Store:
+	1. Meeting date
+	2. Meeting length (in hours)
+	3. Meeting agenda
+	4. Meeting todos (action items)
+	5. Next meeting date (tentative)
+	6. Next meeting agenda
+	"""
+
+	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
+	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
+
+	meeting_date = models.DateTimeField(auto_now_add=False)
+	meeting_length = models.IntegerField()
+	meeting_details = models.TextField(max_length=512)
+	meeting_todos = models.TextField(max_length=512, null=True)
+
+	next_meeting_date = models.DateTimeField(auto_now_add=False)
+	next_meeting_agenda = models.TextField(max_length=512)
+
+	def __str__(self):
+		return "Meeting held at {} of length {} hours".format(
+			self.meeting_date, self.meeting_length)
