@@ -21,9 +21,9 @@ Profile
 				<span class="d-block d-lg-none">
 					{{ requested_user.account.user.first_name }} {{ requested_user.account.user.last_name }}
 				</span>
-				{% if requested_user.account.gender == 'M' %}	
+				{% if requested_user.account.gender == 1 %}	
 					<span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="{% static 'users/male.jpg' %}" alt="" /></span>
-				{% elif requested_user.account.gender == 'F' %}
+				{% elif requested_user.account.gender == 2 %}
 					<span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="{% static 'users/female.jpg' %}" alt="" /></span>
 				{% else %}
 					<span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="{% static 'users/neutral.jpg' %}" alt="" /></span>
