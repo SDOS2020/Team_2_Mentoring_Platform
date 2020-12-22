@@ -35,7 +35,7 @@ class Account(models.Model):
 		]
 	)
 
-	gender = models.CharField(max_length=1, choices=Gender.choices, default=Gender.choices[-1])
+	gender = models.IntegerField(choices=Gender.choices, default=Gender.choices[-1])
 
 	mobile = models.CharField(
 		max_length=10,
@@ -333,3 +333,14 @@ class MeetingSummary(models.Model):
 	def __str__(self):
 		return "Meeting held at {} of length {} hours".format(
 			self.meeting_date, self.meeting_length)
+
+
+class Milestone(models.Model):
+	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
+	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
+	content = models.TextField(max_length=512)
+
+	def __str__(self):
+		return f'Mentor: {self.mentor}, Mentee: {self.mentee}'
+	 
+

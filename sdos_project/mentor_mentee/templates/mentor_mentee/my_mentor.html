@@ -8,6 +8,7 @@ My Mentor
 
 {% block header %}
 <link href="{% static 'mentor_mentee/chats.css' %}" rel="stylesheet" />
+<link href="{% static 'mentor_mentee/progress_tracker.css' %}" rel="stylesheet" />
 
 <style>
 	#chatbox {
@@ -24,6 +25,13 @@ My Mentor
 		padding-top: 0;
 		width: 26rem;
 	}
+
+	#progresstracker {
+		margin-left: 1rem;
+		margin-top: -84vh;
+		width: 20rem;
+	}
+
 </style>
 
 {% endblock header %}
@@ -58,10 +66,19 @@ My Mentor
 				</tr>
 			</tbody>
 		</table>
+		<br/>
+
+		<div id="progresstracker">
+			<progress-tracker mentor="{{ mentor }}" mentee="{{ user.username }}"></progress-tracker>
+			<br/>
+		</div>
+
 
 		<div id="chatbox" style="margin-bottom: 1rem;">
 			<chat-window receiver="{{ mentor }}" sender="{{ user.username }}" csrf="{{ csrf_token }}"></chat-window>
 		</div>
+
+
 	</div>
 </center>
 
@@ -77,6 +94,7 @@ My Mentor
 <script src="{% static 'mentor_mentee/display_summary.js' %}"></script>
 <script src="{% static 'mentor_mentee/show_meeting_summary.js' %}"></script>
 <script src="{% static 'mentor_mentee/add_meeting_summary.js' %}"></script>
+<script src="{% static 'mentor_mentee/progress_tracker.js' %}"></script>
 
 <script>
 	const app = new Vue({
@@ -86,7 +104,8 @@ My Mentor
 			"show-meeting": ShowMeeting,
 			"schedule-meeting": ScheduleMeeting,
 			"show-meeting-summary": ShowMeetingSummary,
-			"add-meeting-summary": AddMeetingSummary
+			"add-meeting-summary": AddMeetingSummary,
+			"progress-tracker": ProgressTracker,
 		},
 	});
 

@@ -31,4 +31,7 @@ urlpatterns = [
 
 	path("get_meeting_summaries/<str:guest_name>", api_views.get_meeting_summaries, name="get_meeting_summaries"),
 	path("add_meeting_summary/", api_views.add_meeting_summary, name="add_meeting_summary"),
+	
+	path("get_milestones/", api_views.get_milestones, name="get_milestones"),
+	path("add_milestone/", api_views.add_milestone, name="add_milestone"),
 ]
