@@ -63,15 +63,28 @@ Profile
 					</span>
 				</h1>
 				<div class="subheading mb-5">
-					<b>{{ requested_user.account.rating }} </b> <i class="fas fa-star"></i> &nbsp &nbsp|&nbsp &nbsp
+					<b>{{ requested_user.account.rating }} </b> <i class="fas fa-star"></i> 
+					&nbsp &nbsp|&nbsp &nbsp
 					{% if requested_user.account.is_mentor %}
 						<span style='color: #404065'>
 							<i>Mentor</i>
-						</span>
+						</span> 
+
+						&nbsp &nbsp|&nbsp &nbsp
+						<b>{{ requested_user.account.mentor.mentorrolefield.get_role_display}}, {{ requested_user.account.mentor.mentorrolefield.get_field_display}}</b>
+
+						&nbsp &nbsp|&nbsp &nbsp
+						<b>{{ requested_user.account.mentor.mentorarea.get_area_display}}</b>
+
+
 					{% else %}
 						<span style='color: #404065'>
 							<i>Mentee</i>
-						</span>
+						</span> 
+
+						&nbsp &nbsp|&nbsp &nbsp
+						<b>{{ requested_user.account.mentee.menteerolefield.get_role_display}}, {{ requested_user.account.mentee.menteerolefield.get_field_display}}</b>
+
 					{% endif %}
 				</div>
 
