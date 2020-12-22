@@ -87,3 +87,16 @@ INVALID_EMAIL = {
 	'area': 1,
 	'subarea': 'Subarea',
 }
+
+EDIT_PROFILE_FORM = {
+	"area": 1,
+	"subarea": "Subarea 1",
+	"introduction": "My Intro",
+	"education": "My Edu",
+	"experience": "My Exp",
+}
+
+UPDATE_SETTINGS_FORM = {
+	"mentorship_duration": 8,
+	"is_open_to_mentorship": True
+}

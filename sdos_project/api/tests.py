@@ -263,7 +263,50 @@ class IntegrationTestCases(TestCase):
 		messages = json.loads(response.content.decode())['messages']
 		message_contents = [msg['content'] for msg in messages]
 		self.assertTrue(message in message_contents)
-		
+
+	def test_integration_2(self):
+		'''
+		Create a mentor
+		Login
+		Edit your profile
+		Check that DB has been updated
+		Update settings
+		Check that DB has been updated
+		Logout
+		Try to update settings again
+		Mus be redirected to login page
+		'''
+
+		self.create_user(VALID2, role='MENTOR')
+		self.login_user('karan', 'pass4321')
+
+		response = self.client.post('/users/edit_profile/', data=EDIT_PROFILE_FORM)
+		user = User.objects.get(username='karan')
+
+		self.assertEqual(EDIT_PROFILE_FORM['area'], user.account.mentor.mentorarea.area)
+		self.assertEqual(EDIT_PROFILE_FORM['subarea'], user.account.mentor.mentorarea.subarea)
+		self.assertEqual(EDIT_PROFILE_FORM['introduction'], user.account.introduction)
+		self.assertEqual(EDIT_PROFILE_FORM['education'], user.account.education)
+		self.assertEqual(EDIT_PROFILE_FORM['experience'], user.account.experience)
+
+		self.client.post('/api/update_settings/', json.dumps(UPDATE_SETTINGS_FORM), content_type='application/json')
+
+		response = self.client.get('/api/get_settings/')
+		settings = json.loads(response.content.decode())
+		self.assertEqual(UPDATE_SETTINGS_FORM['mentorship_duration'], settings['mentorship_duration'])
+		self.assertEqual(UPDATE_SETTINGS_FORM['is_open_to_mentorship'], settings['is_open_to_mentorship'])
+
+		self.client.post('/users/logout/')
+
+		response = self.client.get('/api/get_settings/')
+		self.assertEqual(response.status_code, 302)
+
+
+
+
+
+
+
 
 
 		
