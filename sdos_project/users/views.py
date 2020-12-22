@@ -153,9 +153,9 @@ def edit_profile(request):
 
 	if request.method == "POST":
 		if request.user.account.is_mentor:
-			areas_form = EditAreasForm(request.POST, initial=initial_areas)
+			areas_form = EditAreasForm(request.POST)
 	
-		details_form = EditDetailsForm(request.POST, initial=initial_details)
+		details_form = EditDetailsForm(request.POST)
 
 		if areas_form.is_valid() and details_form.is_valid():
 			user = request.user
