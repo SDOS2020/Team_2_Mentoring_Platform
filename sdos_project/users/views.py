@@ -161,10 +161,10 @@ def edit_profile(request):
 	
 		details_form = EditDetailsForm(request.POST)
 
-		if areas_form.is_valid() and details_form.is_valid():
+		if details_form.is_valid():
 			user = request.user
-
-			if request.user.account.is_mentor:
+			
+			if request.user.account.is_mentor and areas_form.is_valid():
 				user.account.mentor.mentorarea.area = areas_form.cleaned_data["area"]
 				user.account.mentor.mentorarea.subarea = areas_form.cleaned_data["subarea"]
 				user.account.mentor.mentorarea.save()
@@ -173,7 +173,7 @@ def edit_profile(request):
 			user.account.education = details_form.cleaned_data["education"]
 			user.account.experience = details_form.cleaned_data["experience"]
 			user.account.save()
-
+			print('Saved')
 			return redirect("homepage")
 
 	elif request.method == "GET":
