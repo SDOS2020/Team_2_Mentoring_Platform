@@ -177,7 +177,7 @@ class MentorRoleField(models.Model):
 	"""
 	Stores the mentors qualifications, their role (current / past), their fields(current / past)
 	"""
-	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
+	mentor = models.OneToOneField(Mentor, on_delete=models.CASCADE)
 	role = models.IntegerField(choices=MentorRoles.choices, null=True)
 	field = models.IntegerField(choices=Fields.choices, null=True)
 
@@ -189,7 +189,7 @@ class MenteeRoleField(models.Model):
 	"""
 	Stores the mentees qualifications, their role (current / past), their fields (current / past)
 	"""
-	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
+	mentee = models.OneToOneField(Mentee, on_delete=models.CASCADE)
 	role = models.IntegerField(choices=MenteeRoles.choices, null=True)
 	field = models.IntegerField(choices=Fields.choices, null=True)
 
