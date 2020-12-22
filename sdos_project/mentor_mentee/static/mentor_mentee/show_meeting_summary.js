@@ -1,8 +1,11 @@
 const ShowMeetingSummary = {
 	delimiters: ["[[", "]]"],
+	components: {
+		"display-summary": DisplaySummary
+	},
 	template: `
 	<div>
-		<div class="card-header" style="border-radius: 10px 10px 0 0; background-color: lightgrey;" id="show-meetings-header">
+		<div class="card-header" style="border-radius: 10px 10px 0 0; background-color: lightgrey;" id="show-summary-header">
 			<center>
 				<font size="4">
 					<b>Past Meeting Details</b>
@@ -10,37 +13,37 @@ const ShowMeetingSummary = {
 			</center>
 		</div>
 
-		<div style="height: 30vh; overflow-y: scroll;" id="show-meetings-body">
-			<div v-if="meetings.length === 0" id="no-meetings-text">
+		<div style="height: 30vh; overflow-y: scroll;" id="show-summary-body">
+			<div v-if="summaries.length === 0" id="no-meetings-text">
 				<center style="margin-top: 5rem;">
-					No past meetings
+					No past meeting summaries
 				</center>
 			</div>
 
 			<table class="table table-hover table-striped">
 				<tbody>
-					<tr v-for="meeting in meetings">
+					<tr v-for="(summary, index) in summaries">
 						<td>
-							<b>[[ meeting.time ]]</b>
+							<b>[[ summary.time ]]</b>
 							<br/>
 							<i>
 								<small class="text-muted">
-									[[ meeting.date ]], [[ meeting.day ]]
+									[[ summary.date ]], [[ summary.day ]]
 								</small>
 							</i>
 						</td>
 
 						<td style="width: 75%;">
-							<a v-bind:href="meeting.meeting_url" target="blank" style="text-decoration: none; color: black;">
-								<b>[[ meeting.title ]]</b> &nbsp
-								
-								<a v-bind:href="meeting.meeting_url" target="blank">
-									<i class="fas fa-video"></i>
-								</a>
-								
-								<br/>
-								<small class="text-muted">[[ meeting.agenda ]]</small>
-							</a>
+							<display-summary
+								:meeting_id="index"
+								:meeting_date="summary.meeting_date"
+								:meeting_length="summary.meeting_length"
+								:meeting_details="summary.meeting_details"
+								:meeting_todos="summary.meeting_todos"
+								:next_meeting_date="summary.next_meeting_date"
+								:next_meeting_agenda="summary.next_meeting_agenda"
+							>
+							</display-summary>
 						</td>
 					</tr>
 				</tbody>
@@ -50,7 +53,7 @@ const ShowMeetingSummary = {
 	`,
 	data() {
 		return {
-			meetings: [],
+			summaries: [],
 		};
 	},
 
@@ -59,17 +62,17 @@ const ShowMeetingSummary = {
 	},
 
 	created() {
-		this.get_meetings();
-		window.setInterval(this.get_meetings, 1000);
+		this.get_meeting_summaries();
+		window.setInterval(this.get_meeting_summaries, 2000);
 	},
 
 	methods: {
-		get_meetings() {
+		get_meeting_summaries() {
 			let request_url = "http://127.0.0.1:8000/api/get_meeting_summaries/" + this.guest_name;
 
 			axios.get(request_url)
 			.then(response => {
-				this.meetings = response.data.meetings;
+				this.summaries = response.data.summaries;
 			})
 			.catch(error => {
 				console.log('[ERROR]');

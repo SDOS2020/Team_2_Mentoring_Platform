@@ -109,6 +109,10 @@
 							Mentees
 						</a>
 
+						<a class="dropdown-item" href="{% url 'my_requests' %}" style="text-align: right;">
+							Requests
+						</a>
+
 					{% else %}
 
 						<a class="dropdown-item" href="{% url 'my_mentors' %}" style="text-align: right;">
@@ -116,10 +120,6 @@
 						</a>
 
 					{% endif %}
-
-					<a class="dropdown-item" href="{% url 'my_requests' %}" style="text-align: right;">
-						Requests
-					</a>
 
 					{% if user.account.is_mentee %}
 						<a class="dropdown-item" href="{% url 'search_users' %}" style="text-align: right;">

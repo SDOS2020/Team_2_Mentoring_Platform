@@ -24,6 +24,7 @@ def __get_choices(s: str, ChoiceClass):
 
 
 @login_required
+@mentee_required
 def get_mentor_roles(request):
 	response = {
 		'success': True,
@@ -34,6 +35,7 @@ def get_mentor_roles(request):
 
 
 @login_required
+@mentee_required
 def get_mentor_fields(request):
 	response = {
 		'success': True,
@@ -44,6 +46,7 @@ def get_mentor_fields(request):
 
 
 @login_required
+@mentee_required
 def get_mentor_areas(request):
 	response = {
 		'success': True,
@@ -184,7 +187,6 @@ def accept_mentorship_request(request):
 	requestor = request.GET.get('requestor')
 	requestor = User.objects.get(username=requestor)
 
-
 	status = False
 	if MenteeSentRequest.objects.filter(mentor=user.account.mentor, mentee=requestor.account.mentee).exists():
 		# executes only if, requestor is not already a mentee of the user and it is the requestor that sent the 
@@ -219,6 +221,7 @@ def reject_mentorship_request(request):
 	
 
 @login_required
+@mentee_required
 def get_mentors(request):
 	user = request.user
 	# TODO: get a list of mentors only and not a list of mentor / mentee
@@ -241,6 +244,7 @@ def get_mentors(request):
 
 
 @login_required
+@mentor_required
 def get_mentees(request):
 	user = request.user
 	mentees = MyMentee.objects.filter(mentor=user.account.mentor)
@@ -296,6 +300,7 @@ def get_chatters(request):
 
 
 @login_required
+@mentee_required
 def get_recommendations(request):
 	mentors = []
 	for mentor in Mentor.objects.all():
@@ -479,17 +484,17 @@ def get_meeting_summaries(request, guest_name):
 	fields = ('meeting_date', 'meeting_length', 'meeting_details', 'meeting_todos',
 				'next_meeting_date', 'next_meeting_agenda')
 
-	meetings = [dict((field, getattr(summary, field)) for field in fields) for summary in summaries]
-	meetings.sort(key=lambda x: x['meeting_date'], reverse=True)
+	summaries = [dict((field, getattr(summary, field)) for field in fields) for summary in summaries]
+	summaries.sort(key=lambda x: x['meeting_date'], reverse=True)
 
-	for i in range(len(meetings)):
-		meetings[i]['day'] = meetings[i]['time'].strftime('%a')
-		meetings[i]['date'] = meetings[i]['time'].strftime('%d %b')
-		meetings[i]['time'] = meetings[i]['time'].strftime('%H:%M')
+	for i in range(len(summaries)):
+		summaries[i]['day'] = summaries[i]['meeting_date'].strftime('%a')
+		summaries[i]['date'] = summaries[i]['meeting_date'].strftime('%d %b')
+		summaries[i]['time'] = summaries[i]['meeting_date'].strftime('%H:%M')
 
 	response = {
 		'success': True,
-		'meetings': meetings,
+		'summaries': summaries,
 	}
 
 	return JsonResponse(response)
@@ -506,7 +511,7 @@ def add_meeting_summary(request):
 		return JsonResponse({'success': False})
 
 	guest = User.objects.get(username=guest_name)
-	req['meeting_date'] = make_aware(datetime.strptime(req['time'], '%Y-%m-%dT%H:%M'))
+	req['meeting_date'] = make_aware(datetime.strptime(req['meeting_date'], '%Y-%m-%dT%H:%M'))
 
 	mentor, mentee = user, guest
 	if user.account.is_mentee and guest.account.is_mentor:

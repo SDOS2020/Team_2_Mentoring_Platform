@@ -51,6 +51,7 @@ My Mentor
 				<tr>
 					<td id="meeting-table">
 						<show-meeting-summary guest_name="{{ mentor }}"></show-meeting-summary>
+						<add-meeting-summary guest_name="{{ mentor }}" csrf="{{ csrf_token }}"></add-meeting-summary>
 					</td>
 					<td>
 					</td>
@@ -72,8 +73,10 @@ My Mentor
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="{% static 'mentor_mentee/chats.js' %}"></script>
 <script src="{% static 'mentor_mentee/show_meeting.js' %}"></script>
-<script src="{% static 'mentor_mentee/show_meeting_summary.js' %}"></script>
 <script src="{% static 'mentor_mentee/schedule_meeting.js' %}"></script>
+<script src="{% static 'mentor_mentee/display_summary.js' %}"></script>
+<script src="{% static 'mentor_mentee/show_meeting_summary.js' %}"></script>
+<script src="{% static 'mentor_mentee/add_meeting_summary.js' %}"></script>
 
 <script>
 	const app = new Vue({
@@ -83,6 +86,7 @@ My Mentor
 			"show-meeting": ShowMeeting,
 			"schedule-meeting": ScheduleMeeting,
 			"show-meeting-summary": ShowMeetingSummary,
+			"add-meeting-summary": AddMeetingSummary
 		},
 	});
 

@@ -7,13 +7,15 @@ const AddMeetingSummary = {
 				Add meeting summary
 			</button>
 		</center>
-	
+
 		<div class="modal fade" id="addSummaryModal" tabindex="-1" role="dialog" aria-labelledby="addSummaryModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 
 					<div class="modal-header">
-						<h5 class="modal-title" id="addSummaryModalLabel">addSummary a meeting</h5>
+						<h5 class="modal-title" id="addSummaryModalLabel">
+							Add summary of the meeting
+						</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -22,32 +24,43 @@ const AddMeetingSummary = {
 					<div class="modal-body">
 						<form>
 							<div class="form-group">
-								<label for="meeting-title" class="col-form-label">Title:</label>
-								<input v-model="meeting_title" type="text" class="form-control" id="meeting-title">
-							</div>
-
-							<div class="form-group">
-								<label for="message-agenda" class="col-form-label">Agenda:</label>
-								<textarea v-model="meeting_agenda" class="form-control" id="message-agenda"></textarea>
-							</div>
-
-							<div class="form-group">
-								<label for="meeting-url" class="col-form-label">Meeting URL:</label>
-								<input v-model="meeting_url" type="text" class="form-control" id="meeting-url">
-							</div>
-								
-							<div class="form-group">
-								<label for="meeting-time" class="col-form-label">Time:</label>
+								<label class="col-form-label">Start time:</label>
 								<br/>
-								<input v-model="meeting_time" type="datetime-local" id="meeting-time" name="meeting-time" min="2020-11-20T08:30" required>
+								<input v-model="meeting_date" type="datetime-local" min="2020-12-22T08:30" required>
+							</div>
+						
+							<div class="form-group">
+								<label class="col-form-label">Meeting duration (hrs):</label>
+								<input v-model="meeting_length" type="text" class="form-control">
+							</div>
+
+							<div class="form-group">
+								<label class="col-form-label">Meeting details:</label>
+								<textarea v-model="meeting_details" class="form-control"></textarea>
+							</div>
+
+							<div class="form-group">
+								<label class="col-form-label">Action items:</label>
+								<textarea v-model="meeting_todos" class="form-control"></textarea>
+							</div>
+							
+							<div class="form-group">
+								<label class="col-form-label">Next meeting date:</label>
+								<br/>
+								<input v-model="next_meeting_date" type="datetime-local" min="2020-12-22T08:30" required>
+							</div>
+							
+							<div class="form-group">
+								<label class="col-form-label">Next meeting agenda:</label>
+								<textarea v-model="next_meeting_agenda" class="form-control"></textarea>
 							</div>
 						</form>
 					</div>
 
 
 					<div class="modal-footer">
-						<button v-on:click="add_new_meeting" class="btn btn-success">addSummary</button>
-						<button id="close-button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button v-on:click="add_new_meeting" class="btn btn-success">Add Summary</button>
+						<button id="summary-close-button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 					</div>
 				</div>
 			</div>
@@ -83,7 +96,7 @@ const AddMeetingSummary = {
 			}
 
 			if (alert_message.length === 0) {
-				alert("[SUCCESS]\nSummary successfully added!")
+				alert("Summary successfully added!")
 				return true;
 			}
 			else {
@@ -101,28 +114,32 @@ const AddMeetingSummary = {
 
 			axios.post(request_url, {
 				'guest_name': this.guest_name,
-				'title': this.meeting_title,
-				'agenda': this.meeting_agenda,
-				'meeting_url': this.meeting_url,
-				'time': this.meeting_time,
+				'meeting_date': this.meeting_date,
+				'meeting_length': this.meeting_length,
+				'meeting_details': this.meeting_details,
+				'meeting_todos': this.meeting_todos,
+				'next_meeting_date': this.next_meeting_date,
+				'next_meeting_agenda': this.next_meeting_agenda,
 			}, {
 				headers: {
 					'X-CSRFTOKEN': this.csrf
 				}
 			})
-				.then(response => {
-				})
-				.catch(error => {
-					console.log('[ERROR]');
-					console.log(error);
-				});
+			.then(response => {
+			})
+			.catch(error => {
+				console.log('[ERROR]');
+				console.log(error);
+			});
 
-			this.meeting_title = "";
-			this.meeting_agenda = "";
-			this.meeting_url = "";
-			this.meeting_time = "";
+			this.meeting_date = "";
+			this.meeting_length = "";
+			this.meeting_details = "";
+			this.meeting_todos = "";
+			this.next_meeting_date = "";
+			this.next_meeting_agenda = "";
 
-			document.getElementById("close-button").click();
+			document.getElementById("summary-close-button").click();
 		}
 	}
 };
