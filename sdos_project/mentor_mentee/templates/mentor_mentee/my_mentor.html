@@ -42,16 +42,15 @@ My Mentor
 				<tr>
 					<td id="meeting-table">
 						<show-meeting guest_name="{{ mentor }}"></show-meeting>
+						<schedule-meeting guest_name="{{ mentor }}" csrf="{{ csrf_token }}"></schedule-meeting>
+						<br/>
 					</td>
 					<td>
 					</td>
 				</tr>
 				<tr>
 					<td id="meeting-table">
-						<schedule-meeting guest_name="{{ mentor }}" csrf="{{ csrf_token }}"></schedule-meeting>
-						<br />
-						<show-meeting guest_name="{{ mentor }}"></show-meeting>
-						<schedule-meeting guest_name="{{ mentor }}" csrf="{{ csrf_token }}"></schedule-meeting>
+						<show-meeting-summary guest_name="{{ mentor }}"></show-meeting-summary>
 					</td>
 					<td>
 					</td>
@@ -73,6 +72,7 @@ My Mentor
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="{% static 'mentor_mentee/chats.js' %}"></script>
 <script src="{% static 'mentor_mentee/show_meeting.js' %}"></script>
+<script src="{% static 'mentor_mentee/show_meeting_summary.js' %}"></script>
 <script src="{% static 'mentor_mentee/schedule_meeting.js' %}"></script>
 
 <script>
@@ -82,6 +82,7 @@ My Mentor
 			"chat-window": ChatWindow,
 			"show-meeting": ShowMeeting,
 			"schedule-meeting": ScheduleMeeting,
+			"show-meeting-summary": ShowMeetingSummary,
 		},
 	});
 

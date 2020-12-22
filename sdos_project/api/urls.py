@@ -28,4 +28,7 @@ urlpatterns = [
 
 	path("get_meetings/<str:guest_name>", api_views.get_meetings, name="get_meetings"),
 	path("add_meeting/", api_views.add_meeting, name="add_meeting"),
+
+	path("get_meeting_summaries/<str:guest_name>", api_views.get_meeting_summaries, name="get_meeting_summaries"),
+	path("add_meeting_summary/<str:guest_name>", api_views.add_meeting_summary, name="add_meeting_summary"),
 ]

@@ -459,3 +459,74 @@ def add_meeting(request):
 	}
 
 	return JsonResponse(response)
+
+
+@login_required
+def get_meeting_summaries(request, guest_name):
+	user = request.user
+	guest = User.objects.get(username=guest_name)
+
+	mentor, mentee = user, guest
+	if user.account.is_mentee and guest.account.is_mentor:
+		mentor, mentee = guest, user
+
+	elif user.account.is_mentee == guest.account.is_mentee:
+		print('[ERROR] Both users of same type')
+		return JsonResponse({'success': False})
+	
+	summaries = MeetingSummary.objects.filter(mentor=mentor.account.mentor, mentee=mentee.account.mentee).all()
+
+	fields = ('meeting_date', 'meeting_length', 'meeting_details', 'meeting_todos',
+				'next_meeting_date', 'next_meeting_agenda')
+
+	meetings = [dict((field, getattr(summary, field)) for field in fields) for summary in summaries]
+	meetings.sort(key=lambda x: x['meeting_date'], reverse=True)
+
+	for i in range(len(meetings)):
+		meetings[i]['day'] = meetings[i]['time'].strftime('%a')
+		meetings[i]['date'] = meetings[i]['time'].strftime('%d %b')
+		meetings[i]['time'] = meetings[i]['time'].strftime('%H:%M')
+
+	response = {
+		'success': True,
+		'meetings': meetings,
+	}
+
+	return JsonResponse(response)
+
+
+@login_required
+def add_meeting_summary(request):
+	user = request.user
+	req = json.loads(request.body)
+	guest_name = req.get('guest_name')
+
+	if not guest_name:
+		print('[ERROR] guest_name is None')
+		return JsonResponse({'success': False})
+
+	guest = User.objects.get(username=guest_name)
+	req['meeting_date'] = make_aware(datetime.strptime(req['time'], '%Y-%m-%dT%H:%M'))
+
+	mentor, mentee = user, guest
+	if user.account.is_mentee and guest.account.is_mentor:
+		mentor, mentee = guest, user
+
+	elif user.account.is_mentee == guest.account.is_mentee:
+		print('[ERROR] Both users of same type')
+		return JsonResponse({'success': False})
+
+	MeetingSummary.objects.create(mentor=mentor.account.mentor,
+								mentee=mentee.account.mentee,
+								meeting_date=req['meeting_date'],
+								meeting_length=req['meeting_length'],
+								meeting_details=req['meeting_details'],
+								meeting_todos=req['meeting_todos'],
+								next_meeting_date=req['next_meeting_date'],
+								next_meeting_agenda=req['next_meeting_agenda'])
+
+	response = {
+		'success': True
+	}
+
+	return JsonResponse(response)
