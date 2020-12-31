@@ -139,55 +139,93 @@ def my_recommendations(request):
 	return render(request, "users/my_recommendations.html")
 
 
-@login_required
-def edit_profile(request):
-	initial_areas = None
-	if request.user.account.is_mentor:
-		initial_areas = {
-			"area": request.user.account.mentor.mentorarea.area,
-			"subarea": request.user.account.mentor.mentorarea.subarea
-		}
+def edit_mentor_profile(request):
+	"""
+	Edit mentor profile
+	"""
+	user = request.user
+
+	initial_areas = {
+		"area": user.account.mentor.mentorarea.area,
+		"subarea": user.account.mentor.mentorarea.subarea
+	}
 
 	initial_details = {
-		"introduction": request.user.account.introduction,
-		"education": request.user.account.education,
-		"research_experience": request.user.account.research_experience
+		"introduction": user.account.introduction,
+		"education": user.account.education,
+		"research_experience": user.account.research_experience,
+		"social_handle": user.account.social_handle
 	}
 
 	areas_form, details_form = None, None
 
 	if request.method == "POST":
-		if request.user.account.is_mentor:
-			areas_form = EditAreasForm(request.POST)
-	
-		details_form = EditDetailsForm(request.POST)
+		areas_form = EditAreasForm(request.POST)
+		details_form = EditMentorDetailsForm(request.POST)
 
-		if details_form.is_valid():
-			user = request.user
-			
-			if request.user.account.is_mentor and areas_form.is_valid():
-				user.account.mentor.mentorarea.area = areas_form.cleaned_data["area"]
-				user.account.mentor.mentorarea.subarea = areas_form.cleaned_data["subarea"]
-				user.account.mentor.mentorarea.save()
+		if details_form.is_valid() and areas_form.is_valid():
+			user.account.mentor.mentorarea.area = areas_form.cleaned_data["area"]
+			user.account.mentor.mentorarea.subarea = areas_form.cleaned_data["subarea"]
 
 			user.account.introduction = details_form.cleaned_data["introduction"]
 			user.account.education = details_form.cleaned_data["education"]
 			user.account.research_experience = details_form.cleaned_data["research_experience"]
+			user.account.social_handle = details_form.cleaned_data["social_handle"]
+			
+			user.account.mentor.mentorarea.save()
 			user.account.save()
-			print('Saved')
 			return redirect("homepage")
 
 	elif request.method == "GET":
-		if request.user.account.is_mentor:
-			areas_form = EditAreasForm(initial=initial_areas)
+		areas_form = EditAreasForm(initial=initial_areas)
+		details_form = EditMentorDetailsForm(initial=initial_details)
+
+	context = {
+		"details_form": details_form,
+		"areas_form" : areas_form
+	}
+
+	return render(request, "users/edit_profile.html", context)
+
+
+def edit_mentee_profile(request):
+	"""
+	Edit mentee profile
+	"""
+	user = request.user
+
+	initial_details = {
+		"introduction": user.account.introduction,
+		"education": user.account.education,
+		"research_experience": user.account.research_experience,
+	}
+
+	details_form = None
+
+	if request.method == "POST":
+		details_form = EditMenteeDetailsForm(request.POST)
+
+		if details_form.is_valid():
+			user.account.introduction = details_form.cleaned_data["introduction"]
+			user.account.education = details_form.cleaned_data["education"]
+			user.account.research_experience = details_form.cleaned_data["research_experience"]
 			
-		details_form = EditDetailsForm(initial=initial_details)
+			user.account.save()
+			return redirect("homepage")
+
+	elif request.method == "GET":
+		details_form = EditMenteeDetailsForm(initial=initial_details)
 
 	context = {
 		"details_form": details_form
 	}
 
-	if request.user.account.is_mentor:
-		context["areas_form"] = areas_form
-
 	return render(request, "users/edit_profile.html", context)
+
+
+@login_required
+def edit_profile(request):
+	if request.user.account.is_mentor:
+		return edit_mentor_profile(request)
+	else:
+		return edit_mentee_profile(request)

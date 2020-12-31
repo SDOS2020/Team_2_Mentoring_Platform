@@ -141,11 +141,15 @@ class EditNameForm(forms.ModelForm):
 		fields = ("first_name", "last_name")
 
 
-class EditDetailsForm(forms.ModelForm):
+class EditMentorDetailsForm(forms.ModelForm):
+	class Meta:
+		model = Account
+		fields = ("introduction", "education", "research_experience", "social_handle")
+
+class EditMenteeDetailsForm(forms.ModelForm):
 	class Meta:
 		model = Account
 		fields = ("introduction", "education", "research_experience")
-
 
 class EditAreasForm(forms.ModelForm):
 	class Meta:
