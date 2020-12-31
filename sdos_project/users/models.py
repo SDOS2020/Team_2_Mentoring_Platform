@@ -90,6 +90,11 @@ class Mentor(models.Model):
 	)
 
 	is_open_to_mentorship = models.BooleanField(default=True)
+	
+	will_mentor_faculty = models.BooleanField(default=False)
+	will_mentor_phd = models.BooleanField(default=False)
+	will_mentor_mtech = models.BooleanField(default=False)
+	will_mentor_btech = models.BooleanField(default=False)
 
 	def __str__(self):
 		return self.account.user.username

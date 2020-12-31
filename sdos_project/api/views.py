@@ -328,9 +328,19 @@ def update_settings(request):
 	if user.account.is_mentor:	
 		mentorship_duration = json.loads(request.body.decode('utf-8'))['mentorship_duration']
 		is_open_to_mentorship = json.loads(request.body.decode('utf-8'))['is_open_to_mentorship']
+		
+		will_mentor_faculty = json.loads(request.body.decode('utf-8'))['will_mentor_faculty']
+		will_mentor_phd = json.loads(request.body.decode('utf-8'))['will_mentor_phd']
+		will_mentor_mtech = json.loads(request.body.decode('utf-8'))['will_mentor_mtech']
+		will_mentor_btech = json.loads(request.body.decode('utf-8'))['will_mentor_btech']
 
 		user.account.mentor.mentorship_duration = mentorship_duration
 		user.account.mentor.is_open_to_mentorship = is_open_to_mentorship
+		user.account.mentor.will_mentor_faculty = will_mentor_faculty
+		user.account.mentor.will_mentor_phd = will_mentor_phd
+		user.account.mentor.will_mentor_mtech = will_mentor_mtech
+		user.account.mentor.will_mentor_btech = will_mentor_btech
+		
 		user.account.mentor.save()
 
 	else:
@@ -351,11 +361,19 @@ def get_settings(request):
 	if user.account.is_mentor:
 		mentorship_duration = user.account.mentor.mentorship_duration
 		is_open_to_mentorship = user.account.mentor.is_open_to_mentorship
-		
+		will_mentor_faculty = user.account.mentor.will_mentor_faculty
+		will_mentor_phd = user.account.mentor.will_mentor_phd
+		will_mentor_mtech = user.account.mentor.will_mentor_mtech
+		will_mentor_btech = user.account.mentor.will_mentor_btech
+
 		response = {
 			'success': True,
 			'mentorship_duration': mentorship_duration,
-			'is_open_to_mentorship': is_open_to_mentorship
+			'is_open_to_mentorship': is_open_to_mentorship,
+			'will_mentor_faculty': will_mentor_faculty,
+			'will_mentor_phd': will_mentor_phd,
+			'will_mentor_mtech': will_mentor_mtech,
+			'will_mentor_btech': will_mentor_btech
 		}
 
 	else:
