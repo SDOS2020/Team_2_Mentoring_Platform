@@ -89,12 +89,11 @@ Profile
 				</div>
 
 				<p class="lead mb-5"> {{ requested_user.account.introduction }}</p>
+				{% if user.account.is_mentor %}
 				<div class="social-icons">
-					<a class="social-icon" href="//www.linkedin.com"><i class="fab fa-linkedin-in"></i></a>
-					<a class="social-icon" href="//www.github.com"><i class="fab fa-github"></i></a>
-					<a class="social-icon" href="//www.twitter.com"><i class="fab fa-twitter"></i></a>
-					<a class="social-icon" href="//www.facebook.com"><i class="fab fa-facebook-f"></i></a>
+					<a href="{{ user.account.social_handle }}" class="btn btn-primary" target="blank">More about me</a>
 				</div>
+				{% endif %}
 			</div>
 		</section>
 
