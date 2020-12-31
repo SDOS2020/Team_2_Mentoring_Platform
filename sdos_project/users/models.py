@@ -49,7 +49,7 @@ class Account(models.Model):
 	education = models.TextField(max_length=512, null=True)
 	research_experience = models.TextField(max_length=512, null=True)
 	expertise = models.TextField(max_length=512, null=True)
-	social_handles = models.TextField(max_length=512, null=True)
+	social_handle = models.URLField(null=True, help_text="Link to your personal website/LinkedIn profile")
 	
 	rating = models.DecimalField(
 		null=True,

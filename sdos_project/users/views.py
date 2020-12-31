@@ -19,7 +19,8 @@ def register_mentor(request):
 				user=user,
 				gender=form.cleaned_data['gender'],
 				age=form.cleaned_data['age'],
-				is_mentor = True
+				social_handle=form.cleaned_data['social_handle'],
+				is_mentor=True
 			)
 
 			account.save()
