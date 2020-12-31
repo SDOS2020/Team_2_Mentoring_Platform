@@ -138,7 +138,7 @@ class EditNameForm(forms.ModelForm):
 class EditDetailsForm(forms.ModelForm):
 	class Meta:
 		model = Account
-		fields = ("introduction", "education", "experience")
+		fields = ("introduction", "education", "research_experience")
 
 
 class EditAreasForm(forms.ModelForm):

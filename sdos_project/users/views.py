@@ -150,7 +150,7 @@ def edit_profile(request):
 	initial_details = {
 		"introduction": request.user.account.introduction,
 		"education": request.user.account.education,
-		"experience": request.user.account.experience
+		"research_experience": request.user.account.research_experience
 	}
 
 	areas_form, details_form = None, None
@@ -171,7 +171,7 @@ def edit_profile(request):
 
 			user.account.introduction = details_form.cleaned_data["introduction"]
 			user.account.education = details_form.cleaned_data["education"]
-			user.account.experience = details_form.cleaned_data["experience"]
+			user.account.research_experience = details_form.cleaned_data["research_experience"]
 			user.account.save()
 			print('Saved')
 			return redirect("homepage")

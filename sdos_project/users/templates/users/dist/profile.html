@@ -35,7 +35,7 @@ Profile
 				<ul class="navbar-nav">
 					<li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">About</a></li>
 					<li class="nav-item"><a class="nav-link js-scroll-trigger" href="#education">Education</a></li>
-					<li class="nav-item"><a class="nav-link js-scroll-trigger" href="#experience">Experience</a></li>
+					<li class="nav-item"><a class="nav-link js-scroll-trigger" href="#research_experience">Research Experience</a></li>
 					<li class="nav-item"><a class="nav-link js-scroll-trigger" href="#skills">Skills</a></li>
 					<li class="nav-item"><a class="nav-link js-scroll-trigger" href="#interests">Interests</a></li>
 					{% if requested_user == user %}	
@@ -113,12 +113,12 @@ Profile
 
 		<hr class="m-0" />
 		<!-- Experience-->
-		<section class="resume-section" id="experience">
+		<section class="resume-section" id="research_experience">
 			<div class="resume-section-content">
-				<h2 class="mb-5">Experience</h2>
+				<h2 class="mb-5">Research Experience</h2>
 				<div class="d-flex flex-column flex-md-row justify-content-between mb-5">
 					<div class="flex-grow-1">
-						<p>{{ requested_user.account.experience }}</p>
+						<p>{{ requested_user.account.research_experience }}</p>
 					</div>
 				</div>
 

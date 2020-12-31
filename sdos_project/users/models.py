@@ -47,7 +47,7 @@ class Account(models.Model):
 
 	introduction = models.TextField(max_length=512, null=True)
 	education = models.TextField(max_length=512, null=True)
-	experience = models.TextField(max_length=512, null=True)
+	research_experience = models.TextField(max_length=512, null=True)
 	expertise = models.TextField(max_length=512, null=True)
 	social_handles = models.TextField(max_length=512, null=True)
 	
