@@ -12,6 +12,7 @@ const MentorSettings = {
 					</td>
 					<td>
 						<select v-model="mentorship_duration" name="mentorship_duration" id="mentorship_duration">
+							<option value="1">One Meeting</option>
 							<option value="3">3 Months</option>
 							<option value="6">6 Months</option>
 							<option value="9">9 Months</option>

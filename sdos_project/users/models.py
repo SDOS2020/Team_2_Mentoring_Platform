@@ -75,7 +75,6 @@ class Mentor(models.Model):
 	account = models.OneToOneField(Account, on_delete=models.CASCADE)
 	mentorship_duration = models.IntegerField(
 		default=6,
-		help_text='In months',
 		validators=[
 			validators.MinValueValidator(1),
 			validators.MaxValueValidator(24),
