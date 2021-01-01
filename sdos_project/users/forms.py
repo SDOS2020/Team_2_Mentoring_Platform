@@ -53,6 +53,11 @@ class MentorRegistrationForm(UserCreationForm):
 		initial=''
 	)
 
+	social_handle = forms.URLField(
+		required=False,
+		help_text="Link to your personal website/LinkedIn profile"
+	)
+
 	class Meta:
 		# model that will be affected is the user model, i.e. at form.save(), it will update the User model
 		model = User
@@ -68,6 +73,7 @@ class MentorRegistrationForm(UserCreationForm):
 			"field",
 			"area",
 			"subarea",
+			"social_handle",
 			"password1",
 			"password2"
 		)
@@ -135,11 +141,15 @@ class EditNameForm(forms.ModelForm):
 		fields = ("first_name", "last_name")
 
 
-class EditDetailsForm(forms.ModelForm):
+class EditMentorDetailsForm(forms.ModelForm):
 	class Meta:
 		model = Account
-		fields = ("introduction", "education", "experience")
+		fields = ("introduction", "education", "research_experience", "social_handle")
 
+class EditMenteeDetailsForm(forms.ModelForm):
+	class Meta:
+		model = Account
+		fields = ("introduction", "education", "research_experience")
 
 class EditAreasForm(forms.ModelForm):
 	class Meta:

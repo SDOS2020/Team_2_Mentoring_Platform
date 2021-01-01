@@ -12,6 +12,7 @@ const MentorSettings = {
 					</td>
 					<td>
 						<select v-model="mentorship_duration" name="mentorship_duration" id="mentorship_duration">
+							<option value="1">One Meeting</option>
 							<option value="3">3 Months</option>
 							<option value="6">6 Months</option>
 							<option value="9">9 Months</option>
@@ -32,6 +33,60 @@ const MentorSettings = {
 					</td>
 				</tr>
 
+				<tr>
+					<td>
+						<p class="lead">
+							Mentees you wish to mentor
+						</p>
+					</td>
+					<td>
+						<ul style="list-style: none; padding: 0px">
+							<li>
+								<input v-model="will_mentor_faculty" type="checkbox">
+								Faculty
+							</li>
+
+							<li>
+								<input v-model="will_mentor_phd" type="checkbox">
+								PhD
+							</li>
+
+							<li>
+								<input v-model="will_mentor_mtech" type="checkbox">
+								MTech
+							</li>
+
+							<li>
+								<input v-model="will_mentor_btech" type="checkbox">
+								BTech
+							</li>
+						</ul>
+					</td>
+				</tr>
+
+				<tr>
+					<td colspan=2>
+						<p class="lead">
+							You are willing to
+						</p>
+						<ul style="list-style: none; padding: 0px">
+							<li v-for="(reponsibility, i) in responsibilities">
+								<input v-model="willing_to[i]" type="checkbox">
+								[[ reponsibility[1] ]]
+							</li>
+						</ul>
+					</td>
+				</tr>
+
+				<tr>
+					<td colspan=2>
+						<p class="lead">
+							Anything else you can help the mentees with
+						</p>
+						<textarea style="width: 100%" v-model="other_responsibility" />
+					</td>
+				</tr>
+
 			</tbody>
 		</table>
 
@@ -48,11 +103,18 @@ const MentorSettings = {
 	</div>
 	`,
 	data() {
+		
 		return {
 			is_open_to_mentorship: true,
 			mentorship_duration: 2,
 			update_success: false,
-
+			will_mentor_faculty: false,
+			will_mentor_phd: false,
+			will_mentor_mtech: false,
+			will_mentor_btech: false,
+			willing_to: [false, false, false, false, false, false, false, false],
+			responsibilities: [],
+			other_responsibility: '',
 		};
 	},
 	props: {
@@ -65,6 +127,16 @@ const MentorSettings = {
 		.then(response => {
 			this.mentorship_duration = response.data.mentorship_duration;
 			this.is_open_to_mentorship = response.data.is_open_to_mentorship;
+			this.will_mentor_faculty = response.data.will_mentor_faculty;
+			this.will_mentor_phd = response.data.will_mentor_phd;
+			this.will_mentor_mtech = response.data.will_mentor_mtech;
+			this.will_mentor_btech = response.data.will_mentor_btech;
+			this.responsibilities = response.data.responsibilities;
+			for (let i = 0; i < 8; ++i) {
+				this.willing_to[i] = this.responsibilities[i][0];
+			}
+			this.other_responsibility = response.data.other_responsibility;
+			console.log(this.willing_to);
 		})
 		.catch(error => {
 			console.log("[ERROR]");
@@ -85,10 +157,18 @@ const MentorSettings = {
 		update_other_settings() {
 			let request_url = "http://127.0.0.1:8000/api/update_settings/";
 
-			axios.post(request_url, 
-				{'mentorship_duration': this.mentorship_duration,
-				'is_open_to_mentorship': this.is_open_to_mentorship}, 
-				{headers: {'X-CSRFTOKEN': this.csrf}})
+			axios.post(request_url, {
+				'mentorship_duration': this.mentorship_duration,
+				'is_open_to_mentorship': this.is_open_to_mentorship,
+				'will_mentor_faculty' : this.will_mentor_faculty,
+				'will_mentor_phd' : this.will_mentor_phd,
+				'will_mentor_mtech' : this.will_mentor_mtech,
+				'will_mentor_btech' : this.will_mentor_btech,
+				'willing_to': this.willing_to,
+				'other_responsibility': this.other_responsibility,
+			}, {
+				headers: {'X-CSRFTOKEN': this.csrf}
+			})
 			.then(response => {
 				// this.existing_tags = response.data.tags;
 				console.log('Success!!!!');

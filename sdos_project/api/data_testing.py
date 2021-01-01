@@ -93,7 +93,7 @@ EDIT_PROFILE_FORM = {
 	"subarea": "Subarea 1",
 	"introduction": "My Intro",
 	"education": "My Edu",
-	"experience": "My Exp",
+	"research_experience": "My Exp",
 }
 
 UPDATE_SETTINGS_FORM = {

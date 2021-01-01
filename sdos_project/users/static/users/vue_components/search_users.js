@@ -219,9 +219,10 @@ const SearchUsers = {
 			.then(response => {
 				console.log("[SUCCESS]");
 				if (response.data.success === false) {
-					alert('You can have 3 mentors at max.');
+					alert('[LIMIT REACHED] Number of mentors + pending requests is max possible\nOR\nFor the mentor, number of mentees + pending requests is max possible');
 					return;
 				}
+				
 				for (result of this.search_results) {
 					if (result.username === username) {
 						result.status = 1; // Mark as PENDING_REQUEST

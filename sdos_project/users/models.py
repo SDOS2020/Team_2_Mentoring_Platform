@@ -47,9 +47,9 @@ class Account(models.Model):
 
 	introduction = models.TextField(max_length=512, null=True)
 	education = models.TextField(max_length=512, null=True)
-	experience = models.TextField(max_length=512, null=True)
+	research_experience = models.TextField(max_length=512, null=True)
 	expertise = models.TextField(max_length=512, null=True)
-	social_handles = models.TextField(max_length=512, null=True)
+	social_handle = models.URLField(null=True, help_text="Link to your personal website/LinkedIn profile")
 	
 	rating = models.DecimalField(
 		null=True,
@@ -75,7 +75,6 @@ class Mentor(models.Model):
 	account = models.OneToOneField(Account, on_delete=models.CASCADE)
 	mentorship_duration = models.IntegerField(
 		default=6,
-		help_text='In months',
 		validators=[
 			validators.MinValueValidator(1),
 			validators.MaxValueValidator(24),
@@ -90,6 +89,23 @@ class Mentor(models.Model):
 	)
 
 	is_open_to_mentorship = models.BooleanField(default=True)
+	
+	will_mentor_faculty = models.BooleanField(default=False)
+	will_mentor_phd = models.BooleanField(default=False)
+	will_mentor_mtech = models.BooleanField(default=False)
+	will_mentor_btech = models.BooleanField(default=False)
+
+	
+	# Responsibilities
+	responsibility1 = models.BooleanField(default=False)
+	responsibility2 = models.BooleanField(default=False)
+	responsibility3 = models.BooleanField(default=False)
+	responsibility4 = models.BooleanField(default=False)
+	responsibility5 = models.BooleanField(default=False)
+	responsibility6 = models.BooleanField(default=False)
+	responsibility7 = models.BooleanField(default=False)
+	responsibility8 = models.BooleanField(default=False)
+	other_responsibility = models.TextField(null=True, max_length=512)
 
 	def __str__(self):
 		return self.account.user.username
@@ -249,6 +265,19 @@ class Meeting(models.Model):
 	def __str__(self):
 		return self.creator.user.username + ' created a meeting with ' + self.guest.user.username
 
+
+class MentorResponsibility(models.IntegerChoices):
+	"""
+	Reference: Mail/Github Issue
+	"""
+	responsibility1 = 1, _('Listen to research proposals/initial research and give suggestions for improvement')
+	responsibility2 = 2, _('Read papers written (the final version which the author wants to submit) and give inputs')
+	responsibility3 = 3, _('Guide in literature reading')
+	responsibility4 = 4, _('Help in understanding difficult concepts, discussing some papers/results')
+	responsibility5 = 5, _('Guidance on where to submit a research paper')
+	responsibility6 = 6, _('Guidance on the proper conduct of research and literature review')
+	responsibility7 = 7, _('Review and comment on the resume')
+	responsibility8 = 8, _('Guide on postdoc and other research job possibilities')
 
 class Areas(models.IntegerChoices):
 	'''
