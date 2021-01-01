@@ -147,7 +147,7 @@ def send_mentorship_request(request):
 	elif len(MenteeSentRequest.objects.filter(mentee=user.account.mentee)) + len(MyMentor.objects.filter(mentee=user.account.mentee)) == 3:
 		# If mentee has already sent 3 requests
 		pass
-	elif len(MyMentee.objects.filter(mentor=requestee.account.mentor)) + len(MenteeSentRequest.objects.filter(mentor=requestee.account.mentor)) == 2:
+	elif len(MyMentee.objects.filter(mentor=requestee.account.mentor)) + len(MenteeSentRequest.objects.filter(mentor=requestee.account.mentor)) == 5:
 		# If mentor already has 5 mentees (or has received 5 requests)
 		pass
 	else:
