@@ -333,14 +333,24 @@ def update_settings(request):
 		will_mentor_phd = json.loads(request.body.decode('utf-8'))['will_mentor_phd']
 		will_mentor_mtech = json.loads(request.body.decode('utf-8'))['will_mentor_mtech']
 		will_mentor_btech = json.loads(request.body.decode('utf-8'))['will_mentor_btech']
+		responsibilities = json.loads(request.body.decode('utf-8'))['willing_to']
+		other_responsibility = json.loads(request.body.decode('utf-8'))['other_responsibility']
 
+
+		
 		user.account.mentor.mentorship_duration = mentorship_duration
 		user.account.mentor.is_open_to_mentorship = is_open_to_mentorship
 		user.account.mentor.will_mentor_faculty = will_mentor_faculty
 		user.account.mentor.will_mentor_phd = will_mentor_phd
 		user.account.mentor.will_mentor_mtech = will_mentor_mtech
 		user.account.mentor.will_mentor_btech = will_mentor_btech
-		
+
+		s = 'responsibility'
+		for i in range(len(responsibilities)):
+			setattr(user.account.mentor, s + str(i+1), responsibilities[i])
+
+		user.account.mentor.other_responsibility = other_responsibility
+
 		user.account.mentor.save()
 
 	else:
@@ -359,31 +369,30 @@ def get_settings(request):
 	user = request.user
 	
 	if user.account.is_mentor:
-		mentorship_duration = user.account.mentor.mentorship_duration
-		is_open_to_mentorship = user.account.mentor.is_open_to_mentorship
-		will_mentor_faculty = user.account.mentor.will_mentor_faculty
-		will_mentor_phd = user.account.mentor.will_mentor_phd
-		will_mentor_mtech = user.account.mentor.will_mentor_mtech
-		will_mentor_btech = user.account.mentor.will_mentor_btech
 
 		response = {
 			'success': True,
-			'mentorship_duration': mentorship_duration,
-			'is_open_to_mentorship': is_open_to_mentorship,
-			'will_mentor_faculty': will_mentor_faculty,
-			'will_mentor_phd': will_mentor_phd,
-			'will_mentor_mtech': will_mentor_mtech,
-			'will_mentor_btech': will_mentor_btech
+			'mentorship_duration': user.account.mentor.mentorship_duration,
+			'is_open_to_mentorship': user.account.mentor.is_open_to_mentorship,
+			'will_mentor_faculty': user.account.mentor.will_mentor_faculty,
+			'will_mentor_phd': user.account.mentor.will_mentor_phd,
+			'will_mentor_mtech': user.account.mentor.will_mentor_mtech,
+			'will_mentor_btech': user.account.mentor.will_mentor_btech,
+			'responsibilities': [],
+			'other_responsibility': user.account.mentor.other_responsibility,
 		}
 
+		s = 'responsibility'
+		for i, j in MentorResponsibility.choices:
+			response['responsibilities'].append( 
+				(getattr(user.account.mentor, s + str(i)), j)
+			)
 	else:
-		needs_mentoring = user.account.mentee.needs_mentoring
-		needs_urgent_mentoring = user.account.mentee.needs_urgent_mentoring
 
 		response = {
 			'success': True,
-			'needs_mentoring': needs_mentoring,
-			'needs_urgent_mentoring': needs_urgent_mentoring
+			'needs_mentoring': user.account.mentee.needs_mentoring,
+			'needs_urgent_mentoring': user.account.mentee.needs_urgent_mentoring
 		}
 
 	return JsonResponse(response)
