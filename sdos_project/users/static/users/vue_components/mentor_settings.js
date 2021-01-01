@@ -64,13 +64,10 @@ const MentorSettings = {
 				</tr>
 
 				<tr>
-					<td>
+					<td colspan=2>
 						<p class="lead">
 							You are willing to
 						</p>
-					</td>
-					
-					<td>
 						<ul style="list-style: none; padding: 0px">
 							<li v-for="(reponsibility, i) in responsibilities">
 								<input v-model="willing_to[i]" type="checkbox">
@@ -81,14 +78,11 @@ const MentorSettings = {
 				</tr>
 
 				<tr>
-					<td>
+					<td colspan=2>
 						<p class="lead">
 							Anything else you can help the mentees with
 						</p>
-					</td>
-					
-					<td>
-						<textarea v-model="other_responsibility" />
+						<textarea style="width: 100%" v-model="other_responsibility" />
 					</td>
 				</tr>
 

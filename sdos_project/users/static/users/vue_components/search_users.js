@@ -219,7 +219,7 @@ const SearchUsers = {
 			.then(response => {
 				console.log("[SUCCESS]");
 				if (response.data.success === false) {
-					alert('You can have 3 mentors at max.');
+					alert('You cannot send this request as either you have 3 mentors, or the mentor has 5 mentees');
 					return;
 				}
 				for (result of this.search_results) {
