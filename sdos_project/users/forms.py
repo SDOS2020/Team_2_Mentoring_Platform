@@ -134,7 +134,6 @@ class MenteeRegistrationForm(UserCreationForm):
 		)
 
 
-
 class EditNameForm(forms.ModelForm):
 	class Meta:
 		model = User
@@ -142,14 +141,21 @@ class EditNameForm(forms.ModelForm):
 
 
 class EditMentorDetailsForm(forms.ModelForm):
+	social_handle = forms.URLField(
+		required=False,
+		help_text="Link to your personal website/LinkedIn profile"
+	)
+
 	class Meta:
 		model = Account
 		fields = ("introduction", "education", "research_experience", "social_handle")
+
 
 class EditMenteeDetailsForm(forms.ModelForm):
 	class Meta:
 		model = Account
 		fields = ("introduction", "education", "research_experience")
+
 
 class EditAreasForm(forms.ModelForm):
 	class Meta:

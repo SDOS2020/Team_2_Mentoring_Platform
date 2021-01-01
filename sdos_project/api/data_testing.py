@@ -98,5 +98,22 @@ EDIT_PROFILE_FORM = {
 
 UPDATE_SETTINGS_FORM = {
 	"mentorship_duration": 8,
-	"is_open_to_mentorship": True
+	"is_open_to_mentorship": True,
+	
+	"will_mentor_faculty": False,
+	"will_mentor_phd": True,
+	"will_mentor_mtech": False,
+	"will_mentor_btech": True,
+	
+	"willing_to": [
+		False,
+		True,
+		True,
+		False,
+		False,
+		False,
+		False,
+		True
+	],
+	"other_responsibility": "Discuss about research opportunities abroad",
 }

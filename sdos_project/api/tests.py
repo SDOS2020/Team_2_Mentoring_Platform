@@ -4,6 +4,7 @@ from users.models import *
 from .data_testing import *
 import json
 
+
 class RegistrationTestCases(TestCase):
 	@classmethod
 	def setUpClass(cls) -> None:
@@ -11,64 +12,79 @@ class RegistrationTestCases(TestCase):
 		logging.disable(logging.CRITICAL)
 		# signals.post_save.disconnect(receiver=)
 
+
 	@classmethod
 	def tearDownClass(cls) -> None:
 		return super().tearDownClass()
+
 
 	def test_single_mentor_valid(self):
 		response = self.client.post('/users/register_mentor/', data=VALID1)
 		self.assertEqual(response.status_code, 302)
 
+
 	def test_single_mentee_valid(self):
 		response = self.client.post('/users/register_mentee/', data=VALID1)
 		self.assertEqual(response.status_code, 302)
+
 
 	def test_single_mentor_invalid_username(self):
 		response = self.client.post('/users/register_mentor/', data=INVALID_USERNAME)
 		self.assertEqual(response.status_code, 200)
 
+
 	def test_single_mentee_invalid_username(self):
 		response = self.client.post('/users/register_mentee/', data=INVALID_USERNAME)
 		self.assertEqual(response.status_code, 200)
+
 
 	def test_single_mentor_passwords_not_same(self):
 		response = self.client.post('/users/register_mentor/', data=PASSWORDS_NOT_SAME)
 		self.assertEqual(response.status_code, 200)
 
+
 	def test_single_mentee_passwords_not_same(self):
 		response = self.client.post('/users/register_mentee/', data=PASSWORDS_NOT_SAME)
 		self.assertEqual(response.status_code, 200)
+
 
 	def test_single_mentor_invalid_password(self):
 		response = self.client.post('/users/register_mentor/', data=INVALID_PASSWORD)
 		self.assertEqual(response.status_code, 200)
 
+
 	def test_single_mentee_invalid_password(self):
 		response = self.client.post('/users/register_mentee/', data=INVALID_PASSWORD)
 		self.assertEqual(response.status_code, 200)
+
 
 	def test_single_mentor_invalid_email(self):
 		response = self.client.post('/users/register_mentor/', data=INVALID_EMAIL)
 		self.assertEqual(response.status_code, 200)
 
+
 	def test_single_mentee_invalid_email(self):
 		response = self.client.post('/users/register_mentee/', data=INVALID_EMAIL)
 		self.assertEqual(response.status_code, 200)
+
 
 	def test_multiple_create_mentors_valid(self):
 		response = self.client.post('/users/register_mentor/', data=VALID1)
 		response = self.client.post('/users/register_mentor/', data=VALID2)
 		self.assertEqual(response.status_code, 302)
 
+
 	def test_multiple_create_mentees_valid(self):
 		response = self.client.post('/users/register_mentee/', data=VALID1)
 		response = self.client.post('/users/register_mentee/', data=VALID2)
 		self.assertEqual(response.status_code, 302)
 
+
 	def test_multiple_mentors_with_non_unique_username(self):
 		response = self.client.post('/users/register_mentor/', data=VALID1)
 		response = self.client.post('/users/register_mentor/', data=VALID1)
 		self.assertEqual(response.status_code, 200)
+
 
 	def test_multiple_mentees_with_non_unique_username(self):
 		response = self.client.post('/users/register_mentee/', data=VALID1)
@@ -83,9 +99,11 @@ class LoginTestCases(TestCase):
 		logging.disable(logging.CRITICAL)
 		# signals.post_save.disconnect(receiver=)
 
+
 	@classmethod
 	def tearDownClass(cls) -> None:
 		return super().tearDownClass()
+
 
 	def test_basic_login(self):
 		self.client.post('/users/register_mentee/', data=VALID1)
@@ -97,6 +115,7 @@ class LoginTestCases(TestCase):
 		response = self.client.post('/users/login/', data=data)
 		self.assertEqual(response.status_code, 302)
 
+
 	def test_basic_login_wrong_password(self):
 		self.client.post('/users/register_mentee/', data=VALID1)
 		data = {
@@ -107,6 +126,7 @@ class LoginTestCases(TestCase):
 		response = self.client.post('/users/login/', data=data)
 		self.assertEqual(response.status_code, 200)
 
+
 	def test_basic_login_incorrect_username(self):
 		self.client.post('/users/register_mentee/', data=VALID1)
 		data = {
@@ -116,6 +136,7 @@ class LoginTestCases(TestCase):
 
 		response = self.client.post('/users/login/', data=data)
 		self.assertEqual(response.status_code, 200)
+
 
 	def test_accessing_settings_while_logged_in(self):
 		self.client.post('/users/register_mentee/', data=VALID1)
@@ -128,9 +149,11 @@ class LoginTestCases(TestCase):
 		response = self.client.get('/users/settings/')
 		self.assertEqual(response.status_code, 200)
 
+
 	def test_accessing_settings_while_logged_out(self):
 		response = self.client.get('/users/settings/')
 		self.assertEqual(response.status_code, 302)
+
 
 	def test_accessing_chats_while_logged_in(self):
 		self.client.post('/users/register_mentee/', data=VALID1)
@@ -143,9 +166,11 @@ class LoginTestCases(TestCase):
 		response = self.client.get('/users/chat_user/')
 		self.assertEqual(response.status_code, 200)
 
+
 	def test_accessing_chats_while_logged_out(self):
 		response = self.client.get('/users/chat_user/')
 		self.assertEqual(response.status_code, 302)
+
 
 	def test_edit_profile_while_logged_in(self):
 		self.client.post('/users/register_mentee/', data=VALID1)
@@ -158,9 +183,11 @@ class LoginTestCases(TestCase):
 		response = self.client.get('/users/edit_profile/')
 		self.assertEqual(response.status_code, 200)
 
+
 	def test_edit_profile_while_logged_out(self):
 		response = self.client.get('/users/edit_profile/')
 		self.assertEqual(response.status_code, 302)
+
 
 	def test_view_profile_while_logged_in(self):
 		self.client.post('/users/register_mentee/', data=VALID1)
@@ -172,6 +199,7 @@ class LoginTestCases(TestCase):
 		response = self.client.post('/users/login/', data=data)
 		response = self.client.get('/users/profile/ananya/')
 		self.assertEqual(response.status_code, 200)
+
 
 	def test_view_profile_while_logged_in_invalid_user(self):
 		self.client.post('/users/register_mentee/', data=VALID1)
@@ -199,9 +227,11 @@ class IntegrationTestCases(TestCase):
 		logging.disable(logging.CRITICAL)
 		# signals.post_save.disconnect(receiver=)
 
+
 	@classmethod
 	def tearDownClass(cls) -> None:
 		return super().tearDownClass()
+
 
 	def create_user(self, data, role):
 		if role == 'MENTOR':	
@@ -209,12 +239,14 @@ class IntegrationTestCases(TestCase):
 		else:
 			self.client.post('/users/register_mentee/', data=data)
 
+
 	def login_user(self, username, password):
 		data = {
 			'username': username,
 			'password': password
 		}
 		self.client.post('/users/login/', data=data)
+
 
 	def test_integration_1(self):
 		'''
@@ -264,6 +296,7 @@ class IntegrationTestCases(TestCase):
 		message_contents = [msg['content'] for msg in messages]
 		self.assertTrue(message in message_contents)
 
+
 	def test_integration_2(self):
 		'''
 		Create a mentor
@@ -291,6 +324,7 @@ class IntegrationTestCases(TestCase):
 
 		self.client.post('/api/update_settings/', json.dumps(UPDATE_SETTINGS_FORM), content_type='application/json')
 
+		# Now fetch settings
 		response = self.client.get('/api/get_settings/')
 		settings = json.loads(response.content.decode())
 		self.assertEqual(UPDATE_SETTINGS_FORM['mentorship_duration'], settings['mentorship_duration'])
@@ -300,15 +334,3 @@ class IntegrationTestCases(TestCase):
 
 		response = self.client.get('/api/get_settings/')
 		self.assertEqual(response.status_code, 302)
-
-
-
-
-
-
-
-
-
-		
-
-
