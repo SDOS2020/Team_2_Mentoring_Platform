@@ -9,6 +9,7 @@ urlpatterns = [
 	path("login/", auth_views.LoginView.as_view(template_name="users/login.html", redirect_authenticated_user=True), name="login"),
 	path("register_mentor/", user_views.register_mentor, name="register_mentor"),
 	path("register_mentee/", user_views.register_mentee, name="register_mentee"),
+	path("change_password/", user_views.change_password, name="change_password"),
 
 	# When user is logged in
 	path("logout/", auth_views.LogoutView.as_view(template_name="home/homepage.html"), name="logout"),
