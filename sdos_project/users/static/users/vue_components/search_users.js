@@ -45,7 +45,8 @@ const SearchUsers = {
 					<tr>
 						<th scope="col">#</th>
 						<th scope="col">Username</th>
-						<th scope="col">Actions</th>
+						<th scope="col"><center>Actions</center></th>
+						<th scope="col"></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -61,61 +62,134 @@ const SearchUsers = {
 						</td>
 
 						<td>
-							<div v-if="result.status === 0">
-								<button @click="clear_request()" class="btn btn-sm btn-primary" data-toggle="modal" :data-target="'#requestModal' + index" data-whatever="@mdo">
-									Request Mentorship
-								</button>
+							<center>
+								<div v-if="result.status === 0">
+									<button @click="clear_request()" class="btn btn-sm btn-primary" data-toggle="modal" :data-target="'#requestModal' + index" data-whatever="@mdo">
+										Request Mentorship
+									</button>
 
+									<div class="modal fade" :id="'requestModal' + index" tabindex="-1" role="dialog" :aria-labelledby="'requestModalLabel' + index" aria-hidden="true">
+										<div class="modal-dialog" role="document">
+											<div class="modal-content">
 
-								<div class="modal fade" :id="'requestModal' + index" tabindex="-1" role="dialog" :aria-labelledby="'requestModalLabel' + index" aria-hidden="true">
-									<div class="modal-dialog" role="document">
-										<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" :id="'requestModalLabel' + index">Request Mentorship</h5>
+													<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+														<span aria-hidden="true">&times;</span>
+													</button>
+												</div>
 
-											<div class="modal-header">
-												<h5 class="modal-title" :id="'requestModalLabel' + index">Request Mentorship</h5>
-												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-													<span aria-hidden="true">&times;</span>
-												</button>
-											</div>
+												<div class="modal-body">
+													<form>
+														<div class="form-group">
+															<label class="col-form-label">Purpose:</label>
+															<textarea v-model="request_sop" type="text" class="form-control" ></textarea>
+														</div>
 
-											<div class="modal-body">
-												<form>
-													<div class="form-group">
-														<label class="col-form-label">Purpose:</label>
-														<textarea v-model="request_sop" type="text" class="form-control" ></textarea>
-													</div>
+														<div class="form-group">
+															<label class="col-form-label">Expectations:</label>
+															<textarea v-model="request_expectations" class="form-control" ></textarea>
+														</div>
 
-													<div class="form-group">
-														<label class="col-form-label">Expectations:</label>
-														<textarea v-model="request_expectations" class="form-control" ></textarea>
-													</div>
+														<div class="form-group">
+															<label class="col-form-label">Commitment:</label>
+															<textarea v-model="request_commitment" type="text" class="form-control"></textarea>
+														</div>
+													</form>
+												</div>
 
-													<div class="form-group">
-														<label class="col-form-label">Commitment:</label>
-														<textarea v-model="request_commitment" type="text" class="form-control"></textarea>
-													</div>
-												</form>
-											</div>
-
-											<div class="modal-footer">
-												<button v-on:click="send_request(result.username, index)" class="btn btn-success">Request</button>
-												<button id="close-button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+												<div class="modal-footer">
+													<button v-on:click="send_request(result.username, index)" class="btn btn-success">Request</button>
+													<button id="close-button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-							</div>
 
 
-							<div v-if="result.status === 1">
-								<button class="btn btn-sm btn-warning" disabled> Pending Request </button>
-							</div>
+								<div v-if="result.status === 1">
+									<button class="btn btn-sm btn-warning" disabled> Pending Request </button>
+								</div>
 
-							
-							<div v-if="result.status === 2">
-								<button class="btn btn-sm btn-info" disabled> Mentor </button>
-							</div>
+								
+								<div v-if="result.status === 2">
+									<button class="btn btn-sm btn-info" disabled> Mentor </button>
+								</div>
+							</center>
 						</td>
+
+						<td>
+							<button
+								class="btn btn-sm btn-secondary"
+								data-toggle="modal"
+								v-bind:data-target="'#moreInfoModal' + index"
+							>
+								More info
+							</button>
+						</td>
+
+						<!-- START MODAL - More info -->
+						<div class="modal fade" v-bind:id="'moreInfoModal' + index" tabindex="-1" role="dialog" aria-labelledby="'moreInfoModalLabel' + index" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h3 class="modal-title" id="'moreInfoModalLabel' + index">
+											About [[ result.username ]]
+										</h3>
+										
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+
+									<div class="modal-body">
+										<h5>Mentorship Duration</h5>
+										<span v-if="result.mentorship_duration === 1">
+											One meeting
+										</span>
+										<span v-else>
+											[[ result.mentorship_duration ]] months
+										</span>
+										<hr>
+
+										<h5>Is open for mentorship?</h5>
+										<span v-if="result.is_open_to_mentorship">
+											Yes
+										</span>
+										<span v-else>
+											No
+										</span>
+										<hr>
+
+										<h5>Open to mentor</h5>
+										<ul>
+											<li v-if="result.will_mentor_faculty">Faculty</li>
+											<li v-if="result.will_mentor_phd">PhD</li>
+											<li v-if="result.will_mentor_mtech">MTech</li>
+											<li v-if="result.will_mentor_btech">BTech</li>
+										</ul>
+										<hr>
+
+										<h5>You are willing to</h5>
+										<ul>
+											<li v-for="reponsibility in result.responsibilities">
+												[[ reponsibility ]]
+											</li>
+										</ul>
+										<hr>
+
+										<h5>Can also help with</h5>
+										[[ result.other_responsibility ]]
+									</div>
+
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- END MODAL -->
 
 					</tr>
 				</tbody>
@@ -260,6 +334,7 @@ const SearchUsers = {
 			$('body').removeClass('modal-open');
 			$('.modal-backdrop').remove();
 		},
+
 		clear_request() {
 			this.request_sop = '';
 			this.request_expectations = '';

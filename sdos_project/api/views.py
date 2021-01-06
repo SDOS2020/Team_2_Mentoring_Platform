@@ -88,7 +88,6 @@ def filter_mentors(role: str, field: str, area: str):
 	return [m for m in shortlist if m.mentorarea.area == area]
 
 
-# TODO: Filters
 @login_required
 @mentee_required
 def search_users(request):
@@ -117,12 +116,30 @@ def search_users(request):
 		else:
 			status = REQUEST_MENTORSHIP
 
-		shortlist.append({
+		mentor_details = {
 			'id': mentor.account.id,
 			'username': mentor.account.user.username,
 			'is_mentor': mentor.account.is_mentor,
-			'status': status
-		})
+			'status': status,
+
+			'mentorship_duration': mentor.mentorship_duration,
+			'is_open_to_mentorship': mentor.is_open_to_mentorship,
+			
+			'will_mentor_faculty': mentor.will_mentor_faculty,
+			'will_mentor_phd': mentor.will_mentor_phd,
+			'will_mentor_mtech': mentor.will_mentor_mtech,
+			'will_mentor_btech': mentor.will_mentor_btech,
+			
+			'responsibilities': [],
+			'other_responsibility': mentor.other_responsibility,
+		}
+
+		s = 'responsibility'
+		for i, j in MentorResponsibility.choices:
+			if getattr(mentor, s + str(i)):
+				mentor_details['responsibilities'].append(j)
+
+		shortlist.append(mentor_details)
 
 	return JsonResponse(shortlist, safe=False)
 
@@ -340,8 +357,6 @@ def update_settings(request):
 		responsibilities = json.loads(request.body.decode('utf-8'))['willing_to']
 		other_responsibility = json.loads(request.body.decode('utf-8'))['other_responsibility']
 
-
-		
 		user.account.mentor.mentorship_duration = mentorship_duration
 		user.account.mentor.is_open_to_mentorship = is_open_to_mentorship
 		user.account.mentor.will_mentor_faculty = will_mentor_faculty
@@ -354,7 +369,6 @@ def update_settings(request):
 			setattr(user.account.mentor, s + str(i+1), responsibilities[i])
 
 		user.account.mentor.other_responsibility = other_responsibility
-
 		user.account.mentor.save()
 
 	else:
