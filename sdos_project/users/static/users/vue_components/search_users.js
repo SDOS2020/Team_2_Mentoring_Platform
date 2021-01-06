@@ -200,12 +200,33 @@ const SearchUsers = {
 			});
 		},
 
+		limit_content_size(content, lower, upper, type) {
+			if (content.length < lower) {
+				alert('[ERROR] Please elaborate on ' + type);
+				return false;
+			}
+
+			if (content.length > upper) {
+				alert('[ERROR] Please shorten the content of ' + type);
+				return false;
+			}
+
+			return true;
+		},
+
 		send_request(username, index) {
-			if (this.request_sop.length < 10) {
-				alert('Please enter a purpose');
+			if (!this.limit_content_size(this.request_sop, 10, 255, 'SOP')) {
 				return;
 			}
-			
+
+			if (!this.limit_content_size(this.request_expectations, 10, 255, 'Expectations')) {
+				return;
+			}
+
+			if (!this.limit_content_size(this.request_commitment, 10, 255, 'Commitment')) {
+				return;
+			}
+
 			let request_url = "http://127.0.0.1:8000/api/send_mentorship_request";
 
 			axios.get(request_url, {
@@ -240,7 +261,6 @@ const SearchUsers = {
 			$('.modal-backdrop').remove();
 		},
 		clear_request() {
-			console.log('Clear kara toh baba');
 			this.request_sop = '';
 			this.request_expectations = '';
 			this.request_commitment = '';
