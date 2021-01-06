@@ -376,7 +376,7 @@ class Milestone(models.Model):
 class DeletedMentorMenteeRelation(models.Model):
 	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
 	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
-	reason = models.TextField(max_length=512)
+	end_reason = models.TextField(max_length=512)
 
 	def __str__(self):
 		return f'[ENDED] Mentor: {self.mentor}, Mentee: {self.mentee}'

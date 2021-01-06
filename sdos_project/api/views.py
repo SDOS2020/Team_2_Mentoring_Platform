@@ -694,4 +694,27 @@ def add_milestone(request):
 	return JsonResponse({'success': True})
 
 
+@login_required
+def end_relationship(request):
+	user = request.user
+	other = User.objects.get(username=request.GET.get('username'))
 
+	if user.account.is_mentor == other.account.is_mentor:
+		return JsonResponse({'success': False})
+
+	mentor, mentee = other, user
+	if user.account.is_mentor:
+		mentor, mentee = user, other
+
+	mentor, mentee = mentor.account.mentor, mentee.account.mentee
+
+	MyMentee.objects.filter(mentor=mentor, mentee=mentee).delete()
+	MyMentor.objects.filter(mentor=mentor, mentee=mentee).delete()
+
+	DeletedMentorMenteeRelation.objects.create(
+		mentor=mentor,
+		mentee=mentee,
+		end_reason=request.GET.get('end_reason')
+	)
+
+	return JsonResponse({'success': True})
