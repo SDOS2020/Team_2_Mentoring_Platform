@@ -1,6 +1,7 @@
 import json
 from datetime import datetime
 from django.http import JsonResponse
+from django.core.mail import send_mail
 from django.utils.timezone import make_aware # Naive to native
 from django.contrib.auth.decorators import login_required
 
@@ -549,25 +550,100 @@ def add_meeting_summary(request):
 	mentor, mentee = user, guest
 	if user.account.is_mentee and guest.account.is_mentor:
 		mentor, mentee = guest, user
-
 	elif user.account.is_mentee == guest.account.is_mentee:
 		print('[ERROR] Both users of same type')
 		return JsonResponse({'success': False})
 
-	MeetingSummary.objects.create(mentor=mentor.account.mentor,
-								mentee=mentee.account.mentee,
-								meeting_date=req['meeting_date'],
-								meeting_length=req['meeting_length'],
-								meeting_details=req['meeting_details'],
-								meeting_todos=req['meeting_todos'],
-								next_meeting_date=req['next_meeting_date'],
-								next_meeting_agenda=req['next_meeting_agenda'])
+	send_mail(
+		subject='Meeting Summary - {}'.format(req['meeting_date'].strftime('%x')),
+		message='Following is the summary of the meeting',
+		html_message='''
+			<i>This is a system generated mail. Please do not reply to this.</i>
+
+			<br/>
+			<table>
+				<thead>
+					<tr colspan="2">
+						<th>
+							<center>
+								<h2> MEETING DETAILS </h2>
+							</center>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th> DATE </th>
+						<td> {} </td>
+					</tr>
+					<tr>
+						<th> DURATION </th>
+						<td> {} hours </td>
+					</tr>
+					<tr>
+						<th> DETAILS </th>
+						<td> {} </td>
+					</tr>
+					<tr>
+						<th> TODOS </th>
+						<td> {} </td>
+					</tr>
+				</tbody>
+			</table>
+
+			<br/><br/>
+
+			<table>
+				<thead>
+					<tr colspan="2">
+						<th>
+							<center>
+								<h2> NEXT MEETING </h2>
+							</center>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th> TENTATIVE DATE </th>
+						<td> {} </td>
+					</tr>
+					<tr>
+						<th> AGENDA </th>
+						<td> {} </td>
+					</tr>
+				</tbody>
+			</table>
+			<br/>
+			'''.format(
+				req['meeting_date'],
+				req['meeting_length'],
+				req['meeting_details'],
+				req['meeting_todos'],
+				req['next_meeting_date'],
+				req['next_meeting_agenda']
+			),
+		from_email='mailbotfcs@gmail.com',
+		recipient_list=[mentor.account.user.email, mentee.account.user.email]
+	)
+
+	MeetingSummary.objects.create(
+		mentor=mentor.account.mentor,
+		mentee=mentee.account.mentee,
+		meeting_date=req['meeting_date'],
+		meeting_length=req['meeting_length'],
+		meeting_details=req['meeting_details'],
+		meeting_todos=req['meeting_todos'],
+		next_meeting_date=req['next_meeting_date'],
+		next_meeting_agenda=req['next_meeting_agenda']
+	)
 
 	response = {
 		'success': True
 	}
 
 	return JsonResponse(response)
+
 
 @login_required
 def get_milestones(request):
@@ -585,6 +661,7 @@ def get_milestones(request):
 		'success': True
 	}
 	return JsonResponse(response, safe=False)
+
 
 @login_required
 @mentor_required
