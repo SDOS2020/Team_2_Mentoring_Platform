@@ -448,9 +448,11 @@ def get_messages(request, chatter_username):
 def send_message(request):
 	message = json.loads(request.body.decode('utf-8'))['message']
 	receiver_user = User.objects.filter(username=message['receiver']).first()
-	Message.objects.create(sender=request.user.account, 
-							receiver=receiver_user.account, 
-							content=message['content'])
+	Message.objects.create(
+		sender=request.user.account, 
+		receiver=receiver_user.account, 
+		content=message['content']
+	)
 
 	return JsonResponse({'success': True})
 
@@ -500,12 +502,14 @@ def add_meeting(request):
 	guest = User.objects.filter(username=guest_name).first()
 	req['time'] = make_aware(datetime.strptime(req['time'], '%Y-%m-%dT%H:%M'))
 
-	Meeting.objects.create(creator=user.account,
-							guest=guest.account,
-							title=req['title'],
-							agenda=req['agenda'],
-							time=req['time'],
-							meeting_url=req['meeting_url'])
+	Meeting.objects.create(
+		creator=user.account,
+		guest=guest.account,
+		title=req['title'],
+		agenda=req['agenda'],
+		time=req['time'],
+		meeting_url=req['meeting_url']
+	)
 
 	response = {
 		'success': True
@@ -629,14 +633,14 @@ def add_meeting_summary(request):
 				</tbody>
 			</table>
 			<br/>
-			'''.format(
-				req['meeting_date'],
-				req['meeting_length'],
-				req['meeting_details'],
-				req['meeting_todos'],
-				req['next_meeting_date'],
-				req['next_meeting_agenda']
-			),
+		'''.format(
+			req['meeting_date'],
+			req['meeting_length'],
+			req['meeting_details'],
+			req['meeting_todos'],
+			req['next_meeting_date'],
+			req['next_meeting_agenda']
+		),
 		from_email='mailbotfcs@gmail.com',
 		recipient_list=[mentor.account.user.email, mentee.account.user.email]
 	)
@@ -714,7 +718,26 @@ def end_relationship(request):
 	DeletedMentorMenteeRelation.objects.create(
 		mentor=mentor,
 		mentee=mentee,
-		end_reason=request.GET.get('end_reason')
+		end_reason=request.GET.get('end_reason'),
+	)
+
+	send_mail(
+		subject='Mentor Mentee Relation Ended',
+		message='Mentor mentee relationship has been ended. Details are as follows',
+		html_message='''
+			<i>This is a system generated mail. Please do not reply to this.</i>
+			<br/>
+
+			{} ended the mentor-mentee relationship with {}.
+			<br/>
+			<b>REASON:</b> {}
+		'''.format(
+			user.username,
+			other.username,
+			request.GET.get('end_reason')
+		),
+		from_email='mailbotfcs@gmail.com',
+		recipient_list=[user.email, other.email]
 	)
 
 	return JsonResponse({'success': True})
