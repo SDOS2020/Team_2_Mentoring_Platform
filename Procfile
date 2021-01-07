@@ -1,1 +1,1 @@
-web: gunicorn sdos_project.wsgi
+web: gunicorn sdos_project/sdos_project.wsgi
