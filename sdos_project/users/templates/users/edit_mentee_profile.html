@@ -1,0 +1,220 @@
+{% extends "home/base.html" %}
+{% load static %}
+
+{% block title %}
+Edit Profile
+{% endblock title %}
+
+
+{% block content %}
+
+<div class="container" style="margin-top: 5vh;">
+	<div class="row justify-content-center">
+		<div class="col-5">
+			<center>
+				<h1 class="display-3">Edit Profile</h1>
+			</center>
+			<br />
+
+			<div id="edit-mentee-form">
+				<div id="vue-edit-mentee-profile">
+					<font size="5">Introduction</font>
+					<hr>
+					<textarea class="form-control" v-model="introduction"></textarea>
+					
+					<br/>
+					<add-education
+						v-bind:qualifications="edu_qualifications"
+						v-bind:start_dates="edu_start_dates"
+						v-bind:end_dates="edu_end_dates"
+						v-bind:organizations="edu_organizations"
+						v-bind:details="edu_details"
+						v-on:update_education="update_education"
+					></add-education>
+
+					<add-research-experience
+						v-bind:positions="re_positions"
+						v-bind:start_dates="re_start_dates"
+						v-bind:end_dates="re_end_dates"
+						v-bind:organizations="re_organizations"
+						v-bind:details="re_details"
+						v-on:update_research_experience="update_research_experience"
+					></add-research-experience>
+				
+					<br/>
+					<center>
+						<table>
+							<tr>
+								<td> <button class="btn btn-success" v-on:click="update_settings">
+									Save Changes
+								</button> </td>
+								<td>
+									<div v-if="update_success">
+										<i style="color: green; font-size: 2rem; margin-left: 1rem" class="fas fa-check-circle"></i>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</center>
+				</div>
+				
+			</div>
+
+		</div>
+	</div>
+</div>
+
+{% endblock content %}
+
+{% block javascript %}
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="{% static 'users/vue_components/add_education.js' %}"></script>
+<script src="{% static 'users/vue_components/add_research_experience.js' %}"></script>
+
+<script>
+	const app = new Vue({
+		delimiters: ["[[", "]]"],
+		components: {
+			"add-education": AddEducation,
+			"add-research-experience": AddResearchExperience,
+		},
+		data() {
+			return {
+				csrf: "{{ csrf_token }}",
+
+				introduction: "",
+				
+				edu_qualifications: [],
+				edu_start_dates: [],
+				edu_end_dates: [],
+				edu_organizations: [],
+				edu_details: [],
+				
+				re_positions: [],
+				re_start_dates: [],
+				re_end_dates: [],
+				re_organizations: [],
+				re_details: [],
+
+				update_success: false,
+			}
+		},
+
+		created() {
+			this.get_details();
+		},
+
+		methods: {
+			limit_content_size(content, lower, upper, type) {
+				if (content.length < lower) {
+					alert('[ERROR] Please elaborate on ' + type);
+					return false;
+				}
+
+				if (content.length > upper) {
+					alert('[ERROR] Please shorten the content of ' + type);
+					return false;
+				}
+
+				return true;
+			},
+
+			get_details() {
+				let request_url = "http://127.0.0.1:8000/api/get_mentee_profile/";
+
+				axios.get(request_url, {})
+				.then(response => {
+					console.log("[SUCCESS]");
+					// Django
+					this.introduction = response.data['introduction'];
+
+					// Education
+					this.edu_qualifications = response.data['edu_qualifications'];
+					this.edu_start_dates = response.data['edu_start_dates'];
+					this.edu_end_dates = response.data['edu_end_dates'];
+					this.edu_organizations = response.data['edu_organizations'];
+					this.edu_details = response.data['edu_details'];
+
+					// Research Experience
+					this.re_positions = response.data['re_positions'];
+					this.re_start_dates = response.data['re_start_dates'];
+					this.re_end_dates = response.data['re_end_dates'];
+					this.re_organizations = response.data['re_organizations'];
+					this.re_details = response.data['re_details'];
+				})
+				.catch(error => {
+					console.log("[ERROR]");
+					console.log(error);
+				});
+			},
+			
+			save_details() {
+				if (!this.limit_content_size(this.introduction, 10, 255, 'Introduction')) {
+					return;
+				}
+				
+				let request_url = "http://127.0.0.1:8000/api/save_mentee_profile/";
+				
+				axios.post(request_url, {
+					'introduction': this.introduction,
+
+					// Education
+					'edu_qualifications': this.edu_qualifications,
+					'edu_start_dates': this.edu_start_dates,
+					'edu_end_dates': this.edu_end_dates,
+					'edu_organizations': this.edu_organizations,
+					'edu_details': this.edu_details,
+
+					// Research Experience
+					're_positions': this.re_positions,
+					're_start_dates': this.re_start_dates,
+					're_end_dates': this.re_end_dates,
+					're_organizations': this.re_organizations,
+					're_details': this.re_details,
+				}, {
+					headers: {
+						'X-CSRFTOKEN': this.csrf
+					}
+				})
+				.then(response => {
+					console.log("[SUCCESS]");
+				})
+				.catch(error => {
+					console.log("[ERROR]");
+					console.log(error);
+				});
+			},
+
+			update_education(qualification, start_date, end_date, organization, detail) {
+				this.edu_qualifications.push(qualification);
+				this.edu_start_dates.push(start_date);
+				this.edu_end_dates.push(end_date);
+				this.edu_organizations.push(organization);
+				this.edu_details.push(detail);
+			},
+
+			update_research_experience(position, start_date, end_date, organization, detail) {
+				this.re_positions.push(position);
+				this.re_start_dates.push(start_date);
+				this.re_end_dates.push(end_date);
+				this.re_organizations.push(organization);
+				this.re_details.push(detail);
+			},
+			
+			update_settings() {
+				this.update_success = true;
+				this.save_details();
+				window.setTimeout(this.hide_button, 1000);
+			},
+
+			hide_button() {
+				this.update_success = false;
+			},
+		}
+	});
+
+	app.$mount("#vue-edit-mentee-profile");
+</script>
+
+{% endblock javascript %}

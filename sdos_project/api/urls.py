@@ -43,4 +43,11 @@ urlpatterns = [
 	
 	path("get_milestones/", api_views.get_milestones, name="get_milestones"),
 	path("add_milestone/", api_views.add_milestone, name="add_milestone"),
+
+	# Edit profile
+	path("save_mentor_profile/", api_views.save_mentor_profile, name="save_mentor_profile"),
+	path("get_mentor_profile/", api_views.get_mentor_profile, name="get_mentor_profile"),
+
+	path("save_mentee_profile/", api_views.save_mentee_profile, name="save_mentee_profile"),
+	path("get_mentee_profile/", api_views.get_mentee_profile, name="get_mentee_profile"),
 ]

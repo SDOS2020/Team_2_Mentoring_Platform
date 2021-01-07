@@ -800,3 +800,125 @@ def add_research_experience(request):
 		detail=request.GET.get('detail'),
 	)
 	return JsonResponse({'success' : True})
+
+
+def __get_education(account):
+	return {
+		'edu_qualifications': [edu.qualification for edu in AccountEducation.objects.filter(account=account)],
+		'edu_start_dates': [edu.start_date for edu in AccountEducation.objects.filter(account=account)],
+		'edu_end_dates': [edu.end_date for edu in AccountEducation.objects.filter(account=account)],
+		'edu_organizations': [edu.organization for edu in AccountEducation.objects.filter(account=account)],
+		'edu_details': [edu.detail for edu in AccountEducation.objects.filter(account=account)],
+	}
+
+
+def __get_research_experience(account):
+	return {
+		're_positions': [re.position for re in AccountResearchExperience.objects.filter(account=account)],
+		're_start_dates': [re.start_date for re in AccountResearchExperience.objects.filter(account=account)],
+		're_end_dates': [re.end_date for re in AccountResearchExperience.objects.filter(account=account)],
+		're_organizations': [re.organization for re in AccountResearchExperience.objects.filter(account=account)],
+		're_details': [re.detail for re in AccountResearchExperience.objects.filter(account=account)],
+	}
+
+
+def __save_education(account, fields):
+	n_records = len(fields['edu_qualifications'])
+	
+	for i in range(n_records):
+		AccountEducation.objects.create(
+			account=account,
+			qualification = fields['edu_qualifications'][i],
+			start_date = fields['edu_start_dates'][i],
+			end_date = fields['edu_end_dates'][i],
+			organization = fields['edu_organizations'][i],
+			detail = fields['edu_details'][i],
+		)
+
+
+def __save_research_experience(account, fields):
+	n_records = len(fields['re_positions'])
+	
+	for i in range(n_records):
+		AccountResearchExperience.objects.create(
+			account = account,
+			position = fields['re_positions'][i],
+			start_date = fields['re_start_dates'][i],
+			end_date = fields['re_end_dates'][i],
+			organization = fields['re_organizations'][i],
+			detail = fields['re_details'][i],
+		)
+		
+@login_required
+@mentor_required
+def get_mentor_profile(request):
+	account = request.user.account
+
+	content = {
+		'introduction': account.introduction,
+		'social_handle': account.social_handle,
+		'area': account.mentor.mentorarea.get_area_display(),
+		'subarea': account.mentor.mentorarea.subarea,
+		'success': True,
+	}
+
+	content['area_choices'] = list(map(lambda x: x[1], Areas.choices))
+	content.update(__get_education(account))
+	content.update(__get_research_experience(account))
+	return JsonResponse(content, safe=False)
+
+
+@login_required
+@mentee_required
+def get_mentee_profile(request):
+	account = request.user.account
+
+	content = {
+		'introduction': account.introduction,
+		'success': True,
+	}
+
+	content.update(__get_education(account))
+	content.update(__get_research_experience(account))
+	return JsonResponse(content, safe=False)
+
+
+@login_required
+@mentor_required
+def save_mentor_profile(request):
+	fields = json.loads(request.body)
+	
+	user = request.user
+	user.account.introduction = fields['introduction']
+	user.account.social_handle = fields['social_handle']
+	user.account.mentor.mentorarea.area = get_area_id(fields['area'])
+	user.account.mentor.mentorarea.subarea = fields['subarea']
+
+	user.account.save()
+	user.account.mentor.mentorarea.save()
+	
+	AccountEducation.objects.filter(account=user.account).delete()
+	AccountResearchExperience.objects.filter(account=user.account).delete()
+
+	__save_education(user.account, fields)
+	__save_research_experience(user.account, fields)
+	
+	return JsonResponse({'success': True})
+
+
+@login_required
+@mentee_required
+def save_mentee_profile(request):
+	fields = json.loads(request.body)
+
+	user = request.user
+	user.account.introduction = fields['introduction']
+	user.account.save()
+	
+	AccountEducation.objects.filter(account=user.account).delete()
+	AccountResearchExperience.objects.filter(account=user.account).delete()
+
+	__save_education(user.account, fields)
+	__save_research_experience(user.account, fields)
+
+	return JsonResponse({'success': True})

@@ -289,7 +289,7 @@ const SearchUsers = {
 		},
 
 		send_request(username, index) {
-			if (!this.limit_content_size(this.request_sop, 10, 255, 'SOP')) {
+			if (!this.limit_content_size(this.request_sop, 10, 255, 'Purpose')) {
 				return;
 			}
 
