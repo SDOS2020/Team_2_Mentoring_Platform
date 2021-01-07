@@ -175,7 +175,6 @@ def edit_mentor_profile(request):
 
 	initial_details = {
 		"introduction": user.account.introduction,
-		"research_experience": user.account.research_experience,
 		"social_handle": user.account.social_handle
 	}
 
@@ -216,7 +215,6 @@ def edit_mentee_profile(request):
 
 	initial_details = {
 		"introduction": user.account.introduction,
-		"research_experience": user.account.research_experience,
 	}
 
 	details_form = None

@@ -27,8 +27,10 @@ Edit Profile
 				{{ details_form|crispy }}
 				
 				<div id="vue-edit-profile">
-					<edit-profile />
+					<add-education></add-education>
+					<add-research-experience></add-research-experience>
 				</div>
+
 				<br/>
 				<center>
 					<input type="submit" class="btn btn-success col-3" value="Save"></input>
@@ -44,13 +46,15 @@ Edit Profile
 {% block javascript %}
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="{% static 'users/vue_components/edit_profile.js' %}"></script>
+<script src="{% static 'users/vue_components/add_education.js' %}"></script>
+<script src="{% static 'users/vue_components/add_research_experience.js' %}"></script>
 
 <script>
 	const app = new Vue({
 		delimiters: ["[[", "]]"],
 		components: {
-			"edit-profile": EditProfile,
+			"add-education": AddEducation,
+			"add-research-experience": AddResearchExperience,
 		},
 	});
 

@@ -47,8 +47,8 @@ class Account(models.Model):
 	)
 
 	introduction = models.TextField(max_length=512, null=True)
-	education = models.TextField(max_length=512, null=True)
-	research_experience = models.TextField(max_length=512, null=True)
+	# education = models.TextField(max_length=512, null=True)
+	# research_experience = models.TextField(max_length=512, null=True)
 	expertise = models.TextField(max_length=512, null=True)
 	social_handle = models.URLField(null=True, help_text="Link to your personal website/LinkedIn profile")
 	
@@ -74,7 +74,11 @@ class AccountEducation(models.Model):
 	Stores the education fields of accounts
 	"""
 	account = models.ForeignKey(Account, on_delete=models.CASCADE)
-	education = models.TextField(max_length=512, null=True)
+	qualification = models.CharField(max_length=128)
+	start_date = models.DateField()
+	end_date = models.DateField()
+	organization = models.CharField(max_length=128)
+	detail = models.TextField(max_length=512, null=True)
 
 	def __str__(self):
 		return self.account.user.username
@@ -85,7 +89,11 @@ class AccountResearchExperience(models.Model):
 	Stores the research experience of accounts
 	"""
 	account = models.ForeignKey(Account, on_delete=models.CASCADE)
-	research_experience = models.TextField(max_length=512, null=True)
+	position = models.CharField(max_length=128)
+	start_date = models.DateField()
+	end_date = models.DateField()
+	organization = models.CharField(max_length=128)
+	detail = models.TextField(max_length=512, null=True)
 
 	def __str__(self):
 		return self.account.user.username
