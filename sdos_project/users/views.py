@@ -190,8 +190,6 @@ def edit_mentor_profile(request):
 			user.account.mentor.mentorarea.subarea = areas_form.cleaned_data["subarea"]
 
 			user.account.introduction = details_form.cleaned_data["introduction"]
-			user.account.education = details_form.cleaned_data["education"]
-			user.account.research_experience = details_form.cleaned_data["research_experience"]
 			user.account.social_handle = details_form.cleaned_data["social_handle"]
 			
 			user.account.mentor.mentorarea.save()
@@ -228,8 +226,6 @@ def edit_mentee_profile(request):
 
 		if details_form.is_valid():
 			user.account.introduction = details_form.cleaned_data["introduction"]
-			user.account.education = details_form.cleaned_data["education"]
-			user.account.research_experience = details_form.cleaned_data["research_experience"]
 			
 			user.account.save()
 			return redirect("homepage")
