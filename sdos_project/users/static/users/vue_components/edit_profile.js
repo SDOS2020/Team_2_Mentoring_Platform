@@ -55,7 +55,57 @@ const EditProfile = {
 			</table>
 
 			Research Experience
-			[[ research_experiences ]]
+
+			<a
+				class="btn btn-sm btn-primary"
+				data-toggle="modal"
+				data-target="#addResearchExpModalLong"
+			>
+				Add Research Experience
+			</a>
+
+			<!-- START MODAL - addResearchExpModal -->
+			<div class="modal fade" id="addResearchExpModalLong" tabindex="-1" role="dialog" aria-labelledby="addResearchExpModalLongTitle" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="addResearchExpModalLongTitle">Add Research Experience</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						
+						<div class="modal-body">
+							<h5>Enter details of your research</h5>
+							<textarea v-model="research_experience" style="width: 100%;"></textarea>
+						</div>
+						
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<button
+								v-on:click="add_research_experience()"
+								type="button"
+								class="btn btn-success"
+							>
+								Add
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- END MODAL -->
+
+			<table class="table table-hover">
+
+				<tbody>
+					<tr v-for="(resexp, index) in research_experiences">
+						<td>
+							[[ resexp ]]
+						</td>
+					</tr>
+				</tbody>
+
+			</table>
 
 		</div>
 	`,
@@ -162,7 +212,7 @@ const EditProfile = {
 				console.log(error);
 			});
 			
-			$('#addEduModalLong').modal('hide');
+			$('#addResearchExpModalLong').modal('hide');
 			$('body').removeClass('modal-open');
 			$('.modal-backdrop').remove();
 			
