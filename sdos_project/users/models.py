@@ -310,6 +310,7 @@ class MentorResponsibility(models.IntegerChoices):
 	responsibility7 = 7, _('Review and comment on the resume')
 	responsibility8 = 8, _('Guide on postdoc and other research job possibilities')
 
+
 class Areas(models.IntegerChoices):
 	'''
 	Reference: http://csrankings.org/
