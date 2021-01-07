@@ -171,7 +171,7 @@ const SearchUsers = {
 										</ul>
 										<hr>
 
-										<h5>You are willing to</h5>
+										<h5>[[ result.username ]] is willing to</h5>
 										<ul>
 											<li v-for="reponsibility in result.responsibilities">
 												[[ reponsibility ]]
