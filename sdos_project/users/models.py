@@ -80,6 +80,17 @@ class AccountEducation(models.Model):
 		return self.account.user.username
 
 
+class AccountResearchExperience(models.Model):
+	"""
+	Stores the research experience of accounts
+	"""
+	account = models.ForeignKey(Account, on_delete=models.CASCADE)
+	research_experience = models.TextField(max_length=512, null=True)
+
+	def __str__(self):
+		return self.account.user.username
+
+
 class Mentor(models.Model):
 	"""
 	The mentor class, stores attributes specific to a mentor

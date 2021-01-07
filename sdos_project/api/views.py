@@ -758,4 +758,5 @@ def add_education(request):
 	education = request.GET.get('education')
 	AccountEducation.objects.create(account=user.account, education=education)
 	return JsonResponse({'success' : True})
-	
+
+
