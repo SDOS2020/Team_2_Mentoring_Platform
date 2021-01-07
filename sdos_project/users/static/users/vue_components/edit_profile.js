@@ -7,8 +7,9 @@ const EditProfile = {
 				class="btn btn-sm btn-primary"
 				data-toggle="modal"
 				data-target="#addEduModalLong"
+				style="float: right;"
 			>
-				Add Education
+				Add More
 			</a>
 
 			<!-- START MODAL - addEduModal -->
@@ -42,7 +43,7 @@ const EditProfile = {
 			</div>
 			<!-- END MODAL -->
 
-			<table class="table table-hover">
+			<table class="table table-hover table-light table-sm">
 
 				<tbody>
 					<tr v-for="(edu, index) in educations">
@@ -60,8 +61,9 @@ const EditProfile = {
 				class="btn btn-sm btn-primary"
 				data-toggle="modal"
 				data-target="#addResearchExpModalLong"
+				style="float: right;"
 			>
-				Add Research Experience
+				Add More
 			</a>
 
 			<!-- START MODAL - addResearchExpModal -->
@@ -95,10 +97,10 @@ const EditProfile = {
 			</div>
 			<!-- END MODAL -->
 
-			<table class="table table-hover">
+			<table class="table table-hover table-light table-sm">
 
 				<tbody>
-					<tr v-for="(resexp, index) in research_experiences">
+					<tr scope="row" v-for="(resexp, index) in research_experiences">
 						<td>
 							[[ resexp ]]
 						</td>
