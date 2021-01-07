@@ -45,7 +45,7 @@ const ProgressTracker = {
 
 	methods: {
 		get_milestones() {
-			let request_url = "http://127.0.0.1:8000/api/get_milestones";
+			let request_url = "/api/get_milestones";
 			axios.get(request_url, {'params':{
 				'mentor': this.mentor,
 				'mentee': this.mentee,

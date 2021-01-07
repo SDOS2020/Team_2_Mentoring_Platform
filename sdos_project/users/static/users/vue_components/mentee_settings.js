@@ -53,7 +53,7 @@ const MenteeSettings = {
 		csrf: { 'required': true }
 	},
 	created() {
-		request_url = "http://127.0.0.1:8000/api/get_settings/";
+		request_url = "/api/get_settings/";
 
 		axios.get(request_url)
 		.then(response => {
@@ -77,7 +77,7 @@ const MenteeSettings = {
 		},
 
 		update_other_settings() {
-			let request_url = "http://127.0.0.1:8000/api/update_settings/";
+			let request_url = "/api/update_settings/";
 
 			axios.post(request_url, {
 				'needs_mentoring': this.needs_mentoring,

@@ -58,7 +58,7 @@ const Requests = {
 		};
 	},
 	created() {
-		let request_url = "http://127.0.0.1:8000/api/get_user_requests";
+		let request_url = "/api/get_user_requests";
 
 		axios.get(
 			request_url
@@ -75,7 +75,7 @@ const Requests = {
 	},
 	methods: {
 		accept_request(username, index) {
-			let request_url = "http://127.0.0.1:8000/api/accept_mentorship_request";
+			let request_url = "/api/accept_mentorship_request";
 
 			axios.get(
 				request_url,
@@ -99,7 +99,7 @@ const Requests = {
 			$('.modal-backdrop').remove();
 		},
 		reject_request(username, index) {
-			let request_url = "http://127.0.0.1:8000/api/reject_mentorship_request";
+			let request_url = "/api/reject_mentorship_request";
 
 			axios.get(
 				request_url,

@@ -121,7 +121,7 @@ Edit Profile
 			},
 
 			get_details() {
-				let request_url = "http://127.0.0.1:8000/api/get_mentee_profile/";
+				let request_url = "/api/get_mentee_profile/";
 
 				axios.get(request_url, {})
 				.then(response => {
@@ -154,7 +154,7 @@ Edit Profile
 					return;
 				}
 				
-				let request_url = "http://127.0.0.1:8000/api/save_mentee_profile/";
+				let request_url = "/api/save_mentee_profile/";
 				
 				axios.post(request_url, {
 					'introduction': this.introduction,

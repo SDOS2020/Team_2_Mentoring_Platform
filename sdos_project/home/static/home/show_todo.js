@@ -57,7 +57,7 @@ const ShowToDo = {
 
 	methods: {
 		get_todos() {
-			let request_url = "http://127.0.0.1:8000/api/get_todos/" + this.guest_name;
+			let request_url = "/api/get_todos/" + this.guest_name;
 
 			axios.get(request_url)
 			.then(response => {

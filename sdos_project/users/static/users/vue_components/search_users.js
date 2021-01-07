@@ -56,7 +56,7 @@ const SearchUsers = {
 						</td>
 
 						<td>
-							<a v-bind:href="'//127.0.0.1:8000/users/profile/' + result.username">
+							<a v-bind:href="'/users/profile/' + result.username">
 								[[ result.username ]]
 							</a>
 						</td>
@@ -216,7 +216,7 @@ const SearchUsers = {
 	},
 	
 	created() {
-		let request_url = "http://127.0.0.1:8000/api/get_mentor_roles/";
+		let request_url = "/api/get_mentor_roles/";
 
 		axios.get(request_url)
 		.then(response => {
@@ -229,7 +229,7 @@ const SearchUsers = {
 
 		this.selected_role = this.roles[0];
 
-		request_url = "http://127.0.0.1:8000/api/get_mentor_fields/";
+		request_url = "/api/get_mentor_fields/";
 		axios.get(request_url)
 		.then(response => {
 			this.fields = response.data.fields;
@@ -240,7 +240,7 @@ const SearchUsers = {
 
 		this.selected_field = this.fields[0];
 
-		request_url = "http://127.0.0.1:8000/api/get_mentor_areas/";
+		request_url = "/api/get_mentor_areas/";
 		axios.get(request_url)
 		.then(response => {
 			this.areas = response.data.areas;
@@ -254,7 +254,7 @@ const SearchUsers = {
 	
 	methods: {
 		search_users() {
-			let request_url = "http://127.0.0.1:8000/api/search_users";
+			let request_url = "/api/search_users";
 
 			axios.get(request_url, {
 				'params': {
@@ -301,7 +301,7 @@ const SearchUsers = {
 				return;
 			}
 
-			let request_url = "http://127.0.0.1:8000/api/send_mentorship_request";
+			let request_url = "/api/send_mentorship_request";
 
 			axios.get(request_url, {
 				'params': {

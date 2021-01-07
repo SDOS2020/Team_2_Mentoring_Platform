@@ -11,12 +11,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '*$a6j2o^-z8jy7emrqs2x9++$ch3@9cddmo*&mmza@7_9l)c=6'
+SECRET_KEY = os.environ.get('SDOS_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = (os.environ.get('SDOS_PRODUCTION_SERVER') == '0')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+	'researchmentoringplatform.herokuapp.com',
+	'127.0.0.1',
+	'localhost',
+]
 
 
 # Application definition
@@ -149,3 +153,48 @@ EMAIL_HOST_PASSWORD = 'ksxzujhskkwoshfc'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'SDOS Team'
+
+
+LOGGING = {
+	'version': 1,
+	'disable_existing_loggers': False,
+	'formatters': {
+		'simple': {
+			'format': '[{asctime}] {levelname} module:[{module}] {message}',
+			'style': '{',
+			'datefmt': '%d/%b/%Y %H:%M:%S'
+		},
+		'verbose': {
+			'format': '{asctime} {levelname} location:[{pathname}:{lineno}] thread:[{threadName}] {message}',
+			'style': '{',
+			'datefmt': '%d/%b/%Y %H:%M:%S'
+		}
+	},
+	'handlers': {
+		'console': {
+			'level': 'DEBUG',
+			'class': 'logging.StreamHandler',
+			'formatter': 'simple'
+		},
+		'file': {
+			'level': 'WARNING',
+			'class': 'logging.FileHandler',
+			'filename': 'warning.log',
+			'formatter': 'verbose'
+		}
+	},
+	'loggers': {
+		'app': {
+			'handlers': ['console', 'file'],
+			'level': 'DEBUG',
+		},
+		'django': {
+			'handlers': ['console', 'file'],
+			'level': 'INFO'
+		}
+	},
+}
+
+if os.environ.get('SDOS_PRODUCTION_SERVER') == '1':
+	SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+	SECURE_SSL_REDIRECT = True

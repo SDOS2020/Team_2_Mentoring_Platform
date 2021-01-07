@@ -85,7 +85,7 @@ const ChatWindow = {
 				return;
 			}
 			
-			let request_url = "http://127.0.0.1:8000/api/get_messages/" + this.receiver;
+			let request_url = "/api/get_messages/" + this.receiver;
 
 			axios.get(request_url)
 			.then(response => {
@@ -106,7 +106,7 @@ const ChatWindow = {
 				'receiver': this.receiver,
 			}
 
-			let request_url = "http://127.0.0.1:8000/api/send_message/";
+			let request_url = "/api/send_message/";
 
 			axios.post(request_url, {
 				'message': msg

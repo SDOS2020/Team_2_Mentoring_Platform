@@ -61,7 +61,7 @@ const AddProgress = {
 	methods: {
 
 		add_new_meeting() {
-			let request_url = "http://127.0.0.1:8000/api/add_milestone/";
+			let request_url = "/api/add_milestone/";
 
 			axios.post(request_url, {
 				'mentor': this.mentor,

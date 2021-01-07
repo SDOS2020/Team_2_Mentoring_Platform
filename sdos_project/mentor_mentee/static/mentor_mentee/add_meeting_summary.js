@@ -110,7 +110,7 @@ const AddMeetingSummary = {
 				return;
 			}
 
-			let request_url = "http://127.0.0.1:8000/api/add_meeting_summary/";
+			let request_url = "/api/add_meeting_summary/";
 
 			axios.post(request_url, {
 				'guest_name': this.guest_name,

@@ -152,7 +152,7 @@ Edit Profile
 			},
 
 			get_details() {
-				let request_url = "http://127.0.0.1:8000/api/get_mentor_profile/";
+				let request_url = "/api/get_mentor_profile/";
 
 				axios.get(request_url, {})
 				.then(response => {
@@ -188,7 +188,7 @@ Edit Profile
 				// if (!this.limit_content_size(this.social_handle, 8, 128, 'Social Handle')) { return; }
 				// if (!this.limit_content_size(this.subarea, 0, 128, 'Subarea')) { return; }
 
-				let request_url = "http://127.0.0.1:8000/api/save_mentor_profile/";
+				let request_url = "/api/save_mentor_profile/";
 
 				console.log(this.area);
 				axios.post(request_url, {
