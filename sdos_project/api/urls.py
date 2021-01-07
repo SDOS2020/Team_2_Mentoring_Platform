@@ -24,8 +24,8 @@ urlpatterns = [
 	path("get_education/", api_views.get_education, name="get_education"),
 	path("add_education/", api_views.add_education, name="add_education"),
 
-	# path("get_research_experience/", api_views.get_research_experience, name="get_research_experience"),
-	# path("add_research_experience/", api_views.add_research_experience, name="add_research_experience"),
+	path("get_research_experience/", api_views.get_research_experience, name="get_research_experience"),
+	path("add_research_experience/", api_views.add_research_experience, name="add_research_experience"),
 
 	path("update_settings/", api_views.update_settings, name="update_settings"),
 	

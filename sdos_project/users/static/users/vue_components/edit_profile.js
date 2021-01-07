@@ -53,6 +53,10 @@ const EditProfile = {
 				</tbody>
 
 			</table>
+
+			Research Experience
+			[[ research_experiences ]]
+
 		</div>
 	`,
 
@@ -117,7 +121,7 @@ const EditProfile = {
 			this.education = '';
 			this.get_education();
 		},
-		
+
 		get_research_experience() {
 			let request_url = "http://127.0.0.1:8000/api/get_research_experience/";
 

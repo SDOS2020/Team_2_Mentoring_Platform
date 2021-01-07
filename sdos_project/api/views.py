@@ -759,4 +759,21 @@ def add_education(request):
 	AccountEducation.objects.create(account=user.account, education=education)
 	return JsonResponse({'success' : True})
 
+@login_required
+def get_research_experience(request):
+	user = request.user
+	
+	response = {
+		'research_experiences': [
+			account_research.research_experience for account_research in AccountResearchExperience.objects.filter(account=user.account)
+		],
+		'success': True
+	}
+	return JsonResponse(response, safe=False)
 
+@login_required
+def add_research_experience(request):
+	user = request.user
+	research_experience = request.GET.get('research_experience')
+	AccountResearchExperience.objects.create(account=user.account, research_experience=research_experience)
+	return JsonResponse({'success' : True})
