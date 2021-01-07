@@ -1,8 +1,8 @@
+import json
 import logging
-from django.test import TestCase
 from users.models import *
 from .data_testing import *
-import json
+from django.test import TestCase
 
 
 class RegistrationTestCases(TestCase):

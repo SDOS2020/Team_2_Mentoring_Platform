@@ -119,7 +119,10 @@ def change_password(request):
 @login_required
 def profile(request, username):
 	requested_user = User.objects.get(username=username)
-	return render(request, "users/dist/profile.html", {"requested_user": requested_user})
+	if (request.user == requested_user) or (requested_user.account.is_mentor):
+		return render(request, "users/dist/profile.html", {"requested_user": requested_user})
+
+	return redirect("homepage")
 
 
 @login_required
