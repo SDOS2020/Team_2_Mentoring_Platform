@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.contrib.auth import login, update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 
 from users.models import User
 from .decorators import mentee_required, mentor_required
@@ -91,6 +94,26 @@ def register_mentee(request):
 	}
 
 	return render(request, "users/register_mentee.html", context)
+
+
+@login_required
+def change_password(request):
+	if request.method == 'POST':
+		form = PasswordChangeForm(request.user, request.POST)
+
+		if form.is_valid():
+			user = form.save()
+			update_session_auth_hash(request, user)  # Important!
+			messages.success(request, 'Your password was successfully updated!')
+			return redirect('homepage')
+
+		else:
+			messages.error(request, 'Please correct the error below.')
+
+	else:
+		form = PasswordChangeForm(request.user)
+
+	return render(request, 'users/change_password.html', {'form': form})
 
 
 @login_required

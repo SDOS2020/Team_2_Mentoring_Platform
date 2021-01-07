@@ -1,6 +1,7 @@
 import json
 from datetime import datetime
 from django.http import JsonResponse
+from django.core.mail import send_mail
 from django.utils.timezone import make_aware # Naive to native
 from django.contrib.auth.decorators import login_required
 
@@ -87,7 +88,6 @@ def filter_mentors(role: str, field: str, area: str):
 	return [m for m in shortlist if m.mentorarea.area == area]
 
 
-# TODO: Filters
 @login_required
 @mentee_required
 def search_users(request):
@@ -116,12 +116,30 @@ def search_users(request):
 		else:
 			status = REQUEST_MENTORSHIP
 
-		shortlist.append({
+		mentor_details = {
 			'id': mentor.account.id,
 			'username': mentor.account.user.username,
 			'is_mentor': mentor.account.is_mentor,
-			'status': status
-		})
+			'status': status,
+
+			'mentorship_duration': mentor.mentorship_duration,
+			'is_open_to_mentorship': mentor.is_open_to_mentorship,
+			
+			'will_mentor_faculty': mentor.will_mentor_faculty,
+			'will_mentor_phd': mentor.will_mentor_phd,
+			'will_mentor_mtech': mentor.will_mentor_mtech,
+			'will_mentor_btech': mentor.will_mentor_btech,
+			
+			'responsibilities': [],
+			'other_responsibility': mentor.other_responsibility,
+		}
+
+		s = 'responsibility'
+		for i, j in MentorResponsibility.choices:
+			if getattr(mentor, s + str(i)):
+				mentor_details['responsibilities'].append(j)
+
+		shortlist.append(mentor_details)
 
 	return JsonResponse(shortlist, safe=False)
 
@@ -339,8 +357,6 @@ def update_settings(request):
 		responsibilities = json.loads(request.body.decode('utf-8'))['willing_to']
 		other_responsibility = json.loads(request.body.decode('utf-8'))['other_responsibility']
 
-
-		
 		user.account.mentor.mentorship_duration = mentorship_duration
 		user.account.mentor.is_open_to_mentorship = is_open_to_mentorship
 		user.account.mentor.will_mentor_faculty = will_mentor_faculty
@@ -353,7 +369,6 @@ def update_settings(request):
 			setattr(user.account.mentor, s + str(i+1), responsibilities[i])
 
 		user.account.mentor.other_responsibility = other_responsibility
-
 		user.account.mentor.save()
 
 	else:
@@ -433,9 +448,11 @@ def get_messages(request, chatter_username):
 def send_message(request):
 	message = json.loads(request.body.decode('utf-8'))['message']
 	receiver_user = User.objects.filter(username=message['receiver']).first()
-	Message.objects.create(sender=request.user.account, 
-							receiver=receiver_user.account, 
-							content=message['content'])
+	Message.objects.create(
+		sender=request.user.account, 
+		receiver=receiver_user.account, 
+		content=message['content']
+	)
 
 	return JsonResponse({'success': True})
 
@@ -485,12 +502,14 @@ def add_meeting(request):
 	guest = User.objects.filter(username=guest_name).first()
 	req['time'] = make_aware(datetime.strptime(req['time'], '%Y-%m-%dT%H:%M'))
 
-	Meeting.objects.create(creator=user.account,
-							guest=guest.account,
-							title=req['title'],
-							agenda=req['agenda'],
-							time=req['time'],
-							meeting_url=req['meeting_url'])
+	Meeting.objects.create(
+		creator=user.account,
+		guest=guest.account,
+		title=req['title'],
+		agenda=req['agenda'],
+		time=req['time'],
+		meeting_url=req['meeting_url']
+	)
 
 	response = {
 		'success': True
@@ -549,25 +568,100 @@ def add_meeting_summary(request):
 	mentor, mentee = user, guest
 	if user.account.is_mentee and guest.account.is_mentor:
 		mentor, mentee = guest, user
-
 	elif user.account.is_mentee == guest.account.is_mentee:
 		print('[ERROR] Both users of same type')
 		return JsonResponse({'success': False})
 
-	MeetingSummary.objects.create(mentor=mentor.account.mentor,
-								mentee=mentee.account.mentee,
-								meeting_date=req['meeting_date'],
-								meeting_length=req['meeting_length'],
-								meeting_details=req['meeting_details'],
-								meeting_todos=req['meeting_todos'],
-								next_meeting_date=req['next_meeting_date'],
-								next_meeting_agenda=req['next_meeting_agenda'])
+	send_mail(
+		subject='Meeting Summary - {}'.format(req['meeting_date'].strftime('%x')),
+		message='Following is the summary of the meeting',
+		html_message='''
+			<i>This is a system generated mail. Please do not reply to this.</i>
+
+			<br/>
+			<table>
+				<thead>
+					<tr colspan="2">
+						<th>
+							<center>
+								<h2> MEETING DETAILS </h2>
+							</center>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th> DATE </th>
+						<td> {} </td>
+					</tr>
+					<tr>
+						<th> DURATION </th>
+						<td> {} hours </td>
+					</tr>
+					<tr>
+						<th> DETAILS </th>
+						<td> {} </td>
+					</tr>
+					<tr>
+						<th> TODOS </th>
+						<td> {} </td>
+					</tr>
+				</tbody>
+			</table>
+
+			<br/><br/>
+
+			<table>
+				<thead>
+					<tr colspan="2">
+						<th>
+							<center>
+								<h2> NEXT MEETING </h2>
+							</center>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th> TENTATIVE DATE </th>
+						<td> {} </td>
+					</tr>
+					<tr>
+						<th> AGENDA </th>
+						<td> {} </td>
+					</tr>
+				</tbody>
+			</table>
+			<br/>
+		'''.format(
+			req['meeting_date'],
+			req['meeting_length'],
+			req['meeting_details'],
+			req['meeting_todos'],
+			req['next_meeting_date'],
+			req['next_meeting_agenda']
+		),
+		from_email='mailbotfcs@gmail.com',
+		recipient_list=[mentor.account.user.email, mentee.account.user.email]
+	)
+
+	MeetingSummary.objects.create(
+		mentor=mentor.account.mentor,
+		mentee=mentee.account.mentee,
+		meeting_date=req['meeting_date'],
+		meeting_length=req['meeting_length'],
+		meeting_details=req['meeting_details'],
+		meeting_todos=req['meeting_todos'],
+		next_meeting_date=req['next_meeting_date'],
+		next_meeting_agenda=req['next_meeting_agenda']
+	)
 
 	response = {
 		'success': True
 	}
 
 	return JsonResponse(response)
+
 
 @login_required
 def get_milestones(request):
@@ -586,6 +680,7 @@ def get_milestones(request):
 	}
 	return JsonResponse(response, safe=False)
 
+
 @login_required
 @mentor_required
 def add_milestone(request):
@@ -603,4 +698,46 @@ def add_milestone(request):
 	return JsonResponse({'success': True})
 
 
+@login_required
+def end_relationship(request):
+	user = request.user
+	other = User.objects.get(username=request.GET.get('username'))
 
+	if user.account.is_mentor == other.account.is_mentor:
+		return JsonResponse({'success': False})
+
+	mentor, mentee = other, user
+	if user.account.is_mentor:
+		mentor, mentee = user, other
+
+	mentor, mentee = mentor.account.mentor, mentee.account.mentee
+
+	MyMentee.objects.filter(mentor=mentor, mentee=mentee).delete()
+	MyMentor.objects.filter(mentor=mentor, mentee=mentee).delete()
+
+	DeletedMentorMenteeRelation.objects.create(
+		mentor=mentor,
+		mentee=mentee,
+		end_reason=request.GET.get('end_reason'),
+	)
+
+	send_mail(
+		subject='Mentor Mentee Relation Ended',
+		message='Mentor mentee relationship has been ended. Details are as follows',
+		html_message='''
+			<i>This is a system generated mail. Please do not reply to this.</i>
+			<br/>
+
+			{} ended the mentor-mentee relationship with {}.
+			<br/>
+			<b>REASON:</b> {}
+		'''.format(
+			user.username,
+			other.username,
+			request.GET.get('end_reason')
+		),
+		from_email='mailbotfcs@gmail.com',
+		recipient_list=[user.email, other.email]
+	)
+
+	return JsonResponse({'success': True})

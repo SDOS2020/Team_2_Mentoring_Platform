@@ -2,6 +2,7 @@ from django.db import models
 from django.core import validators
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 
 
 class User(AbstractUser):
@@ -371,5 +372,13 @@ class Milestone(models.Model):
 
 	def __str__(self):
 		return f'Mentor: {self.mentor}, Mentee: {self.mentee}'
-	 
 
+
+class DeletedMentorMenteeRelation(models.Model):
+	mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
+	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
+	end_reason = models.TextField(max_length=512)
+	date_ended = models.DateTimeField(default=timezone.now)
+
+	def __str__(self):
+		return f'[ENDED] Mentor: {self.mentor}, Mentee: {self.mentee}'

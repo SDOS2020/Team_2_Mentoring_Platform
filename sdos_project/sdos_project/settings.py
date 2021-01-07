@@ -39,7 +39,14 @@ INSTALLED_APPS = [
 
 	# Crispy Forms
 	'crispy_forms',
+
+	# Confirmation Mail
+	# 'simple_email_confirmation',
 ]
+
+# Email confirmation
+# EMAIL_CONFIRMATION_PERIOD_DAYS = 7
+# SIMPLE_EMAIL_CONFIRMATION_PERIOD = timedelta(days=EMAIL_CONFIRMATION_PERIOD_DAYS)
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
@@ -72,7 +79,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'sdos_project.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -133,3 +139,13 @@ STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = 'homepage'
 LOGIN_URL = 'login'
+
+
+# EMail Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'mailbotfcs@gmail.com'
+EMAIL_HOST_PASSWORD = 'ksxzujhskkwoshfc'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'SDOS Team'
