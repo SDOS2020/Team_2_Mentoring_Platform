@@ -17,7 +17,7 @@ const Recommendations = {
 					</td>
 
 					<td>
-						<a v-bind:href="'//127.0.0.1:8000/users/profile/' + recommendation.username">
+						<a v-bind:href="'/users/profile/' + recommendation.username">
 							[[ recommendation.username ]]
 						</a>
 					</td>
@@ -32,7 +32,7 @@ const Recommendations = {
 		}
 	},
 	created() {
-		let request_url = "http://127.0.0.1:8000/api/get_recommendations/";
+		let request_url = "/api/get_recommendations/";
 
 		axios.get(request_url)
 		.then(response => {

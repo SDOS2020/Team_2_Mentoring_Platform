@@ -19,13 +19,13 @@ const ShowMentees = {
 					</td>
 
 					<td>
-						<a v-bind:href="'http://127.0.0.1:8000/users/profile/' + mentee.username">
+						<a v-bind:href="'/users/profile/' + mentee.username">
 							[[ mentee.username ]]
 						</a>
 					</td>
 
 					<td>
-						<a class="btn btn-sm btn-primary" v-bind:href="'http://127.0.0.1:8000/mentor_mentee/my_mentee/' + mentee.username">
+						<a class="btn btn-sm btn-primary" v-bind:href="'/mentor_mentee/my_mentee/' + mentee.username">
 							Mentor-Mentee page
 						</a>
 					</td>
@@ -88,7 +88,7 @@ const ShowMentees = {
 
 	methods: {
 		get_my_mentees() {
-			let request_url = "http://127.0.0.1:8000/api/get_mentees/";
+			let request_url = "/api/get_mentees/";
 	
 			axios.get(request_url)
 			.then(response => {
@@ -108,7 +108,7 @@ const ShowMentees = {
 				return;
 			}
 
-			let request_url = "http://127.0.0.1:8000/api/end_relationship/";
+			let request_url = "/api/end_relationship/";
 
 			axios.get(request_url, {
 				'params': {

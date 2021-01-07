@@ -65,7 +65,7 @@ const ShowMeeting = {
 
 	methods: {
 		get_meetings() {
-			let request_url = "http://127.0.0.1:8000/api/get_meetings/" + this.guest_name;
+			let request_url = "/api/get_meetings/" + this.guest_name;
 
 			axios.get(request_url)
 			.then(response => {

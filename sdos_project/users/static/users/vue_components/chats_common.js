@@ -74,7 +74,7 @@ const ChatsCommon = {
 
 	},
 	created() {
-		let request_url = "http://127.0.0.1:8000/api/get_chatters/";
+		let request_url = "/api/get_chatters/";
 
 		axios.get(request_url)
 		.then(response => {
