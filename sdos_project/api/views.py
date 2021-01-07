@@ -741,3 +741,62 @@ def end_relationship(request):
 	)
 
 	return JsonResponse({'success': True})
+
+
+@login_required
+def get_education(request):
+	account = request.user.account
+	
+	response = {
+		'qualifications': [edu.qualification for edu in AccountEducation.objects.filter(account=account)],
+		'start_dates': [edu.start_date for edu in AccountEducation.objects.filter(account=account)],
+		'end_dates': [edu.end_date for edu in AccountEducation.objects.filter(account=account)],
+		'organizations': [edu.organization for edu in AccountEducation.objects.filter(account=account)],
+		'details': [edu.detail for edu in AccountEducation.objects.filter(account=account)],
+		'success': True
+	}
+
+	return JsonResponse(response, safe=False)
+
+
+@login_required
+def add_education(request):
+	user = request.user
+	
+	AccountEducation.objects.create(
+		account=user.account,
+		qualification = request.GET.get('qualification'),
+		start_date = request.GET.get('start_date'),
+		end_date = request.GET.get('end_date'),
+		organization = request.GET.get('organization'),
+		detail = request.GET.get('detail'),
+	)
+	return JsonResponse({'success' : True})
+
+
+@login_required
+def get_research_experience(request):
+	account = request.user.account
+	
+	response = {
+		'positions': [re.position for re in AccountResearchExperience.objects.filter(account=account)],
+		'start_dates': [re.start_date for re in AccountResearchExperience.objects.filter(account=account)],
+		'end_dates': [re.end_date for re in AccountResearchExperience.objects.filter(account=account)],
+		'organizations': [re.organization for re in AccountResearchExperience.objects.filter(account=account)],
+		'details': [re.detail for re in AccountResearchExperience.objects.filter(account=account)],
+		'success': True
+	}
+	return JsonResponse(response, safe=False)
+
+
+@login_required
+def add_research_experience(request):
+	AccountResearchExperience.objects.create(
+		account=request.user.account,
+		position=request.GET.get('position'),
+		start_date=request.GET.get('start_date'),
+		end_date=request.GET.get('end_date'),
+		organization=request.GET.get('organization'),
+		detail=request.GET.get('detail'),
+	)
+	return JsonResponse({'success' : True})

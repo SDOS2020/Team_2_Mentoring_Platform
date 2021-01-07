@@ -6,7 +6,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 
 from users.models import User
 from .decorators import mentee_required, mentor_required
-from .models import Account, Mentor, Mentee, MentorRoleField, MenteeRoleField
+from .models import Account, AccountEducation, Mentor, Mentee, MentorRoleField, MenteeRoleField
 from .forms import *
 
 
@@ -175,8 +175,6 @@ def edit_mentor_profile(request):
 
 	initial_details = {
 		"introduction": user.account.introduction,
-		"education": user.account.education,
-		"research_experience": user.account.research_experience,
 		"social_handle": user.account.social_handle
 	}
 
@@ -191,8 +189,6 @@ def edit_mentor_profile(request):
 			user.account.mentor.mentorarea.subarea = areas_form.cleaned_data["subarea"]
 
 			user.account.introduction = details_form.cleaned_data["introduction"]
-			user.account.education = details_form.cleaned_data["education"]
-			user.account.research_experience = details_form.cleaned_data["research_experience"]
 			user.account.social_handle = details_form.cleaned_data["social_handle"]
 			
 			user.account.mentor.mentorarea.save()
@@ -205,7 +201,7 @@ def edit_mentor_profile(request):
 
 	context = {
 		"details_form": details_form,
-		"areas_form" : areas_form
+		"areas_form" : areas_form,
 	}
 
 	return render(request, "users/edit_profile.html", context)
@@ -219,8 +215,6 @@ def edit_mentee_profile(request):
 
 	initial_details = {
 		"introduction": user.account.introduction,
-		"education": user.account.education,
-		"research_experience": user.account.research_experience,
 	}
 
 	details_form = None
@@ -230,8 +224,6 @@ def edit_mentee_profile(request):
 
 		if details_form.is_valid():
 			user.account.introduction = details_form.cleaned_data["introduction"]
-			user.account.education = details_form.cleaned_data["education"]
-			user.account.research_experience = details_form.cleaned_data["research_experience"]
 			
 			user.account.save()
 			return redirect("homepage")
@@ -240,7 +232,7 @@ def edit_mentee_profile(request):
 		details_form = EditMenteeDetailsForm(initial=initial_details)
 
 	context = {
-		"details_form": details_form
+		"details_form": details_form,
 	}
 
 	return render(request, "users/edit_profile.html", context)

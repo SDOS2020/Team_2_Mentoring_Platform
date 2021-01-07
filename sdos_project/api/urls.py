@@ -20,6 +20,13 @@ urlpatterns = [
 	path("get_mentor_areas/", api_views.get_mentor_areas, name="get_mentor_areas"),
 
 	path("get_settings/", api_views.get_settings, name="get_settings"),
+	
+	path("get_education/", api_views.get_education, name="get_education"),
+	path("add_education/", api_views.add_education, name="add_education"),
+
+	path("get_research_experience/", api_views.get_research_experience, name="get_research_experience"),
+	path("add_research_experience/", api_views.add_research_experience, name="add_research_experience"),
+
 	path("update_settings/", api_views.update_settings, name="update_settings"),
 	
 	path("end_relationship/", api_views.end_relationship, name="end_relationship"),
