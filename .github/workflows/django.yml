@@ -10,6 +10,8 @@ jobs:
   build:
     env:
       SDOS_DB: ${{ secrets.SDOS_DB }}
+      SDOS_SECRET_KEY: ${{ secrets.SDOS_SECRET_KEY }}
+      SDOS_PRODUCTION_SERVER: "0"
     runs-on: ubuntu-latest
     services:
       postgres:
