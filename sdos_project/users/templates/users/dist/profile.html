@@ -34,6 +34,10 @@ Profile
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav">
 					<li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">About</a></li>
+					{% if requested_user.account.is_mentor %}	
+						<li class="nav-item"><a class="nav-link js-scroll-trigger" href="#mentorship_details">Mentorship Details</a></li>						
+					{% endif %}
+
 					<li class="nav-item"><a class="nav-link js-scroll-trigger" href="#education">Education</a></li>
 					<li class="nav-item"><a class="nav-link js-scroll-trigger" href="#research_experience">Research Experience</a></li>
 					<li class="nav-item"><a class="nav-link js-scroll-trigger" href="#skills">Skills</a></li>
@@ -59,7 +63,7 @@ Profile
 					<span class="text-primary"> {{ requested_user.account.user.first_name }}</span>
 					{{ requested_user.account.user.last_name}}
 					<span class="subheading mb-5">
-						<a href="mailto:name@email.com">{{ requested_user.email }}</a>
+						<a href="mailto:{{requested_user.email}}">{{ requested_user.email }}</a>
 					</span>
 				</h1>
 				<div class="subheading mb-5">
@@ -90,10 +94,23 @@ Profile
 
 				<p class="lead mb-5"> {{ requested_user.account.introduction }}</p>
 				{% if user.account.is_mentor %}
-				<div class="social-icons">
-					<a href="{{ user.account.social_handle }}" class="btn btn-primary" target="blank">More about me</a>
-				</div>
+					<div class="social-icons">
+						<a href="{{ user.account.social_handle }}" class="btn btn-primary" target="blank">Visit my site</a>
+					</div>
 				{% endif %}
+			</div>
+		</section>
+
+		<hr class="m-0" />
+		<!-- Mentorship Details-->
+		<section class="resume-section" id="mentorship_details">
+			<div class="resume-section-content">
+				<h2 class="mb-5">Mentorship Details</h2>
+				<div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+					<div class="flex-grow-1">
+						<div>Helllloooooo</div>
+					</div>
+				</div>
 			</div>
 		</section>
 
