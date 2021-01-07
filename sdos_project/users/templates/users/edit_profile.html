@@ -1,6 +1,6 @@
 {% extends "home/base.html" %}
 {% load crispy_forms_tags %}
-
+{% load static %}
 
 {% block title %}
 Edit Profile
@@ -25,13 +25,36 @@ Edit Profile
 				{% endif %}
 
 				{{ details_form|crispy }}
-
+				
+				<div id="vue-edit-profile">
+					<edit-profile />
+				</div>
+				<br/>
 				<center>
 					<input type="submit" class="btn btn-success col-3" value="Save"></input>
 				</center>
 			</form>
+
 		</div>
 	</div>
 </div>
 
 {% endblock content %}
+
+{% block javascript %}
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="{% static 'users/vue_components/edit_profile.js' %}"></script>
+
+<script>
+	const app = new Vue({
+		delimiters: ["[[", "]]"],
+		components: {
+			"edit-profile": EditProfile,
+		},
+	});
+
+	app.$mount("#vue-edit-profile");
+</script>
+
+{% endblock javascript %}

@@ -741,3 +741,21 @@ def end_relationship(request):
 	)
 
 	return JsonResponse({'success': True})
+
+@login_required
+def get_education(request):
+	user = request.user
+	
+	response = {
+		'educations': [account_edu.education for account_edu in AccountEducation.objects.filter(account=user.account)],
+		'success': True
+	}
+	return JsonResponse(response, safe=False)
+
+@login_required
+def add_education(request):
+	user = request.user
+	education = request.GET.get('education')
+	AccountEducation.objects.create(account=user.account, education=education)
+	return JsonResponse({'success' : True})
+	
