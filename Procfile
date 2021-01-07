@@ -1,0 +1,1 @@
+web: gunicorn sdos_project.wsgi
