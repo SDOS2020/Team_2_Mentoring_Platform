@@ -14,7 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SDOS_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = (os.environ.get('SDOS_PRODUCTION_SERVER') == '0')
+DEBUG = (int(os.environ.get('SDOS_PRODUCTION_SERVER')) == 0)
 
 ALLOWED_HOSTS = [
 	'researchmentoringplatform.herokuapp.com',
@@ -202,6 +202,6 @@ LOGGING = {
 	},
 }
 
-if os.environ.get('SDOS_PRODUCTION_SERVER') == '1':
+if int(os.environ.get('SDOS_PRODUCTION_SERVER')) == 1:
 	SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 	SECURE_SSL_REDIRECT = True
