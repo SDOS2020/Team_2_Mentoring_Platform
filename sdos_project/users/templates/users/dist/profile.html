@@ -40,8 +40,6 @@ Profile
 
 					<li class="nav-item"><a class="nav-link js-scroll-trigger" href="#education">Education</a></li>
 					<li class="nav-item"><a class="nav-link js-scroll-trigger" href="#research_experience">Research Experience</a></li>
-					<li class="nav-item"><a class="nav-link js-scroll-trigger" href="#skills">Skills</a></li>
-					<li class="nav-item"><a class="nav-link js-scroll-trigger" href="#interests">Interests</a></li>
 					{% if requested_user == user %}	
 						<li class="nav-item">
 							<a class="nav-link js-scroll-trigger" href="{% url 'edit_profile' %}">
@@ -101,18 +99,64 @@ Profile
 			</div>
 		</section>
 
-		<hr class="m-0" />
-		<!-- Mentorship Details-->
-		<section class="resume-section" id="mentorship_details">
-			<div class="resume-section-content">
-				<h2 class="mb-5">Mentorship Details</h2>
-				<div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-					<div class="flex-grow-1">
-						<div>Helllloooooo</div>
+		{% if user.account.is_mentor %}
+			<hr class="m-0" />
+			<!-- Mentorship Details-->
+			<section class="resume-section" id="mentorship_details">
+				<div class="resume-section-content">
+					<h2 class="mb-5">Mentorship Details</h2>
+					<div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+						<div class="flex-grow-1">
+							<h5>Mentorship Duration</h5>
+							{% if user.account.mentor.mentorship_duration == 1 %}
+								One meeting
+							{% else %}
+								{{ user.account.mentor.mentorship_duration }} months
+							{% endif %}
+							<hr>
+
+							<h5>Is open for mentorship?</h5>
+							{% if user.account.mentor.is_open_to_mentorship %}
+								Yes
+							{% else %}
+								No
+							{% endif %}
+							<hr>
+
+							<h5>Open to mentoring</h5>
+							<ul>
+								{% if user.account.mentor.will_mentor_faculty %}
+									<li>Faculty</li>
+								{% endif %}
+
+								{% if user.account.mentor.will_mentor_phd %}
+									<li>PhD</li>
+								{% endif %}
+
+								{% if user.account.mentor.will_mentor_mtech %}
+									<li>M.Tech</li>
+								{% endif %}
+
+								{% if user.account.mentor.will_mentor_btech %}
+									<li>B.Tech</li>
+								{% endif %}
+							</ul>
+							<hr>
+
+							<h5>{{ user.account.user.first_name}} is willing to</h5>
+							<ul>
+								{% for responsibility in responsibilities %}
+									<li>{{ responsibility }}</li>
+								{% endfor %}
+							</ul>
+							<hr>
+
+
+						</div>
 					</div>
 				</div>
-			</div>
-		</section>
+			</section>
+		{% endif %}
 
 		<hr class="m-0" />
 		<!-- Education-->
@@ -121,7 +165,19 @@ Profile
 				<h2 class="mb-5">Education</h2>
 				<div class="d-flex flex-column flex-md-row justify-content-between mb-5">
 					<div class="flex-grow-1">
-						<div>{{ requested_user.account.education }}</div>
+
+						{% for education in educations %}
+							<b>{{ education.qualification }}</b> 
+							from 
+							<b>{{ education.organization }}</b> 
+							<span style="float: right">
+								{{ education.start_date }} to {{ education.end_date }}
+							</span>
+							<br/>
+							{{ education.detail }}
+							<hr>
+						{% endfor %}
+
 					</div>
 				</div>
 			</div>
@@ -134,46 +190,20 @@ Profile
 				<h2 class="mb-5">Research Experience</h2>
 				<div class="d-flex flex-column flex-md-row justify-content-between mb-5">
 					<div class="flex-grow-1">
-						<p>{{ requested_user.account.research_experience }}</p>
+						{% for experience in experiences %}
+							<b>{{ experience.position }}</b> 
+							at 
+							<b>{{ experience.organization }}</b> 
+							<span style="float: right">
+								{{ experience.start_date }} to {{ experience.end_date }}
+							</span>
+							<br/>
+							{{ experience.detail }}
+							<hr>
+						{% endfor %}
 					</div>
 				</div>
 
-			</div>
-		</section>
-
-		<hr class="m-0" />
-		<!-- Skills-->
-		<section class="resume-section" id="skills">
-			<div class="resume-section-content">
-				<h2 class="mb-5">Skills</h2>
-				<ul class="fa-ul mb-0">
-					<li>
-						<span class="fa-li"><i class="fas fa-check"></i></span>
-						Mobile-First, Responsive Design
-					</li>
-					<li>
-						<span class="fa-li"><i class="fas fa-check"></i></span>
-						Cross Browser Testing & Debugging
-					</li>
-					<li>
-						<span class="fa-li"><i class="fas fa-check"></i></span>
-						Cross Functional Teams
-					</li>
-					<li>
-						<span class="fa-li"><i class="fas fa-check"></i></span>
-						Agile Development & Scrum
-					</li>
-				</ul>
-			</div>
-		</section>
-		
-		<hr class="m-0" />
-		<!-- Interests-->
-		<section class="resume-section" id="interests">
-			<div class="resume-section-content">
-				<h2 class="mb-5">Interests</h2>
-				<p>Apart from being a web developer, I enjoy most of my time being outdoors. In the winter, I am an avid skier and novice ice climber. During the warmer months here in Colorado, I enjoy mountain biking, free climbing, and kayaking.</p>
-				<p class="mb-0">When forced indoors, I follow a number of sci-fi and fantasy genre movies and television shows, I am an aspiring chef, and I spend a large amount of my free time exploring the latest technology advancements in the front-end web development world.</p>
 			</div>
 		</section>
 	</div>

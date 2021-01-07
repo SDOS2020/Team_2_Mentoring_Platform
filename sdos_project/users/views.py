@@ -4,11 +4,10 @@ from django.contrib import messages
 from django.contrib.auth import login, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 
-from users.models import User
+from users.models import *
 from .decorators import mentee_required, mentor_required
 from .models import Account, AccountEducation, Mentor, Mentee, MentorRoleField, MenteeRoleField
 from .forms import *
-
 
 def register_mentor(request):
 	if request.user.is_authenticated:
@@ -115,12 +114,29 @@ def change_password(request):
 
 	return render(request, 'users/change_password.html', {'form': form})
 
+def get_responsibilities(mentor):
+	responsibilities = []
+	s = 'responsibility'
+	for i, j in MentorResponsibility.choices:
+		if getattr(mentor, s + str(i)):
+			responsibilities.append(j)
+	return responsibilities
 
 @login_required
 def profile(request, username):
 	requested_user = User.objects.get(username=username)
+	
+	educations = AccountEducation.objects.filter(account=requested_user.account).all()
+	educations = sorted(educations, key=lambda x: x.start_date, reverse=True)
+	
+	experiences = AccountResearchExperience.objects.filter(account=requested_user.account).all()[::-1]
+	experiences = sorted(experiences, key=lambda x: x.start_date, reverse=True)
+	
 	if (request.user == requested_user) or (requested_user.account.is_mentor):
-		return render(request, "users/dist/profile.html", {"requested_user": requested_user})
+		responsibilities = []
+		if requested_user.account.is_mentor:
+			responsibilities = get_responsibilities(requested_user.account.mentor)
+		return render(request, "users/dist/profile.html", {"requested_user": requested_user, "responsibilities": responsibilities, "educations": educations, "experiences": experiences})
 
 	return redirect("homepage")
 

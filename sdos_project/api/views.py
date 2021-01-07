@@ -87,6 +87,16 @@ def filter_mentors(role: str, field: str, area: str):
 
 	return [m for m in shortlist if m.mentorarea.area == area]
 
+def get_responsibilities(mentor):
+	responsibilities = []
+	s = 'responsibility'
+	for i, j in MentorResponsibility.choices:
+		if getattr(mentor, s + str(i)):
+			responsibilities.append(j)
+	return responsibilities
+
+
+
 
 @login_required
 @mentee_required
@@ -130,14 +140,9 @@ def search_users(request):
 			'will_mentor_mtech': mentor.will_mentor_mtech,
 			'will_mentor_btech': mentor.will_mentor_btech,
 			
-			'responsibilities': [],
+			'responsibilities': get_responsibilities(mentor),
 			'other_responsibility': mentor.other_responsibility,
 		}
-
-		s = 'responsibility'
-		for i, j in MentorResponsibility.choices:
-			if getattr(mentor, s + str(i)):
-				mentor_details['responsibilities'].append(j)
 
 		shortlist.append(mentor_details)
 
