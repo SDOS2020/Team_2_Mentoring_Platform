@@ -148,13 +148,13 @@ class EditMentorDetailsForm(forms.ModelForm):
 
 	class Meta:
 		model = Account
-		fields = ("introduction", "education", "research_experience", "social_handle")
+		fields = ("introduction", "research_experience", "social_handle")
 
 
 class EditMenteeDetailsForm(forms.ModelForm):
 	class Meta:
 		model = Account
-		fields = ("introduction", "education", "research_experience")
+		fields = ("introduction", "research_experience")
 
 
 class EditAreasForm(forms.ModelForm):
