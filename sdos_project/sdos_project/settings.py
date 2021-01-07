@@ -142,10 +142,14 @@ USE_TZ = True
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATIC_URL = '/static/'
+
+# Created 'static' folder at the level of all the apps to get this to work
+# This global variable may not be needed
 STATICFILES_DIRS = (BASE_DIR / 'static', )
 
-LOGIN_REDIRECT_URL = 'homepage'
+
 LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'homepage'
 
 
 # EMail Configuration
