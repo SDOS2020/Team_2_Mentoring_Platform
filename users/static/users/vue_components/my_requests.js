@@ -27,16 +27,48 @@ const Requests = {
 							<div class="modal-body">
 								<table class="table">
 									<tr>
+										<th>Name:</th>
+										<td>[[ request.name ]]</td>
+									</tr>
+								</table>
+								
+								<table class="table">
+									<th>Education:</th>
+									<tr v-for="edu in request.educations">
+										<td>
+											<div style="float: right;">
+												<i>
+													[[ edu.start_date ]] <b>to</b>
+													<br>
+													[[ edu.end_date ]]
+												</i>
+											</div>
+											
+											<div style="width: 70%">
+												<b> [[ edu.qualification ]] </b>
+											</div>
+
+											<br/>
+											<b> [[ edu.organization ]] </b>
+											<br/>
+											[[ edu.detail ]]
+											<hr>
+										</td>
+									</tr>
+								</table>
+								
+								<table class="table">
+									<tr>
 										<th>Purpose:</th>
-										<td>[[request.sop]]</td>
+										<td>[[ request.sop ]]</td>
 									</tr>
 									<tr>
 										<th>Mentee Expectations:</th>
-										<td>[[request.expectations]]</td>
+										<td>[[ request.expectations ]]</td>
 									</tr>
 									<tr>
 										<th>Mentee Commitment:</th>
-										<td>[[request.commitment]]</td>
+										<td>[[ request.commitment ]]</td>
 									</tr>
 								</table>
 							</div>

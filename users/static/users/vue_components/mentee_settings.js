@@ -15,17 +15,6 @@ const MenteeSettings = {
 					</td>
 				</tr>
 
-				<tr>
-					<td>
-						<p class="lead">
-							Do you need urgent mentorship?
-						</p>
-					</td>
-					<td>
-						<input v-model="needs_urgent_mentoring" type="checkbox" id="needs_urgent_mentoring" name="needs_urgent_mentoring">
-					</td>
-				</tr>
-
 			</tbody>
 		</table>
 
@@ -44,7 +33,6 @@ const MenteeSettings = {
 	`,
 	data() {
 		return {
-			needs_urgent_mentoring: true,
 			needs_mentoring: true,
 			update_success: false,
 		};
@@ -58,7 +46,6 @@ const MenteeSettings = {
 		axios.get(request_url)
 		.then(response => {
 			this.needs_mentoring = response.data.needs_mentoring;
-			this.needs_urgent_mentoring = response.data.needs_urgent_mentoring;
 		})
 		.catch(error => {
 			console.log("[ERROR]");
@@ -81,7 +68,7 @@ const MenteeSettings = {
 
 			axios.post(request_url, {
 				'needs_mentoring': this.needs_mentoring,
-				'needs_urgent_mentoring': this.needs_urgent_mentoring}, 
+			}, 
 				{
 					headers: {
 						'X-CSRFTOKEN': this.csrf
@@ -90,7 +77,7 @@ const MenteeSettings = {
 			)
 			.then(response => {
 				// this.existing_tags = response.data.tags;
-				console.log('Success!!!!');
+				console.log('Success');
 			})
 			.catch(error => {
 				console.log("[ERROR]");

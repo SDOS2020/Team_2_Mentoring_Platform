@@ -104,3 +104,137 @@ django.db.utils.OperationalError: no such table: django_session
 08/Jan/2021 03:26:22 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-1] "GET / HTTP/1.1" 500 260142
 08/Jan/2021 03:26:23 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-1] Not Found: /favicon.ico
 08/Jan/2021 03:26:23 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-1] "GET /favicon.ico HTTP/1.1" 404 2466
+11/Jan/2021 14:25:02 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-1] Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\contrib\sessions\backends\base.py", line 233, in _get_session
+    return self._session_cache
+AttributeError: 'SessionStore' object has no attribute '_session_cache'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\backends\sqlite3\base.py", line 413, in execute
+    return Database.Cursor.execute(self, query, params)
+sqlite3.OperationalError: no such table: django_session
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\home\views.py", line 5, in homepage
+    return render(request, "home/homepage.html")
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\shortcuts.py", line 19, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\template\base.py", line 170, in render
+    return self._render(context)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\template\base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\template\base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\template\base.py", line 905, in render_annotated
+    return self.render(context)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\template\loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\template\base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\template\base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\template\base.py", line 905, in render_annotated
+    return self.render(context)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\template\defaulttags.py", line 305, in render
+    match = condition.eval(context)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\template\defaulttags.py", line 889, in eval
+    return self.value.resolve(context, ignore_failures=True)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\template\base.py", line 671, in resolve
+    obj = self.var.resolve(context)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\template\base.py", line 796, in resolve
+    value = self._resolve_lookup(context)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\template\base.py", line 829, in _resolve_lookup
+    current = current[bit]
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\functional.py", line 240, in inner
+    self._setup()
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\functional.py", line 376, in _setup
+    self._wrapped = self._setupfunc()
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\contrib\auth\middleware.py", line 23, in <lambda>
+    request.user = SimpleLazyObject(lambda: get_user(request))
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\contrib\auth\middleware.py", line 11, in get_user
+    request._cached_user = auth.get_user(request)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\contrib\auth\__init__.py", line 174, in get_user
+    user_id = _get_user_session_key(request)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\contrib\auth\__init__.py", line 58, in _get_user_session_key
+    return get_user_model()._meta.pk.to_python(request.session[SESSION_KEY])
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\contrib\sessions\backends\base.py", line 65, in __getitem__
+    return self._session[key]
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\contrib\sessions\backends\base.py", line 238, in _get_session
+    self._session_cache = self.load()
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\contrib\sessions\backends\db.py", line 43, in load
+    s = self._get_session_from_db()
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\contrib\sessions\backends\db.py", line 32, in _get_session_from_db
+    return self.model.objects.get(
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\query.py", line 425, in get
+    num = len(clone)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\query.py", line 269, in __len__
+    self._fetch_all()
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\query.py", line 1308, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\query.py", line 53, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\sql\compiler.py", line 1156, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\backends\utils.py", line 98, in execute
+    return super().execute(sql, params)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\backends\utils.py", line 66, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\backends\utils.py", line 75, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\utils.py", line 90, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\backends\sqlite3\base.py", line 413, in execute
+    return Database.Cursor.execute(self, query, params)
+django.db.utils.OperationalError: no such table: django_session
+11/Jan/2021 14:25:02 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-1] "GET / HTTP/1.1" 500 260577
+11/Jan/2021 14:25:03 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-1] Not Found: /favicon.ico
+11/Jan/2021 14:25:03 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-1] "GET /favicon.ico HTTP/1.1" 404 2466
+11/Jan/2021 15:45:39 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-3] Internal Server Error: /api/get_user_requests/
+Traceback (most recent call last):
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\users\decorators.py", line 12, in wrapper
+    return view_func(*args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\api\views.py", line 207, in get_user_requests
+    'name': '{} {}'.format(user_request.account.user.first_name, user_request.account.user.last_name),
+AttributeError: 'MenteeSentRequest' object has no attribute 'account'
+11/Jan/2021 15:45:39 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-3] "GET /api/get_user_requests/ HTTP/1.1" 500 83577
+11/Jan/2021 15:45:41 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-3] Internal Server Error: /api/get_user_requests/
+Traceback (most recent call last):
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\users\decorators.py", line 12, in wrapper
+    return view_func(*args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\api\views.py", line 207, in get_user_requests
+    'name': '{} {}'.format(user_request.account.user.first_name, user_request.account.user.last_name),
+AttributeError: 'MenteeSentRequest' object has no attribute 'account'
+11/Jan/2021 15:45:41 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-3] "GET /api/get_user_requests/ HTTP/1.1" 500 83577

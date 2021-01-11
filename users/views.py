@@ -9,6 +9,7 @@ from .decorators import mentee_required, mentor_required
 from .models import Account, AccountEducation, Mentor, Mentee, MentorRoleField, MenteeRoleField
 from .forms import *
 
+
 def register_mentor(request):
 	if request.user.is_authenticated:
 		return redirect("homepage")
@@ -104,7 +105,7 @@ def change_password(request):
 			user = form.save()
 			update_session_auth_hash(request, user)  # Important!
 			messages.success(request, 'Your password was successfully updated!')
-			return redirect('homepage')
+			return redirect('logout')
 
 		else:
 			messages.error(request, 'Please correct the error below.')
@@ -114,31 +115,39 @@ def change_password(request):
 
 	return render(request, 'users/change_password.html', {'form': form})
 
-def get_responsibilities(mentor):
+
+def __get_responsibilities(mentor):
 	responsibilities = []
 	s = 'responsibility'
 	for i, j in MentorResponsibility.choices:
 		if getattr(mentor, s + str(i)):
 			responsibilities.append(j)
+	
 	return responsibilities
+
 
 @login_required
 def profile(request, username):
 	requested_user = User.objects.get(username=username)
-	
+	if (request.user != requested_user) and (requested_user.account.is_mentee):
+		return redirect("homepage")
+
 	educations = AccountEducation.objects.filter(account=requested_user.account).all()
 	educations = sorted(educations, key=lambda x: x.start_date, reverse=True)
 	
 	experiences = AccountResearchExperience.objects.filter(account=requested_user.account).all()[::-1]
 	experiences = sorted(experiences, key=lambda x: x.start_date, reverse=True)
 	
-	if (request.user == requested_user) or (requested_user.account.is_mentor):
-		responsibilities = []
-		if requested_user.account.is_mentor:
-			responsibilities = get_responsibilities(requested_user.account.mentor)
-		return render(request, "users/dist/profile.html", {"requested_user": requested_user, "responsibilities": responsibilities, "educations": educations, "experiences": experiences})
+	context = {
+		"requested_user": requested_user,
+		"educations": educations,
+		"experiences": experiences
+	}
 
-	return redirect("homepage")
+	if requested_user.account.is_mentor:
+		context['responsibilities'] = __get_responsibilities(requested_user.account.mentor)
+	
+	return render(request, "users/dist/profile.html", context)
 
 
 @login_required

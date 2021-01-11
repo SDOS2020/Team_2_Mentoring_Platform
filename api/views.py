@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+from users.forms import EditAreasForm
 from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.utils.timezone import make_aware # Naive to native
@@ -94,8 +95,6 @@ def get_responsibilities(mentor):
 		if getattr(mentor, s + str(i)):
 			responsibilities.append(j)
 	return responsibilities
-
-
 
 
 @login_required
@@ -194,13 +193,22 @@ def get_user_requests(request):
 		mrm = MentorshipRequestMessage.objects.filter(mentor=user.account.mentor, mentee=user_request.mentee)
 		assert(len(mrm) == 1)
 		mrm = mrm.first()
-		
+
+		mentee_account = user_request.mentee.account
+		_educations = AccountEducation.objects.filter(account=mentee_account).all()
+		_educations = sorted(_educations, key=lambda x: x.start_date, reverse=True)
+
+		fields = ["qualification", "start_date", "end_date", "organization", "detail"]
+		educations = [dict((f, getattr(edu, f)) for f in fields) for edu in _educations]
+
 		user_requests.append({
 			'id': user_request.id,
-			'username': user_request.mentee.account.user.username,
+			'name': '{} {}'.format(mentee_account.user.first_name, mentee_account.user.last_name),
+			'username': mentee_account.user.username,
 			'sop': mrm.sop,
 			'expectations': mrm.expectations,
 			'commitment': mrm.commitment,
+			'educations': educations
 		})
 	
 	return JsonResponse(user_requests, safe=False)
@@ -378,10 +386,12 @@ def update_settings(request):
 
 	else:
 		needs_mentoring = json.loads(request.body.decode('utf-8'))['needs_mentoring']
-		needs_urgent_mentoring = json.loads(request.body.decode('utf-8'))['needs_urgent_mentoring']
+		# TODO remove needs_urgent_mentoring
+		# needs_urgent_mentoring = json.loads(request.body.decode('utf-8'))['needs_urgent_mentoring']
 
 		user.account.mentee.needs_mentoring = needs_mentoring
-		user.account.mentee.needs_urgent_mentoring = needs_urgent_mentoring
+		# TODO remove needs_urgent_mentoring
+		# user.account.mentee.needs_urgent_mentoring = needs_urgent_mentoring
 		user.account.mentee.save()
 
 	return JsonResponse({'success': True})
@@ -415,7 +425,8 @@ def get_settings(request):
 		response = {
 			'success': True,
 			'needs_mentoring': user.account.mentee.needs_mentoring,
-			'needs_urgent_mentoring': user.account.mentee.needs_urgent_mentoring
+			# TODO remove needs_urgent_mentoring
+			# 'needs_urgent_mentoring': user.account.mentee.needs_urgent_mentoring
 		}
 
 	return JsonResponse(response)
