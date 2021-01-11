@@ -135,7 +135,7 @@ const AddEducation = {
 			let ed = new Date(this.end_date);
 
 			if (sd > ed) {
-				alert('[ERROR] Start date must be less End date');
+				alert('[ERROR] Start date must be less than End date');
 				return ;
 			}
 
