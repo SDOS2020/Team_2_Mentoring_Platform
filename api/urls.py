@@ -7,6 +7,7 @@ urlpatterns = [
 
 	path("get_user_requests/", api_views.get_user_requests, name="get_user_requests"),
 	path("accept_mentorship_request/", api_views.accept_mentorship_request, name="accept_mentorship_request"),
+	path("cancel_mentorship_request/", api_views.cancel_mentorship_request, name="cancel_mentorship_request"),
 	path("reject_mentorship_request/", api_views.reject_mentorship_request, name="reject_mentorship_request"),
 	path("send_mentorship_request/", api_views.send_mentorship_request, name="send_mentorship_request"),
 

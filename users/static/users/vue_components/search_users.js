@@ -109,7 +109,7 @@ const SearchUsers = {
 
 
 								<div v-if="result.status === 1">
-									<button class="btn btn-sm btn-warning" disabled> Pending Request </button>
+									<button class="btn btn-sm btn-warning" v-on:click="cancel_request(result.username)"> Cancel Request </button>
 								</div>
 
 								
@@ -333,6 +333,34 @@ const SearchUsers = {
 			$('#requestModal' + index).modal('hide');
 			$('body').removeClass('modal-open');
 			$('.modal-backdrop').remove();
+		},
+
+		cancel_request(username) {
+			let request_url = "/api/cancel_mentorship_request";
+
+			axios.get(request_url, {
+				'params': {
+					'request_to': username,
+				}
+			})
+			.then(response => {
+				console.log("[SUCCESS]");
+				if (response.data.success === false) {
+					alert('[ERROR] Invalid request');
+					return;
+				}
+
+				for (result of this.search_results) {
+					if (result.username === username) {
+						result.status = 0; // Mark as REQUEST_MENTORSHIP
+						break;
+					}
+				}
+			})
+			.catch(error => {
+				console.log("[ERROR]");
+				console.log(error);
+			});
 		},
 
 		clear_request() {

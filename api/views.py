@@ -183,6 +183,27 @@ def send_mentorship_request(request):
 
 
 @login_required
+@mentee_required
+def cancel_mentorship_request(request):
+	user = request.user
+	request_to = request.GET.get('request_to')
+	request_to = User.objects.get(username=request_to)
+
+	if request_to.account.is_mentee:
+		print('Invalid request! Cannot send request to mentees in the first place')
+		return JsonResponse({'success': False})
+
+	status = False
+	if MenteeSentRequest.objects.filter(mentor=request_to.account.mentor, mentee=user.account.mentee).exists():
+		# Delete a request only if the request exists
+		MenteeSentRequest.objects.filter(mentor=request_to.account.mentor, mentee=user.account.mentee).delete()
+		MentorshipRequestMessage.objects.filter(mentor=request_to.account.mentor, mentee=user.account.mentee).delete()
+		status = True
+
+	return JsonResponse({"success" : status})
+
+
+@login_required
 @mentor_required
 def get_user_requests(request):
 	user = request.user
@@ -249,7 +270,7 @@ def reject_mentorship_request(request):
 
 	status = False
 	if MenteeSentRequest.objects.filter(mentor=user.account.mentor, mentee=to_reject.account.mentee).exists():
-		# delete a request only if the request exists
+		# Delete a request only if the request exists
 		MenteeSentRequest.objects.filter(mentor=user.account.mentor, mentee=to_reject.account.mentee).delete()
 		MentorshipRequestMessage.objects.filter(mentor=user.account.mentor, mentee=to_reject.account.mentee).delete()
 		status = True
