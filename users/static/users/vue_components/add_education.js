@@ -110,7 +110,35 @@ const AddEducation = {
 	},
 
 	methods: {
+		limit_content_size(content, lower, upper, type) {
+			if (content.length < lower) {
+				alert('[ERROR] Please elaborate on ' + type);
+				return false;
+			}
+
+			if (content.length > upper) {
+				alert('[ERROR] Please shorten the content of ' + type);
+				return false;
+			}
+
+			return true;
+		},
+
 		add_education() {
+			if (!this.limit_content_size(this.qualification, 2, 128, 'Qualification')) { return ; }
+			if (!this.limit_content_size(this.start_date, 4, 128, 'Start Date')) { return ; }
+			if (!this.limit_content_size(this.end_date, 4, 128, 'End Date')) { return ; }
+			if (!this.limit_content_size(this.organization, 4, 128, 'Organization')) { return ; }
+			if (!this.limit_content_size(this.detail, 0, 512, 'Detail')) { return ; }
+
+			let sd = new Date(this.start_date);
+			let ed = new Date(this.end_date);
+
+			if (sd > ed) {
+				alert('[ERROR] Start date must be less End date');
+				return ;
+			}
+
 			this.$emit('update_education',
 				this.qualification,
 				this.start_date,
