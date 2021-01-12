@@ -311,7 +311,13 @@ const SearchUsers = {
 			.then(response => {
 				console.log("[SUCCESS]");
 				if (response.data.success === false) {
-					alert('[LIMIT REACHED] Number of mentors + pending requests is max possible\nOR\nFor the mentor, number of mentees + pending requests is max possible');
+					if (response.data.status_code === 3) {
+						alert('[ERROR] Your number of mentors + number of pending requests has reached the max limit of 3. Currently, you cannot send further requests.');
+					}
+					else if (response.data.status_code === 4) {
+						alert('[ERROR] The mentor has reached the max limit of 5 mentees and cannot accept more mentees.');
+					}
+
 					return;
 				}
 				

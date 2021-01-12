@@ -159,27 +159,32 @@ def send_mentorship_request(request):
 	commitment = request.GET.get('commitment')
 	
 	status = False
+	status_code = 0
 	
 	if MenteeSentRequest.objects.filter(mentee=user.account.mentee, mentor=requestee.account.mentor).exists():
 		# Checks if mentee has already sent a request to the mentor
-		pass
+		status_code = 1
+	
 	elif MyMentor.objects.filter(mentee=user.account.mentee, mentor=requestee.account.mentor).exists():
 		# Checks if the user is already a mentee of the requestee
-		pass
+		status_code = 2
+	
 	elif len(MenteeSentRequest.objects.filter(mentee=user.account.mentee)) + len(MyMentor.objects.filter(mentee=user.account.mentee)) == 3:
 		# If mentee has already sent 3 requests
-		pass
+		status_code = 3
+	
 	elif len(MyMentee.objects.filter(mentor=requestee.account.mentor)) + len(MenteeSentRequest.objects.filter(mentor=requestee.account.mentor)) == 5:
 		# If mentor already has 5 mentees (or has received 5 requests)
-		pass
-	else:
+		status_code = 4
+	
+	else: # Everything is fine
 		status = True
 		MentorshipRequestMessage.objects.create(mentee=user.account.mentee, mentor=requestee.account.mentor, 
 			sop=sop, expectations=expectations, commitment=commitment
 		)
 		MenteeSentRequest.objects.create(mentee=user.account.mentee, mentor=requestee.account.mentor)
 
-	return JsonResponse({"success" : status})
+	return JsonResponse({"success": status, "status_code": status_code})
 
 
 @login_required
