@@ -57,7 +57,7 @@ const ToDoComponent = {
 					v-model="allDone"
 				/>
 				<label for="toggle-all"></label>
-				<section  style="height: 35vh; overflow-y: scroll;">	
+				<section style="height: 36vh; overflow-y: scroll;">	
 					<ul class="todo-list">
 						<li
 							v-for="todo in filteredTodos"

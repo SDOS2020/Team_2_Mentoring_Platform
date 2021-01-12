@@ -402,3 +402,53 @@ users.models.User.account.RelatedObjectDoesNotExist: User has no account.
 12/Jan/2021 21:10:40 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-2] "GET /favicon.ico HTTP/1.1" 404 2466
 12/Jan/2021 21:27:06 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-4] Not Found: /favicon.ico
 12/Jan/2021 21:27:06 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-4] "GET /favicon.ico HTTP/1.1" 404 2466
+12/Jan/2021 21:41:06 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-7] Internal Server Error: /api/get_meetings/undefined
+Traceback (most recent call last):
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\api\views.py", line 507, in get_meetings
+    meeting_created_by_me = Meeting.objects.filter(creator=user.account).all()
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\functional.py", line 241, in inner
+    return func(self._wrapped, *args)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\fields\related_descriptors.py", line 421, in __get__
+    raise self.RelatedObjectDoesNotExist(
+users.models.User.account.RelatedObjectDoesNotExist: User has no account.
+12/Jan/2021 21:41:06 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-7] "GET /api/get_meetings/undefined HTTP/1.1" 500 86527
+12/Jan/2021 21:41:07 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-7] Internal Server Error: /api/get_meetings/undefined
+Traceback (most recent call last):
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\api\views.py", line 507, in get_meetings
+    meeting_created_by_me = Meeting.objects.filter(creator=user.account).all()
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\functional.py", line 241, in inner
+    return func(self._wrapped, *args)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\fields\related_descriptors.py", line 421, in __get__
+    raise self.RelatedObjectDoesNotExist(
+users.models.User.account.RelatedObjectDoesNotExist: User has no account.
+12/Jan/2021 21:41:07 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-7] "GET /api/get_meetings/undefined HTTP/1.1" 500 86527
+12/Jan/2021 21:41:08 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-7] Internal Server Error: /api/get_meetings/undefined
+Traceback (most recent call last):
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\api\views.py", line 507, in get_meetings
+    meeting_created_by_me = Meeting.objects.filter(creator=user.account).all()
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\functional.py", line 241, in inner
+    return func(self._wrapped, *args)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\fields\related_descriptors.py", line 421, in __get__
+    raise self.RelatedObjectDoesNotExist(
+users.models.User.account.RelatedObjectDoesNotExist: User has no account.
+12/Jan/2021 21:41:08 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-7] "GET /api/get_meetings/undefined HTTP/1.1" 500 86527
+12/Jan/2021 21:44:53 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-7] Not Found: /favicon.ico
+12/Jan/2021 21:44:53 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-7] "GET /favicon.ico HTTP/1.1" 404 2466

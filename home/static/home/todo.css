@@ -44,9 +44,9 @@ button {
 
 .todoapp {
 	background: #fefefe;
-	margin: 130px 0 40px 0;
+	margin: 130px 0 30px 0;
 	position: relative;
-	box-shadow: 0 20px 10px 0 rgba(0, 0, 0, 0.2);
+	box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.2);
 }
 
 .todoapp input::-webkit-input-placeholder {
@@ -266,7 +266,7 @@ button {
 	border-top: 1px solid #e6e6e6;
 }
 
-.footer:before {
+/* .footer:before {
 	content: '';
 	position: absolute;
 	right: 0;
@@ -279,7 +279,7 @@ button {
 	            0 9px 1px -3px rgba(0, 0, 0, 0.2),
 	            0 16px 0 -6px #f6f6f6,
 	            0 17px 2px -6px rgba(0, 0, 0, 0.2);
-}
+} */
 
 .todo-count {
 	float: left;
