@@ -67,7 +67,7 @@ const ToDoComponent = {
 						>
 							<div class="view">
 								<input class="toggle" type="checkbox" v-model="todo.completed" />
-								<label @dblclick="editTodo(todo)"><b>[[ todo.title ]]</b></label>
+								<label id="editTodoLabel" @click="editTodo(todo)" title="Edit todo"><b>[[ todo.title ]]</b></label>
 								<button class="destroy" @click="removeTodo(todo)">
 									<font size="4"><i class="fas fa-trash"></i></font>
 								</button>

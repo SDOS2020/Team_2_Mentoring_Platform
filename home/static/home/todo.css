@@ -379,3 +379,14 @@ html .clear-completed:active {
 		bottom: 10px;
 	}
 }
+
+/* Self-added */
+#editTodoLabel:hover {
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.todo-list li.completed label:hover {
+	color: #999;
+	text-decoration: line-through underline !important;
+}
