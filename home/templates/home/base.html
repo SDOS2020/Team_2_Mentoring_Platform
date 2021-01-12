@@ -95,17 +95,17 @@
 					{% if user.account.is_mentor %}
 
 						<a class="dropdown-item" href="{% url 'my_mentees' %}" style="text-align: right;">
-							Mentees
+							My Mentees
 						</a>
 
 						<a class="dropdown-item" href="{% url 'my_requests' %}" style="text-align: right;">
-							Requests
+							My Requests
 						</a>
 
 					{% else %}
 
 						<a class="dropdown-item" href="{% url 'my_mentors' %}" style="text-align: right;">
-							Mentors
+							My Mentors
 						</a>
 
 					{% endif %}
@@ -120,7 +120,7 @@
 					{% endif %}
 
 					<a class="dropdown-item" href="{% url 'change_password' %}" style="text-align: right;">
-						Update password
+						Change password
 					</a>
 
 					<a class="dropdown-item" href="{% url 'settings' %}" style="text-align: right;">
