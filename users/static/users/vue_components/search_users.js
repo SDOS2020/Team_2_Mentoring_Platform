@@ -10,6 +10,7 @@ const SearchUsers = {
 						<select name="role" class="form-control"
 							v-model="selected_role" v-on:change="search_users"
 						>
+							<option value="" selected disabled hidden>Role</option>
 							<option v-for="role in roles">[[ role.value ]]</option>
 						</select>
 					</div>
@@ -20,6 +21,7 @@ const SearchUsers = {
 						<select name="field" class="form-control"
 							v-model="selected_field" v-on:change="search_users"
 						>
+							<option value="" selected disabled hidden>Field</option>
 							<option v-for="field in fields">[[ field.value ]]</option>
 						</select>
 					</div>
@@ -30,6 +32,7 @@ const SearchUsers = {
 						<select name="area" class="form-control"
 							v-model="selected_area" v-on:change="search_users"
 						>
+							<option value="" selected disabled hidden>Area</option>
 							<option v-for="area in areas">[[ area.value ]]</option>
 						</select>
 					</div>
@@ -227,8 +230,6 @@ const SearchUsers = {
 			console.log(error);
 		});
 
-		this.selected_role = this.roles[0];
-
 		request_url = "/api/get_mentor_fields/";
 		axios.get(request_url)
 		.then(response => {
@@ -238,8 +239,6 @@ const SearchUsers = {
 			console.log(error);
 		});
 
-		this.selected_field = this.fields[0];
-
 		request_url = "/api/get_mentor_areas/";
 		axios.get(request_url)
 		.then(response => {
@@ -248,8 +247,6 @@ const SearchUsers = {
 		.catch(error => {
 			console.log(error);
 		});
-
-		this.selected_area = this.areas[0];
 	},
 	
 	methods: {
