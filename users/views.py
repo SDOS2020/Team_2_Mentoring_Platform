@@ -20,8 +20,8 @@ def register_mentor(request):
 			user = form.save()
 			account = Account(
 				user=user,
-				gender=form.cleaned_data['gender'],
-				age=form.cleaned_data['age'],
+				# gender=form.cleaned_data['gender'],
+				# age=form.cleaned_data['age'],
 				social_handle=form.cleaned_data['social_handle'],
 				is_mentor=True
 			)
@@ -68,8 +68,8 @@ def register_mentee(request):
 			user = form.save()
 			account = Account(
 				user=user,
-				gender=form.cleaned_data['gender'],
-				age=form.cleaned_data['age'],
+				# gender=form.cleaned_data['gender'],
+				# age=form.cleaned_data['age'],
 				is_mentee=True
 			)
 

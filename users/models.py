@@ -37,7 +37,7 @@ class Account(models.Model):
 		default=20
 	)
 
-	gender = models.IntegerField(choices=Gender.choices, default=Gender.choices[-1])
+	gender = models.IntegerField(choices=Gender.choices, default=Gender.choices[-1][0])
 
 	mobile = models.CharField(
 		max_length=10,

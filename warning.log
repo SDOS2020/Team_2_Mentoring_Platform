@@ -452,3 +452,50 @@ users.models.User.account.RelatedObjectDoesNotExist: User has no account.
 12/Jan/2021 21:41:08 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-7] "GET /api/get_meetings/undefined HTTP/1.1" 500 86527
 12/Jan/2021 21:44:53 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-7] Not Found: /favicon.ico
 12/Jan/2021 21:44:53 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-7] "GET /favicon.ico HTTP/1.1" 404 2466
+13/Jan/2021 15:18:58 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-3] Not Found: /favicon.ico
+13/Jan/2021 15:18:58 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-3] "GET /favicon.ico HTTP/1.1" 404 2466
+13/Jan/2021 15:19:38 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-3] Internal Server Error: /users/register_mentor/
+Traceback (most recent call last):
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\fields\__init__.py", line 1774, in get_prep_value
+    return int(value)
+TypeError: int() argument must be a string, a bytes-like object or a number, not 'tuple'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\users\views.py", line 29, in register_mentor
+    account.save()
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\base.py", line 753, in save
+    self.save_base(using=using, force_insert=force_insert,
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\base.py", line 790, in save_base
+    updated = self._save_table(
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\base.py", line 895, in _save_table
+    results = self._do_insert(cls._base_manager, using, fields, returning_fields, raw)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\base.py", line 933, in _do_insert
+    return manager._insert(
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\query.py", line 1254, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\sql\compiler.py", line 1396, in execute_sql
+    for sql, params in self.as_sql():
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\sql\compiler.py", line 1339, in as_sql
+    value_rows = [
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\sql\compiler.py", line 1340, in <listcomp>
+    [self.prepare_value(field, self.pre_save_val(field, obj)) for field in fields]
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\sql\compiler.py", line 1340, in <listcomp>
+    [self.prepare_value(field, self.pre_save_val(field, obj)) for field in fields]
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\sql\compiler.py", line 1281, in prepare_value
+    value = field.get_db_prep_save(value, connection=self.connection)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\fields\__init__.py", line 823, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\fields\__init__.py", line 818, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\fields\__init__.py", line 1776, in get_prep_value
+    raise e.__class__(
+TypeError: Field 'gender' expected a number but got (3, 'Prefer not to say').
+13/Jan/2021 15:19:38 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-3] "POST /users/register_mentor/ HTTP/1.1" 500 150543
