@@ -26,7 +26,7 @@ const AddMeetingSummary = {
 							<div class="form-group">
 								<label class="col-form-label">Start time:</label>
 								<br/>
-								<input v-model="meeting_date" type="datetime-local" min="2020-12-22T08:30" required>
+								<input v-model="meeting_date" type="datetime-local" class="form-control" min="2020-12-22T08:30" required>
 							</div>
 						
 							<div class="form-group">
@@ -47,7 +47,7 @@ const AddMeetingSummary = {
 							<div class="form-group">
 								<label class="col-form-label">Next meeting date:</label>
 								<br/>
-								<input v-model="next_meeting_date" type="datetime-local" min="2020-12-22T08:30" required>
+								<input v-model="next_meeting_date" type="datetime-local" class="form-control" min="2020-12-22T08:30" required>
 							</div>
 							
 							<div class="form-group">

@@ -42,7 +42,7 @@ const AddToDo = {
 							<div class="form-group">
 								<label for="meeting-time" class="col-form-label">Time:</label>
 								<br/>
-								<input v-model="meeting_time" type="datetime-local" id="meeting-time" name="meeting-time" min="2020-11-20T08:30" required>
+								<input v-model="meeting_time" type="datetime-local" class="form-control" id="meeting-time" name="meeting-time" min="2020-11-20T08:30" required>
 							</div>
 						</form>
 					</div>

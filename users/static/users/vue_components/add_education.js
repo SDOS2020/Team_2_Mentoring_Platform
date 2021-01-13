@@ -26,27 +26,27 @@ const AddEducation = {
 
 						<div class="modal-body">
 							<h5>Qualification</h5>
-							<input v-model="qualification" style="width: 100%;">
+							<input v-model="qualification" class="form-control" style="width: 100%;">
 						</div>
 							
 						<div class="modal-body">
 							<h5>Start Date</h5>
-							<input v-model="start_date" type="date" required>
+							<input v-model="start_date" type="date" class="form-control" required>
 						</div>
 							
 						<div class="modal-body">
 							<h5>End Date</h5>
-							<input v-model="end_date" type="date" required>
+							<input v-model="end_date" type="date" class="form-control" required>
 						</div>
 						
 						<div class="modal-body">
 							<h5>Organization</h5>
-							<input v-model="organization" style="width: 100%;">
+							<input v-model="organization" class="form-control" style="width: 100%;">
 						</div>
 
 						<div class="modal-body">
 							<h5>Detail</h5>
-							<textarea v-model="detail" style="width: 100%;"></textarea>
+							<textarea v-model="detail" class="form-control" style="width: 100%;"></textarea>
 						</div>
 
 						<div class="modal-footer">
