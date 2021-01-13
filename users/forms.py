@@ -17,21 +17,9 @@ class MentorRegistrationForm(UserCreationForm):
 		required=True,
 	)
 
-	gender = forms.ChoiceField(
-		choices=Gender.choices,
-		initial=Gender.choices[-1],
-		required=True
-	)
-
-	age = forms.IntegerField(
-		min_value=16,
-		max_value=100,
-		required=True
-	)
-
 	field = forms.ChoiceField(
 		choices=Fields.choices,
-		initial=Fields.choices[-1],
+		initial=Fields.choices[0],
 		required=True
 	)
 
@@ -65,8 +53,6 @@ class MentorRegistrationForm(UserCreationForm):
 		fields = (
 			"first_name",
 			"last_name",
-			"gender",
-			"age",
 			"username",
 			"email",
 			"role",
@@ -92,21 +78,9 @@ class MenteeRegistrationForm(UserCreationForm):
 		required=True,
 	)
 
-	gender = forms.ChoiceField(
-		choices=Gender.choices,
-		initial=Gender.choices[-1],
-		required=True
-	)
-
-	age = forms.IntegerField(
-		min_value=16,
-		max_value=100,
-		required=True
-	)
-
 	field = forms.ChoiceField(
 		choices=Fields.choices,
-		initial=Fields.choices[-1],
+		initial=Fields.choices[0],
 		required=True
 	)
 
@@ -123,8 +97,6 @@ class MenteeRegistrationForm(UserCreationForm):
 		fields = (
 			"first_name",
 			"last_name",
-			"gender",
-			"age",
 			"username",
 			"email",
 			"role",

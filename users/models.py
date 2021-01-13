@@ -29,11 +29,12 @@ class Account(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	
 	age = models.IntegerField(
-		null=True, 
+		null=True,
 		validators=[
 			validators.MinValueValidator(16),
 			validators.MaxValueValidator(100),
-		]
+		],
+		default=20
 	)
 
 	gender = models.IntegerField(choices=Gender.choices, default=Gender.choices[-1])
@@ -197,7 +198,7 @@ class MenteeRoles(models.IntegerChoices):
 	types of mentee a mentor needs, and also the types of mentor a mentee needs.
 	"""
 	faculty       = 1, _('Faculty')
-	developer     = 2, _('Developer')
+	developer     = 2, _('Industry Researcher')
 	undergraduate = 3, _('BTech')
 	graduate      = 4, _('MTech')
 	post_graduate = 5, _('PhD')
@@ -205,19 +206,19 @@ class MenteeRoles(models.IntegerChoices):
 
 class MentorRoles(models.IntegerChoices):
 	faculty   = 1, _('Faculty')
-	developer = 2, _('Developer')
+	developer = 2, _('Industry Researcher')
 
 
 class Fields(models.IntegerChoices):
 	"""
 	The different fields of users that can exist
 	"""
-	computer_science                             = 1, _('CSE')
-	electronics_and_communication                = 2, _('ECE')
-	computer_science_and_design                  = 3, _('CSD')
-	computer_science_and_mathematics             = 4, _('CSAM')
-	computer_science_and_social_sciences         = 5, _('CSSS')
-	computer_science_and_artificial_intelligence = 6, _('CSAI')
+	computer_science                             = 1, _('Computer Science and Engineering')
+	electronics_and_communication                = 2, _('Electronics and Communication Engineering')
+	computer_science_and_design                  = 3, _('Computer Science and Design')
+	computer_science_and_mathematics             = 4, _('Computer Science and Mathematics')
+	computer_science_and_social_sciences         = 5, _('Computer Science and Social Sciences')
+	computer_science_and_artificial_intelligence = 6, _('Computer Science and Artificial Intelligence')
 
 
 class MentorRoleField(models.Model):
