@@ -122,6 +122,17 @@ const AddMeetingSummary = {
 				return;
 			}
 
+			try {
+				if (this.meeting_length <= 0) {
+					alert('[ERROR] Meeting length cannot be <= 0');
+					return;
+				}
+			}
+			catch(error) {
+				alert('[ERROR] Invalid input for meeting length');
+				return;
+			}
+
 			let request_url = "/api/add_meeting_summary/";
 
 			axios.post(request_url, {
