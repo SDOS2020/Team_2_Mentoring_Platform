@@ -385,7 +385,7 @@ class MeetingSummary(models.Model):
 	mentee = models.ForeignKey(Mentee, on_delete=models.CASCADE)
 
 	meeting_date = models.DateTimeField(auto_now_add=False)
-	meeting_length = models.IntegerField()
+	meeting_length = models.FloatField()
 	meeting_details = models.TextField(max_length=512)
 	meeting_todos = models.TextField(max_length=512, null=True)
 

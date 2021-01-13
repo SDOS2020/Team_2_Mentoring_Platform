@@ -89,24 +89,36 @@ const AddMeetingSummary = {
 	},
 
 	methods: {
-		validate_input() {
-			let alert_message = "";
-			if (this.meeting_details.length === 0) {
-				alert_message += "Please fill the meeting details\n";
-			}
-
-			if (alert_message.length === 0) {
-				alert("Summary successfully added!")
-				return true;
-			}
-			else {
-				alert("[ERROR]\n" + alert_message);
+		limit_content_size(content, lower, upper, type) {
+			if (content.length < lower) {
+				alert('[ERROR] Please elaborate on ' + type);
 				return false;
 			}
+
+			if (content.length > upper) {
+				alert('[ERROR] Please shorten the content of ' + type);
+				return false;
+			}
+
+			return true;
 		},
 
 		add_new_meeting() {
-			if (!this.validate_input()) {
+			if (!this.limit_content_size(this.meeting_date, 4, 100, 'Meeting Date')) { return; }
+			if (!this.limit_content_size(this.meeting_details, 8, 512, 'Meeting Details')) { return; }
+			if (!this.limit_content_size(this.next_meeting_date, 4, 100, 'Next Meeting Date')) { return; }
+			if (!this.limit_content_size(this.next_meeting_agenda, 0, 512, 'Next Meeting Agenda')) { return; }
+
+			let today = new Date();
+			let sd = new Date(this.meeting_date);
+			if (sd > today) {
+				alert('[ERROR] Invalid start time');
+				return ;
+			}
+
+			let nmd = new Date(this.next_meeting_date);
+			if (nmd < sd) {
+				alert('[ERROR] Next meeting date cannot be less than start time');
 				return;
 			}
 
@@ -139,6 +151,7 @@ const AddMeetingSummary = {
 			this.next_meeting_date = "";
 			this.next_meeting_agenda = "";
 
+			alert('[SUCCESS] Meeting summary added');
 			document.getElementById("summary-close-button").click();
 		}
 	}
