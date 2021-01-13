@@ -31,7 +31,7 @@ const AddMeetingSummary = {
 						
 							<div class="form-group">
 								<label class="col-form-label">Meeting duration (hrs):</label>
-								<input v-model="meeting_length" type="text" class="form-control">
+								<input v-model="meeting_length" type="number" step="0.01" min="0" class="form-control">
 							</div>
 
 							<div class="form-group">
@@ -123,6 +123,7 @@ const AddMeetingSummary = {
 			}
 
 			try {
+				this.meeting_length = parseFloat(this.meeting_length);
 				if (this.meeting_length <= 0) {
 					alert('[ERROR] Meeting length cannot be <= 0');
 					return;
