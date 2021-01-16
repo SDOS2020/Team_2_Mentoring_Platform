@@ -1,0 +1,215 @@
+{% extends "home/base.html" %}
+{% load static %}
+
+{% block title %}
+Profile
+{% endblock title %}
+
+{% block header %}
+
+<script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet" type="text/css" />
+<link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
+<link href="{% static 'users/dist/css/styles.css' %}" rel="stylesheet" />
+
+{% endblock header %}
+
+{% block content %}
+	<div>	
+		<nav class="navbar navbar-expand-lg navbar-dark bg-primary" id="sideNav">
+			<a class="navbar-brand js-scroll-trigger" href="#page-top">
+				<span class="d-block d-lg-none">
+					{{ requested_user.account.user.first_name }} {{ requested_user.account.user.last_name }}
+				</span>
+				{% if requested_user.account.gender == 1 %}	
+					<span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="{% static 'users/male.jpg' %}" alt="" /></span>
+				{% elif requested_user.account.gender == 2 %}
+					<span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="{% static 'users/female.jpg' %}" alt="" /></span>
+				{% else %}
+					<span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="{% static 'users/neutral.jpg' %}" alt="" /></span>
+				{% endif %}
+			</a>
+			
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav">
+					<li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">About</a></li>
+					{% if requested_user.account.is_mentor %}	
+						<li class="nav-item"><a class="nav-link js-scroll-trigger" href="#mentorship_details">Mentorship Details</a></li>						
+					{% endif %}
+
+					<li class="nav-item"><a class="nav-link js-scroll-trigger" href="#education">Education</a></li>
+					<li class="nav-item"><a class="nav-link js-scroll-trigger" href="#research_experience">Research Experience</a></li>
+					{% if requested_user == user %}	
+						<li class="nav-item">
+							<a class="nav-link js-scroll-trigger" href="{% url 'edit_profile' %}">
+								<i class="fas fa-edit"></i>
+							</a>
+						</li>
+					{% endif %}
+				</ul>
+			</div>
+		</nav>
+	</div>
+	
+	<!-- Page Content-->
+	<div class="container-fluid p-0">
+		<!-- About-->
+		<section class="resume-section" id="about">
+			<div class="resume-section-content">
+				<h1 class="mb-0">
+					<span class="text-primary"> {{ requested_user.account.user.first_name }}</span>
+					{{ requested_user.account.user.last_name}}
+					<span class="subheading mb-5">
+						<a href="mailto:{{requested_user.email}}">{{ requested_user.email }}</a>
+					</span>
+				</h1>
+				<div class="subheading mb-5">
+					<b>{{ requested_user.account.rating }} </b> <i class="fas fa-star"></i> 
+					&nbsp &nbsp|&nbsp &nbsp
+					{% if requested_user.account.is_mentor %}
+						<span style='color: #404065'>
+							<i>Mentor</i>
+						</span> 
+
+						&nbsp &nbsp|&nbsp &nbsp
+						<b>{{ requested_user.account.mentor.mentorrolefield.get_role_display}}, {{ requested_user.account.mentor.mentorrolefield.get_field_display}}</b>
+
+						&nbsp &nbsp|&nbsp &nbsp
+						<b>{{ requested_user.account.mentor.mentorarea.get_area_display}}</b>
+
+
+					{% else %}
+						<span style='color: #404065'>
+							<i>Mentee</i>
+						</span> 
+
+						&nbsp &nbsp|&nbsp &nbsp
+						<b>{{ requested_user.account.mentee.menteerolefield.get_role_display}}, {{ requested_user.account.mentee.menteerolefield.get_field_display}}</b>
+
+					{% endif %}
+				</div>
+
+				<p class="lead mb-5"> {{ requested_user.account.introduction }}</p>
+				{% if user.account.is_mentor %}
+					<div class="social-icons">
+						<a href="{{ user.account.social_handle }}" class="btn btn-primary" target="blank">Visit my site</a>
+					</div>
+				{% endif %}
+			</div>
+		</section>
+
+		{% if user.account.is_mentor %}
+			<hr class="m-0" />
+			<!-- Mentorship Details-->
+			<section class="resume-section" id="mentorship_details">
+				<div class="resume-section-content">
+					<h2 class="mb-5">Mentorship Details</h2>
+					<div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+						<div class="flex-grow-1">
+							<h5>Mentorship Duration</h5>
+							{% if user.account.mentor.mentorship_duration == 1 %}
+								One meeting
+							{% else %}
+								{{ user.account.mentor.mentorship_duration }} months
+							{% endif %}
+							<hr>
+
+							<h5>Is open for mentorship?</h5>
+							{% if user.account.mentor.is_open_to_mentorship %}
+								Yes
+							{% else %}
+								No
+							{% endif %}
+							<hr>
+
+							<h5>Open to mentoring</h5>
+							<ul>
+								{% if user.account.mentor.will_mentor_faculty %}
+									<li>Faculty</li>
+								{% endif %}
+
+								{% if user.account.mentor.will_mentor_phd %}
+									<li>PhD</li>
+								{% endif %}
+
+								{% if user.account.mentor.will_mentor_mtech %}
+									<li>M.Tech</li>
+								{% endif %}
+
+								{% if user.account.mentor.will_mentor_btech %}
+									<li>B.Tech</li>
+								{% endif %}
+							</ul>
+							<hr>
+
+							<h5>{{ user.account.user.first_name}} is willing to</h5>
+							<ul>
+								{% for responsibility in responsibilities %}
+									<li>{{ responsibility }}</li>
+								{% endfor %}
+							</ul>
+							<hr>
+
+						</div>
+					</div>
+				</div>
+			</section>
+		{% endif %}
+
+		<hr class="m-0" />
+		<!-- Education-->
+		<section class="resume-section" id="education">
+			<div class="resume-section-content">
+				<h2 class="mb-5">Education</h2>
+				<div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+					<div class="flex-grow-1">
+
+						{% for education in educations %}
+							<b>{{ education.qualification }}</b> 
+							from 
+							<b>{{ education.organization }}</b> 
+							<span style="float: right">
+								{{ education.start_date }} to {{ education.end_date }}
+							</span>
+							<br/>
+							{{ education.detail }}
+							<hr>
+						{% endfor %}
+
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<hr class="m-0" />
+		<!-- Experience-->
+		<section class="resume-section" id="research_experience">
+			<div class="resume-section-content">
+				<h2 class="mb-5">Research Experience</h2>
+				<div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+					<div class="flex-grow-1">
+						{% for experience in experiences %}
+							<b>{{ experience.position }}</b> 
+							at 
+							<b>{{ experience.organization }}</b> 
+							<span style="float: right">
+								{{ experience.start_date }} to {{ experience.end_date }}
+							</span>
+							<br/>
+							{{ experience.detail }}
+							<hr>
+						{% endfor %}
+					</div>
+				</div>
+
+			</div>
+		</section>
+	</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+<script src="{% static 'users/dist/js/scripts.js' %}"></script>
+
+{% endblock content %}
