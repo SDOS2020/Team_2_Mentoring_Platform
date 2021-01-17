@@ -44,7 +44,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Run migrations
-      run: python sdos_project/manage.py migrate
+      run: python manage.py migrate
     - name: Run Tests
       run: |
-        python sdos_project/manage.py test sdos_project
+        python manage.py test sdos_project
