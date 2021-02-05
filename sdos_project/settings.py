@@ -26,13 +26,6 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
-	'django.contrib.admin',
-	'django.contrib.auth',
-	'django.contrib.contenttypes',
-	'django.contrib.sessions',
-	'django.contrib.messages',
-	'django.contrib.staticfiles',
-
 	# API
 	'api',
 
@@ -46,6 +39,14 @@ INSTALLED_APPS = [
 
 	# Confirmation Mail
 	# 'simple_email_confirmation',
+
+	# Django default apps
+	'django.contrib.admin',
+	'django.contrib.auth',
+	'django.contrib.contenttypes',
+	'django.contrib.sessions',
+	'django.contrib.messages',
+	'django.contrib.staticfiles',
 ]
 
 # Email confirmation
