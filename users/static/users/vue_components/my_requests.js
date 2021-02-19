@@ -75,9 +75,49 @@ const Requests = {
 							
 							<div class="modal-footer">
 								<button v-on:click="accept_request(request.username, index)" class="btn btn-success"> Accept </button>
-								<button v-on:click="reject_request(request.username, index)" class="btn btn-danger"> Reject </button>
+								
+								<a
+									class="btn btn-danger"
+									data-toggle="modal"
+									v-bind:data-target="'#rejectReqModal' + index"
+								>
+									Reject
+								</a>
+
 								<button id="close-button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 							</div>
+
+							<!-- START MODAL - rejectReqModal -->
+							<div class="modal fade" v-bind:id="'rejectReqModal' + index" tabindex="-1" role="dialog" v-bind:aria-labelledby="'rejectReqModalTitle' + index" aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" v-bind:id="'rejectReqModalTitle' + index">Reject Request</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										
+										<div class="modal-body">
+											<h5>Enter reason for rejecting the request</h5>
+											<textarea v-model="reject_reason" style="width: 100%;"></textarea>
+										</div>
+										
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+											<button
+												v-on:click="reject_request(request.username, index)"
+												type="button"
+												class="btn btn-danger"
+											>
+												Confirm
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- END MODAL -->
+							
 						</div>
 					</div>
 				</div>
@@ -86,7 +126,8 @@ const Requests = {
 	`,
 	data() {
 		return {
-			requests: []
+			requests: [],
+			reject_reason: ""
 		};
 	},
 	created() {
@@ -137,7 +178,8 @@ const Requests = {
 				request_url,
 				{
 					'params': {
-						'requestor': username
+						'requestor': username,
+						'reject_reason': this.reject_reason,
 					}
 				}
 			)
@@ -150,9 +192,12 @@ const Requests = {
 				console.log(error);
 			});
 
+			this.reject_reason = "";
 			$('#requestModal' + index).modal('hide');
+			$('#rejectReqModal' + index).modal('hide');
+
 			$('body').removeClass('modal-open');
 			$('.modal-backdrop').remove();
-		}
+		},
 	}
 };

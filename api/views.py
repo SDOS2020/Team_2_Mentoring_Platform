@@ -179,7 +179,8 @@ def send_mentorship_request(request):
 		# If mentor already has 5 mentees (or has received 5 requests)
 		status_code = 4
 	
-	else: # Everything is fine
+	else: 
+		# Everything is fine
 		status = True
 		MentorshipRequestMessage.objects.create(mentee=user.account.mentee, mentor=requestee.account.mentor, 
 			sop=sop, expectations=expectations, commitment=commitment
@@ -276,12 +277,21 @@ def reject_mentorship_request(request):
 	user = request.user
 	to_reject = request.GET.get('requestor')
 	to_reject = User.objects.get(username=to_reject)
+	reject_reason = request.GET.get('reject_reason')
 
 	status = False
 	if MenteeSentRequest.objects.filter(mentor=user.account.mentor, mentee=to_reject.account.mentee).exists():
 		# Delete a request only if the request exists
 		MenteeSentRequest.objects.filter(mentor=user.account.mentor, mentee=to_reject.account.mentee).delete()
 		MentorshipRequestMessage.objects.filter(mentor=user.account.mentor, mentee=to_reject.account.mentee).delete()
+		RejectedMentorshipRequest.objects.create(
+			mentor=user.account.mentor, mentee=to_reject.account.mentee, reject_reason=reject_reason
+		)
+		send_email_custom(
+			to=[user.email, to_reject.email],
+			subject='Mentorship Request Rejected',
+			body=f'{user.first_name} rejected the mentorship request sent by {to_reject.first_name}.\nREASON: {reject_reason}'
+		)
 		status = True
 
 	return JsonResponse({"success" : status})
