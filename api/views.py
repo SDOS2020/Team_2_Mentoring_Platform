@@ -1,5 +1,7 @@
 import json
 from datetime import datetime
+
+from mentor_mentee.methods import send_email_custom
 from users.forms import EditAreasForm
 from django.http import JsonResponse
 from django.core.mail import send_mail
@@ -183,6 +185,8 @@ def send_mentorship_request(request):
 			sop=sop, expectations=expectations, commitment=commitment
 		)
 		MenteeSentRequest.objects.create(mentee=user.account.mentee, mentor=requestee.account.mentor)
+		send_email_custom(to=[user.email], subject="Request sent", body=f"Your request to {requestee.first_name} has been sent!")
+		send_email_custom(to=[requestee.email], subject="Request received", body=f"You have a request from {user.first_name}.")
 
 	return JsonResponse({"success": status, "status_code": status_code})
 
@@ -556,6 +560,12 @@ def add_meeting(request):
 	response = {
 		'success': True
 	}
+
+	email_subject = "Meeting created"
+	email_body = f"Meeting details:\n" \
+				 f"Creator: {user.username}" \
+				 f"Guest:   {guest.username}"
+	send_email_custom(to=[user.email, guest.email], subject=email_subject, body=email_body)
 
 	return JsonResponse(response)
 
