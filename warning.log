@@ -723,3 +723,5 @@ django.db.utils.IntegrityError: NOT NULL constraint failed: users_meetingsummary
 19/Feb/2021 22:05:15 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-1] "GET /favicon.ico HTTP/1.1" 404 2466
 19/Feb/2021 23:10:30 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-2] Not Found: /favicon.ico
 19/Feb/2021 23:10:30 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-2] "GET /favicon.ico HTTP/1.1" 404 2466
+19/Feb/2021 23:22:45 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-7] Not Found: /favicon.ico
+19/Feb/2021 23:22:45 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-7] "GET /favicon.ico HTTP/1.1" 404 2466
