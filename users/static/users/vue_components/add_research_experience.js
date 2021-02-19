@@ -45,7 +45,7 @@ const AddResearchExperience = {
 						</div>
 
 						<div class="modal-body">
-							<h5>Detail</h5>
+							<h5>A brief description</h5>
 							<textarea v-model="detail" class="form-control" style="width: 100%;"></textarea>
 						</div>
 
