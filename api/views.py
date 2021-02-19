@@ -185,10 +185,8 @@ def send_mentorship_request(request):
 			sop=sop, expectations=expectations, commitment=commitment
 		)
 		MenteeSentRequest.objects.create(mentee=user.account.mentee, mentor=requestee.account.mentor)
-		send_email_custom(to=[user.email], subject="Request submitted", body=f"Your request to {requestee.first_name} "
-																			f"has been created!")
-		send_email_custom(to=[requestee.email], subject="Request received", body=f"Request from {user.first_name} "
-																			   f"received.")
+		send_email_custom(to=[user.email], subject="Request sent", body=f"Your request to {requestee.first_name} has been sent!")
+		send_email_custom(to=[requestee.email], subject="Request received", body=f"You have a request from {user.first_name}.")
 
 	return JsonResponse({"success": status, "status_code": status_code})
 
