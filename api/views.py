@@ -563,6 +563,12 @@ def add_meeting(request):
 		'success': True
 	}
 
+	email_subject = "Meeting created"
+	email_body = f"Meeting details:\n" \
+				 f"Creator: {user.username}" \
+				 f"Guest:   {guest.username}"
+	send_email_custom(to=[user.email, guest.email], subject=email_subject, body=email_body)
+
 	return JsonResponse(response)
 
 
