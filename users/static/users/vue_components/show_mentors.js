@@ -36,7 +36,7 @@ const ShowMentors = {
 							data-toggle="modal"
 							v-bind:data-target="'#endRelModalLong' + index"
 						>
-							End relationship
+							Remove
 						</a>
 					</td>
 

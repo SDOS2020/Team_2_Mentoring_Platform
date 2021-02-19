@@ -76,6 +76,27 @@ body {
 
 {% if user.is_authenticated %}
 	<style>
+		#pending-requests {
+			position: absolute;
+			background-color: #404065;
+			right: 3rem;
+			width: 15rem;
+			top: 5rem;
+			color: white;
+			border-radius: 10px;
+			padding: 1rem;
+		}
+
+		#pending-requests a {
+			text-decoration: none;
+			color: white;
+		}
+
+		#pending-requests a:hover {
+			color: rgb(200, 200, 220);
+			font-weight: bolder;
+		}
+
 		#todo-app {
 			position: absolute;
 			left: 3rem;
@@ -98,7 +119,6 @@ body {
 
 		#show-meetings-header {
 			background: none !important;
-			
 		}
 
 		#show-meetings-header font {
@@ -112,6 +132,7 @@ body {
 			text-rendering: optimizeLegibility;
 		}
 	</style>
+
 	<div id="app" style="margin-left: 3rem; margin-top: -3rem;">
 
 		<div id="todo-app">
@@ -120,6 +141,12 @@ body {
 
 		<div id="show-meetings-app">
 			<show-meetings></show-meetings>
+		</div>
+		
+		<div id="pending-requests" v-bind:hidden="!(has_pending_requests)">
+			<a href="{% url 'my_requests' %}">
+				You have pending requests
+			</a>
 		</div>
 	</div>
 {% endif %}
@@ -143,11 +170,29 @@ body {
 		const app = new Vue({
 			delimiters: ["[[", "]]"],
 
+			data() {
+				return {
+					has_pending_requests: false
+				};
+			},
+
 			components: {
 				'todo': ToDoComponent,
 				"show-meetings": ShowMeeting,
 			},
 
+			created() {
+				const request_url = "/api/has_pending_requests/";
+
+				axios.get(request_url)
+				.then(response => {
+					this.has_pending_requests = response.data.has_pending_requests;
+				})
+				.catch(error => {
+					console.log("[ERROR]");
+					console.log(error);
+				});
+			}
 		});
 		app.$mount('#app');
 	</script>

@@ -86,17 +86,31 @@ const SearchUsers = {
 													<form>
 														<div class="form-group">
 															<label class="col-form-label">Purpose:</label>
-															<textarea v-model="request_sop" type="text" class="form-control" ></textarea>
+															<textarea
+																type="text"
+																v-model="request_sop"
+																class="form-control"
+																placeholder="What is your reason for applying for a mentorship under this mentor (i.e. your statement of purpose)?"
+															></textarea>
 														</div>
-
+																
 														<div class="form-group">
 															<label class="col-form-label">Expectations:</label>
-															<textarea v-model="request_expectations" class="form-control" ></textarea>
+															<textarea
+																v-model="request_expectations"
+																class="form-control"
+																placeholder="What do you expect to gain out of the mentorship?"
+															></textarea>
 														</div>
 
 														<div class="form-group">
 															<label class="col-form-label">Commitment:</label>
-															<textarea v-model="request_commitment" type="text" class="form-control"></textarea>
+															<textarea
+																type="text"
+																v-model="request_commitment"
+																class="form-control"
+																placeholder="E.g. how many hours per week / month are you willing to put in..."
+															></textarea>
 														</div>
 													</form>
 												</div>
