@@ -964,3 +964,10 @@ def save_mentee_profile(request):
 	__save_research_experience(user.account, fields)
 
 	return JsonResponse({'success': True})
+
+
+@login_required
+@mentor_required
+def has_pending_requests(request):
+	has_pending_requests = MenteeSentRequest.objects.filter(mentor=request.user.account.mentor).exists()
+	return JsonResponse({'success': True, 'has_pending_requests': has_pending_requests})
