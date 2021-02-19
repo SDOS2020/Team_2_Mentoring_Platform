@@ -28,12 +28,17 @@ Login
 				</center>
 			</form>
 
-			<br/>
 			<center>
+				<br/>
+				<small>
+					<a href="{% url 'password_reset' %}">Forgot password?</a>
+				</small>
+
+				<br/>
 				<small>		
 					Don't have an account? Register as a
-					<a href="/users/register_mentor">mentor</a>
-					or a <a href="/users/register_mentee">mentee</a>.
+					<a href="{% url 'register_mentor' %}">mentor</a>
+					or a <a href="{% url 'register_mentee' %}">mentee</a>.
 				</small>
 			</center>
 		</div>
