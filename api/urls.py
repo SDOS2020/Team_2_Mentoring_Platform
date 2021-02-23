@@ -38,6 +38,7 @@ urlpatterns = [
 
 	path("get_meetings/<str:guest_name>", api_views.get_meetings, name="get_meetings"),
 	path("add_meeting/", api_views.add_meeting, name="add_meeting"),
+	path("edit_meeting/", api_views.edit_meeting, name="edit_meeting"),
 
 	path("has_pending_requests/", api_views.has_pending_requests, name="has_pending_requests"),
 

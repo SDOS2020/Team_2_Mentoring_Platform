@@ -50,7 +50,7 @@ My Mentee
 			<tbody>
 				<tr>
 					<td id="meeting-table">
-						<show-meeting guest_name="{{ mentee }}"></show-meeting>
+						<show-meeting guest_name="{{ mentee }}" csrf="{{ csrf_token }}"></show-meeting>
 						<schedule-meeting guest_name="{{ mentee }}" csrf="{{ csrf_token }}"></schedule-meeting>
 						<br/>
 					</td>

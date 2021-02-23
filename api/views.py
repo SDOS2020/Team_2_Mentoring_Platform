@@ -526,7 +526,7 @@ def get_meetings(request, guest_name):
 		meeting_created_by_me = Meeting.objects.filter(creator=user.account, guest=guest.account).all()
 		meeting_created_for_me = Meeting.objects.filter(creator=guest.account, guest=user.account).all()
 
-	fields = ('title', 'agenda', 'time', 'meeting_url')
+	fields = ('id', 'title', 'agenda', 'time', 'meeting_url')
 	meetings = [dict((field, getattr(meeting, field)) for field in fields) for meeting in meeting_created_by_me] + \
 		[dict((field, getattr(meeting, field)) for field in fields) for meeting in meeting_created_for_me]
 
@@ -579,6 +579,36 @@ def add_meeting(request):
 
 	return JsonResponse(response)
 
+
+@login_required
+def edit_meeting(request):
+	user = request.user
+	req = json.loads(request.body)
+	meeting_id = req['id']
+	meeting_title = req['title']
+	meeting_agenda = req['agenda']
+	meeting_url = req['meeting_url']
+	meeting_time = req['time']
+	
+	success = True
+
+	print('New updated values')
+	print(meeting_title, meeting_agenda, meeting_url, meeting_time)
+
+	meeting = Meeting.objects.get(id=meeting_id)
+
+	#Check if the current user is either the creator or the guest of the meeting
+	if not (meeting.creator == user.account or meeting.guest == user.account):
+		#Some random user is trying to change the details
+		success = False
+	else:
+		meeting.title = meeting_title
+		meeting.agenda = meeting_agenda
+		meeting.meeting_url = meeting_url
+		meeting.time = meeting_time
+		meeting.save()
+	
+	return JsonResponse({'success': success})
 
 @login_required
 def get_meeting_summaries(request, guest_name):
