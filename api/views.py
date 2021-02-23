@@ -437,37 +437,36 @@ def update_settings(request):
 	return JsonResponse({'success': True})
 
 
+def __get_mentor_settings(mentor: Mentor) -> dict:
+	response = {
+		'mentorship_duration': mentor.mentorship_duration,
+		'is_open_to_mentorship': mentor.is_open_to_mentorship,
+		'will_mentor_faculty': mentor.will_mentor_faculty,
+		'will_mentor_phd': mentor.will_mentor_phd,
+		'will_mentor_mtech': mentor.will_mentor_mtech,
+		'will_mentor_btech': mentor.will_mentor_btech,
+		'responsibilities': [],
+		'other_responsibility': mentor.other_responsibility,
+	}
+
+	s = 'responsibility'
+	for i, j in MentorResponsibility.choices:
+		response['responsibilities'].append( 
+			(getattr(mentor, s + str(i)), j)
+		)
+	
+	return response
+
+
 @login_required
 def get_settings(request):
-	user = request.user
+	account = request.user.account
+	response = {'success': True}
 	
-	if user.account.is_mentor:
-
-		response = {
-			'success': True,
-			'mentorship_duration': user.account.mentor.mentorship_duration,
-			'is_open_to_mentorship': user.account.mentor.is_open_to_mentorship,
-			'will_mentor_faculty': user.account.mentor.will_mentor_faculty,
-			'will_mentor_phd': user.account.mentor.will_mentor_phd,
-			'will_mentor_mtech': user.account.mentor.will_mentor_mtech,
-			'will_mentor_btech': user.account.mentor.will_mentor_btech,
-			'responsibilities': [],
-			'other_responsibility': user.account.mentor.other_responsibility,
-		}
-
-		s = 'responsibility'
-		for i, j in MentorResponsibility.choices:
-			response['responsibilities'].append( 
-				(getattr(user.account.mentor, s + str(i)), j)
-			)
+	if account.is_mentor:
+		response.update(__get_mentor_settings(account.mentor))
 	else:
-
-		response = {
-			'success': True,
-			'needs_mentoring': user.account.mentee.needs_mentoring,
-			# TODO remove needs_urgent_mentoring
-			# 'needs_urgent_mentoring': user.account.mentee.needs_urgent_mentoring
-		}
+		response['needs_mentoring'] = account.mentee.needs_mentoring,
 
 	return JsonResponse(response)
 
@@ -991,3 +990,159 @@ def save_mentee_profile(request):
 def has_pending_requests(request):
 	has_pending_requests = MenteeSentRequest.objects.filter(mentor=request.user.account.mentor).exists()
 	return JsonResponse({'success': True, 'has_pending_requests': has_pending_requests})
+
+
+@login_required
+def get_mentor_statistics(request):
+	mentor_username = request.GET.get('mentor_username')
+	mentor = User.objects.filter(username=mentor_username).first()
+
+	if not mentor:
+		print('[ERROR] Requested mentor', mentor_username, 'does not exist')
+		return JsonResponse({'success': False})
+
+	if not mentor.account.is_mentor:
+		print('[ERROR] Requested user', mentor_username, 'is not a mentor')
+		return JsonResponse({'success': False})
+
+	mentor = mentor.account.mentor
+	response = { 'mentor_username': mentor_username }
+	params = request.GET.dict()
+
+	if 'n_active_mentees' in params:
+		response['n_active_mentees'] = MyMentee.objects.filter(mentor=mentor).count()
+
+	if 'n_total_mentees' in params:
+		response['n_total_mentees'] = MyMentee.objects.filter(mentor=mentor).count()
+		response['n_total_mentees'] += DeletedMentorMenteeRelation.objects.filter(mentor=mentor).count()
+
+	if 'n_rejected_mentees' in params:
+		response['n_rejected_mentees'] = RejectedMentorshipRequest.objects.filter(mentor=mentor).count()
+
+	if 'n_meetings' in params:
+		response['n_meetings'] = Meeting.objects.filter(guest=mentor.account).count()
+		response['n_meetings'] += Meeting.objects.filter(creator=mentor.account).count()
+
+	if 'n_messages_sent' in params:
+		response['n_messages_sent'] = Message.objects.filter(sender=mentor.account).count()
+
+	if 'n_messages_received' in params:
+		response['n_messages_received'] = Message.objects.filter(receiver=mentor.account).count()
+
+	mentor_settings = __get_mentor_settings(mentor)
+	if 'responsibilities' in params:
+		response['responsibilities'] = [resp for (yes, resp) in mentor_settings['responsibilities'] if yes]
+		if mentor_settings['other_responsibility']:
+			response['responsibilities'].append(mentor_settings['other_responsibility'])
+
+	if 'will_mentor' in params:
+		response['will_mentor'] = []
+		mentee_types = ['faculty', 'phd', 'mtech', 'btech']
+	
+		for i in mentee_types:
+			if mentor_settings['will_mentor_' + i]:
+				response['will_mentor'].append(i.title())
+
+	response['success'] = True
+	return JsonResponse(response)
+
+
+@login_required
+def get_mentee_statistics(request):
+	mentee_username = request.GET.get('mentee_username')
+	mentee = User.objects.filter(username=mentee_username).first()
+
+	if not mentee:
+		print('[ERROR] Requested mentee', mentee_username, 'does not exist')
+		return JsonResponse({'success': False})
+
+	if not mentee.account.is_mentee:
+		print('[ERROR] Requested user', mentee_username, 'is not a mentee')
+		return JsonResponse({'success': False})
+
+	mentee = mentee.account.mentee
+	response = { 'mentee_username': mentee_username }
+	params = request.GET.dict()
+	
+	if 'n_mentors' in params:
+		response['n_mentors'] = MyMentor.objects.filter(mentee=mentee).count()
+
+	if 'n_meetings' in params:
+		response['n_meetings'] = Meeting.objects.filter(guest=mentee.account).count()
+		response['n_meetings'] += Meeting.objects.filter(creator=mentee.account).count()
+
+	if 'n_messages_sent' in params:
+		response['n_messages_sent'] = Message.objects.filter(sender=mentee.account).count()
+
+	if 'n_messages_received' in params:
+		response['n_messages_received'] = Message.objects.filter(receiver=mentee.account).count()
+
+	if 'n_pending_requests' in params:
+		response['n_pending_requests'] = MenteeSentRequest.objects.filter(mentee=mentee).count()
+
+	if 'n_meeting_summaries_added' in params:
+		response['n_meeting_summaries_added'] = MeetingSummary.objects.filter(mentee=mentee).count()
+
+	response['success'] = True
+	return JsonResponse(response)
+
+
+@login_required
+def get_mentor_mentee_statistics(request):
+	mentor_username = request.GET.get('mentor_username')
+	mentee_username = request.GET.get('mentee_username')
+	mentor = User.objects.filter(username=mentor_username).first()
+	mentee = User.objects.filter(username=mentee_username).first()
+
+	if not mentor:
+		print('[ERROR] Requested mentor', mentee_username, 'does not exist')
+		return JsonResponse({'success': False})
+
+	if not mentor.account.is_mentor:
+		print('[ERROR] Requested user', mentee_username, 'is not a mentor')
+		return JsonResponse({'success': False})
+
+	if not mentee:
+		print('[ERROR] Requested mentee', mentee_username, 'does not exist')
+		return JsonResponse({'success': False})
+
+	if not mentee.account.is_mentee:
+		print('[ERROR] Requested user', mentee_username, 'is not a mentee')
+		return JsonResponse({'success': False})
+
+	mentor = mentor.account.mentor
+	mentee = mentee.account.mentee
+	response = {
+		'mentor_username': mentor_username,
+		'mentee_username': mentee_username
+	}
+	params = request.GET.dict()
+
+	if 'n_meetings' in params:
+		response['n_meetings'] = Meeting.objects.filter(creator=mentor.account, guest=mentee.account).count()
+		response['n_meetings'] += Meeting.objects.filter(creator=mentee.account, guest=mentor.account).count()
+
+	if 'n_messages' in params:
+		response['n_messages'] = Message.objects.filter(sender=mentor.account, receiver=mentee.account).count()
+		response['n_messages'] += Message.objects.filter(sender=mentee.account, receiver=mentor.account).count()
+
+	if 'n_meeting_summaries' in params:
+		response['n_meeting_summaries'] = MeetingSummary.objects.filter(mentor=mentor, mentee=mentee).count()
+
+	if 'n_milestones' in params:
+		response['n_milestones'] = Milestone.objects.filter(mentor=mentor, mentee=mentee).count()
+
+	if 'avg_meeting_duration' in params:
+		total_time = 0
+		summaries = MeetingSummary.objects.filter(mentor=mentor, mentee=mentee)
+		for summary in summaries:
+			total_time += summary.meeting_length
+
+		avg_meeting_duration = -1
+		if summaries.count() > 0:
+			avg_meeting_duration = total_time / summaries.count()
+
+		response['avg_meeting_duration'] = avg_meeting_duration
+
+	response['success'] = True
+	return JsonResponse(response)

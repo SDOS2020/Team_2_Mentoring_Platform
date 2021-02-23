@@ -53,4 +53,9 @@ urlpatterns = [
 
 	path("save_mentee_profile/", api_views.save_mentee_profile, name="save_mentee_profile"),
 	path("get_mentee_profile/", api_views.get_mentee_profile, name="get_mentee_profile"),
+
+	# Statistics
+	path("get_mentor_statistics/", api_views.get_mentor_statistics, name="get_mentor_statistics"),
+	path("get_mentee_statistics/", api_views.get_mentee_statistics, name="get_mentee_statistics"),
+	path("get_mentor_mentee_statistics/", api_views.get_mentor_mentee_statistics, name="get_mentor_mentee_statistics"),
 ]
