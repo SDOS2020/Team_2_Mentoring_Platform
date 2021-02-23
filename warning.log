@@ -1102,3 +1102,123 @@ django.core.exceptions.ValidationError: ['“” value has an invalid format. It
 23/Feb/2021 18:59:46 ERROR location:[/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-1] "POST /api/edit_meeting/ HTTP/1.1" 500 133333
 23/Feb/2021 19:00:23 WARNING location:[/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/utils/log.py:224] thread:[Thread-3] Not Found: /favicon.ico
 23/Feb/2021 19:00:23 WARNING location:[/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-3] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 19:55:56 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-1] Not Found: /favicon.ico
+23/Feb/2021 19:55:56 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-1] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 20:19:15 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-13] Not Found: /favicon.ico
+23/Feb/2021 20:19:15 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-13] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 20:20:00 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-13] Not Found: /favicon.ico
+23/Feb/2021 20:20:00 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-13] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 20:20:30 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-9] Not Found: /favicon.ico
+23/Feb/2021 20:20:30 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-9] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 20:24:49 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-7] Not Found: /favicon.ico
+23/Feb/2021 20:24:49 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-7] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 20:40:44 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-6] Not Found: /favicon.ico
+23/Feb/2021 20:40:44 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-6] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 20:41:11 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-4] Not Found: /favicon.ico
+23/Feb/2021 20:41:11 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-4] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 20:44:33 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-2] Not Found: /favicon.ico
+23/Feb/2021 20:44:33 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-2] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 20:48:12 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-4] Not Found: /favicon.ico
+23/Feb/2021 20:48:12 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-4] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 20:48:34 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-5] Not Found: /favicon.ico
+23/Feb/2021 20:48:34 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-5] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 20:49:11 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-6] Not Found: /favicon.ico
+23/Feb/2021 20:49:11 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-6] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 20:49:25 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-2] Not Found: /favicon.ico
+23/Feb/2021 20:49:25 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-2] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 20:50:49 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-6] Not Found: /favicon.ico
+23/Feb/2021 20:50:49 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-6] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 20:51:45 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-3] Not Found: /favicon.ico
+23/Feb/2021 20:51:45 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-3] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 20:52:26 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-7] Not Found: /favicon.ico
+23/Feb/2021 20:52:26 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-7] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 20:53:11 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-3] Not Found: /favicon.ico
+23/Feb/2021 20:53:11 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-3] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 20:54:58 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-3] Not Found: /favicon.ico
+23/Feb/2021 20:54:58 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-3] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 20:55:13 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-2] Not Found: /favicon.ico
+23/Feb/2021 20:55:13 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-2] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 20:59:48 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-3] Not Found: /favicon.ico
+23/Feb/2021 20:59:48 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-3] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:07:27 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-8] Not Found: /favicon.ico
+23/Feb/2021 21:07:27 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-8] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:07:35 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-5] Not Found: /favicon.ico
+23/Feb/2021 21:07:35 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-5] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:08:10 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-11] Not Found: /favicon.ico
+23/Feb/2021 21:08:10 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-11] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:08:21 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-12] Not Found: /favicon.ico
+23/Feb/2021 21:08:21 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-12] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:08:51 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-10] Not Found: /favicon.ico
+23/Feb/2021 21:08:51 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-10] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:09:10 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-10] Not Found: /favicon.ico
+23/Feb/2021 21:09:10 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-10] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:09:44 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-11] Not Found: /favicon.ico
+23/Feb/2021 21:09:44 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-11] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:10:29 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-10] Not Found: /favicon.ico
+23/Feb/2021 21:10:29 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-10] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:11:06 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-12] Not Found: /favicon.ico
+23/Feb/2021 21:11:06 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-12] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:11:21 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-14] Not Found: /favicon.ico
+23/Feb/2021 21:11:21 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-14] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:11:52 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-2] Not Found: /favicon.ico
+23/Feb/2021 21:11:52 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-2] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:13:22 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-2] Not Found: /favicon.ico
+23/Feb/2021 21:13:22 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-2] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:13:42 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-2] Not Found: /favicon.ico
+23/Feb/2021 21:13:42 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-2] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:15:06 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-4] Not Found: /favicon.ico
+23/Feb/2021 21:15:06 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-4] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:15:30 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-3] Not Found: /favicon.ico
+23/Feb/2021 21:15:30 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-3] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:15:40 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-1] Not Found: /favicon.ico
+23/Feb/2021 21:15:40 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-1] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:15:46 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-3] Not Found: /favicon.ico
+23/Feb/2021 21:15:46 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-3] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:15:55 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-6] Not Found: /favicon.ico
+23/Feb/2021 21:15:55 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-6] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:16:08 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-2] Not Found: /favicon.ico
+23/Feb/2021 21:16:08 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-2] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:17:53 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-4] Not Found: /favicon.ico
+23/Feb/2021 21:17:53 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-4] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:18:28 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-4] Not Found: /favicon.ico
+23/Feb/2021 21:18:28 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-4] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:18:36 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-2] Not Found: /favicon.ico
+23/Feb/2021 21:18:36 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-2] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:18:58 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-4] Not Found: /favicon.ico
+23/Feb/2021 21:18:58 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-4] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:19:06 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-1] Not Found: /favicon.ico
+23/Feb/2021 21:19:06 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-1] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:19:11 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-6] Not Found: /favicon.ico
+23/Feb/2021 21:19:11 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-6] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:19:37 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-5] Not Found: /favicon.ico
+23/Feb/2021 21:19:37 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-5] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:22:32 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-8] Not Found: /favicon.ico
+23/Feb/2021 21:22:32 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-8] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:23:51 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-4] Not Found: /favicon.ico
+23/Feb/2021 21:23:51 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-4] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:24:00 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-4] Not Found: /favicon.ico
+23/Feb/2021 21:24:00 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-4] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:34:28 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-13] Not Found: /favicon.ico
+23/Feb/2021 21:34:28 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-13] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:36:32 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-14] Not Found: /favicon.ico
+23/Feb/2021 21:36:32 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-14] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:39:13 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-13] Not Found: /favicon.ico
+23/Feb/2021 21:39:13 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-13] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:39:22 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-13] Not Found: /favicon.ico
+23/Feb/2021 21:39:22 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-13] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:39:33 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-14] Not Found: /favicon.ico
+23/Feb/2021 21:39:33 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-14] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:40:00 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-14] Not Found: /favicon.ico
+23/Feb/2021 21:40:00 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-14] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:40:35 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-14] Not Found: /favicon.ico
+23/Feb/2021 21:40:35 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-14] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:42:24 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-16] Not Found: /favicon.ico
+23/Feb/2021 21:42:24 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-16] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:44:07 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-16] Not Found: /favicon.ico
+23/Feb/2021 21:44:07 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-16] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:48:44 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-16] Not Found: /favicon.ico
+23/Feb/2021 21:48:44 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-16] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:49:18 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-15] Not Found: /favicon.ico
+23/Feb/2021 21:49:18 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-15] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:49:28 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/utils/log.py:230] thread:[Thread-15] Not Found: /favicon.ico
+23/Feb/2021 21:49:28 WARNING location:[/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-15] "GET /favicon.ico HTTP/1.1" 404 2466
