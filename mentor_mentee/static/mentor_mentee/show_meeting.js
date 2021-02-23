@@ -57,8 +57,50 @@ const ShowMeeting = {
 	props: {
 		guest_name: null,
 	},
-
+	
 	created() {
+		// TO TEST MENTOR STATISTICS
+		// let request_url = "/api/get_mentor_statistics/";
+		// axios.get(request_url, {
+		// 	params: {
+		// 		'mentor_username': 'shaurya',
+		// 		'n_active_mentees': '',
+		// 		'n_total_mentees': '',
+		// 		'n_rejected_mentees': '',
+		// 		'n_meetings': '',
+		// 		'n_messages_sent': '',
+		// 		'n_messages_received': '',
+		// 		'responsibilities': '',
+		// 		'will_mentor': '',
+		// 	}
+		// })
+		// .then(response => {
+		// 	console.log(response.data);
+		// })
+		// .catch(error => {
+		// 	console.log('[ERROR]');
+		// });
+
+		// TO TEST MENTOR-MENTEE STATISTICS
+		// let request_url = "/api/get_mentor_mentee_statistics/";
+		// axios.get(request_url, {
+		// 	params: {
+		// 		'mentor_username': 'shaurya',
+		// 		'mentee_username': 'pratik',
+		// 		'n_meetings': '',
+		// 		'n_messages': '',
+		// 		'n_meeting_summaries': '',
+		// 		'n_milestones': '',
+		// 		'avg_meeting_duration': '',
+		// 	}
+		// })
+		// .then(response => {
+		// 	console.log(response.data);
+		// })
+		// .catch(error => {
+		// 	console.log('[ERROR]');
+		// });
+
 		this.get_meetings();
 		window.setInterval(this.get_meetings, 1000);
 	},

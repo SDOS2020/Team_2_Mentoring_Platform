@@ -838,3 +838,225 @@ django.db.utils.OperationalError: table users_rejectedmentorshiprequest has no c
 19/Feb/2021 19:43:40 ERROR location:[/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-1] "GET /api/reject_mentorship_request/?requestor=reeshu&reject_reason=you+have+been+rejected HTTP/1.1" 500 162398
 19/Feb/2021 19:45:01 WARNING location:[/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/utils/log.py:224] thread:[Thread-1] Not Found: /favicon.ico
 19/Feb/2021 19:45:01 WARNING location:[/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-1] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:04:38 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-4] Not Found: /favicon.ico
+23/Feb/2021 21:04:38 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-4] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:04:49 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-2] Not Found: /favicon.ico
+23/Feb/2021 21:04:49 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-2] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:05:35 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-3] Not Found: /favicon.ico
+23/Feb/2021 21:05:35 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-3] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:06:09 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-5] Not Found: /favicon.ico
+23/Feb/2021 21:06:09 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-5] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:35:17 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-3] Internal Server Error: /api/get_mentor_statistics/
+Traceback (most recent call last):
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\api\views.py", line 1016, in get_mentor_statistics
+    response['n_meetings'] = Meeting.objects.filter(guest=mentor.account)
+AttributeError: 'NoneType' object has no attribute 'account'
+23/Feb/2021 21:35:17 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-2] Not Found: /favicon.ico
+23/Feb/2021 21:35:17 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-3] "GET /api/get_mentor_statistics/?mentor_username=karan&n_active_mentees=&n_total_mentees=&n_rejected_mentees=&n_meetings=&n_messages_sent=&n_messages_received= HTTP/1.1" 500 80444
+23/Feb/2021 21:35:17 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-2] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:38:02 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-1] Internal Server Error: /api/get_mentor_statistics/
+Traceback (most recent call last):
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\api\views.py", line 1001, in get_mentor_statistics
+    if not mentor.account.is_mentor:
+AttributeError: 'NoneType' object has no attribute 'account'
+23/Feb/2021 21:38:02 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-1] "GET /api/get_mentor_statistics/?mentor_username=shaurya&n_active_mentees=&n_total_mentees=&n_rejected_mentees=&n_meetings=&n_messages_sent=&n_messages_received= HTTP/1.1" 500 79078
+23/Feb/2021 21:38:16 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-4] Internal Server Error: /api/get_mentor_statistics/
+Traceback (most recent call last):
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\api\views.py", line 1001, in get_mentor_statistics
+    if not mentor.account.is_mentor:
+AttributeError: 'NoneType' object has no attribute 'account'
+23/Feb/2021 21:38:16 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-4] "GET /api/get_mentor_statistics/?mentor_username=shaurya&n_active_mentees=&n_total_mentees=&n_rejected_mentees=&n_meetings=&n_messages_sent=&n_messages_received= HTTP/1.1" 500 79343
+23/Feb/2021 21:38:16 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-4] Not Found: /favicon.ico
+23/Feb/2021 21:38:16 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-4] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 21:38:45 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-2] Internal Server Error: /api/get_mentor_statistics/
+Traceback (most recent call last):
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\api\views.py", line 1001, in get_mentor_statistics
+    if not mentor.account.is_mentor:
+AttributeError: 'NoneType' object has no attribute 'account'
+23/Feb/2021 21:38:45 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-2] "GET /api/get_mentor_statistics/?mentor_username=shaurya&n_active_mentees=&n_total_mentees=&n_rejected_mentees=&n_meetings=&n_messages_sent=&n_messages_received= HTTP/1.1" 500 79092
+23/Feb/2021 21:40:09 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-1] Internal Server Error: /api/get_mentor_statistics/
+Traceback (most recent call last):
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\api\views.py", line 1013, in get_mentor_statistics
+    response['n_active_mentees'] = MyMentee.objects.filter(mentor=mentor).count()
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\query.py", line 942, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\query.py", line 962, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, *args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\query.py", line 969, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\sql\query.py", line 1358, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\sql\query.py", line 1377, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\sql\query.py", line 1292, in build_filter
+    self.check_related_objects(join_info.final_field, value, join_info.opts)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\sql\query.py", line 1119, in check_related_objects
+    self.check_query_object_type(value, opts, field)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\sql\query.py", line 1100, in check_query_object_type
+    raise ValueError(
+ValueError: Cannot query "shaurya": Must be "Mentor" instance.
+23/Feb/2021 21:40:09 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-1] "GET /api/get_mentor_statistics/?mentor_username=shaurya&n_active_mentees=&n_total_mentees=&n_rejected_mentees=&n_meetings=&n_messages_sent=&n_messages_received= HTTP/1.1" 500 124782
+23/Feb/2021 21:41:31 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-3] Internal Server Error: /api/get_mentor_statistics/
+Traceback (most recent call last):
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\api\views.py", line 1013, in get_mentor_statistics
+    response['n_active_mentees'] = MyMentee.objects.filter(mentor=mentor).count()
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\query.py", line 942, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\query.py", line 962, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, *args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\query.py", line 969, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\sql\query.py", line 1358, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\sql\query.py", line 1377, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\sql\query.py", line 1292, in build_filter
+    self.check_related_objects(join_info.final_field, value, join_info.opts)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\sql\query.py", line 1119, in check_related_objects
+    self.check_query_object_type(value, opts, field)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\sql\query.py", line 1100, in check_query_object_type
+    raise ValueError(
+ValueError: Cannot query "shaurya": Must be "Mentor" instance.
+23/Feb/2021 21:41:31 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-3] "GET /api/get_mentor_statistics/?mentor_username=shaurya&n_active_mentees=&n_total_mentees=&n_rejected_mentees=&n_meetings=&n_messages_sent=&n_messages_received= HTTP/1.1" 500 124529
+23/Feb/2021 21:42:06 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-2] Internal Server Error: /api/get_mentor_statistics/
+Traceback (most recent call last):
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\api\views.py", line 1025, in get_mentor_statistics
+    response['n_meetings'] += Meeting.objects.filter(creator=mentor.account)
+TypeError: unsupported operand type(s) for +=: 'QuerySet' and 'QuerySet'
+23/Feb/2021 21:42:06 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-2] "GET /api/get_mentor_statistics/?mentor_username=shaurya&n_active_mentees=&n_total_mentees=&n_rejected_mentees=&n_meetings=&n_messages_sent=&n_messages_received= HTTP/1.1" 500 80093
+23/Feb/2021 22:02:32 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-1] Internal Server Error: /api/get_mentor_statistics/
+Traceback (most recent call last):
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\api\views.py", line 1041, in get_mentor_statistics
+    response['will_mentor'].append(i.title())
+KeyError: 'will_mentor'
+23/Feb/2021 22:02:32 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-1] "GET /api/get_mentor_statistics/?mentor_username=shaurya&n_active_mentees=&n_total_mentees=&n_rejected_mentees=&n_meetings=&n_messages_sent=&n_messages_received=&responsibilities=&will_mentor= HTTP/1.1" 500 82707
+23/Feb/2021 22:43:02 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-2] Not Found: /favicon.ico
+23/Feb/2021 22:43:02 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-2] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 22:44:04 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-1] Internal Server Error: /api/get_mentor_mentee_statistics/
+Traceback (most recent call last):
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\api\views.py", line 1113, in get_mentor_mentee_statistics
+    mentor = mentor.account.mentee
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\fields\related_descriptors.py", line 421, in __get__
+    raise self.RelatedObjectDoesNotExist(
+users.models.Account.mentee.RelatedObjectDoesNotExist: Account has no mentee.
+23/Feb/2021 22:44:04 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-1] "GET /api/get_mentor_mentee_statistics/?mentor_username=shaurya&mentee_username=pratik&n_meetings=&n_messages=&n_meeting_summaries=&n_milestones=&avg_meeting_duration= HTTP/1.1" 500 84121
+23/Feb/2021 22:44:31 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-3] Internal Server Error: /api/get_mentor_mentee_statistics/
+Traceback (most recent call last):
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\api\views.py", line 1122, in get_mentor_mentee_statistics
+    response['n_meetings'] = Meeting.objects.filter(creator=mentor, guest=mentee).count()
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\query.py", line 942, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\query.py", line 962, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, *args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\query.py", line 969, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\sql\query.py", line 1358, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\sql\query.py", line 1377, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\sql\query.py", line 1292, in build_filter
+    self.check_related_objects(join_info.final_field, value, join_info.opts)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\sql\query.py", line 1119, in check_related_objects
+    self.check_query_object_type(value, opts, field)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\sql\query.py", line 1100, in check_query_object_type
+    raise ValueError(
+ValueError: Cannot query "shaurya": Must be "Account" instance.
+23/Feb/2021 22:44:31 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-3] "GET /api/get_mentor_mentee_statistics/?mentor_username=shaurya&mentee_username=pratik&n_meetings=&n_messages=&n_meeting_summaries=&n_milestones=&avg_meeting_duration= HTTP/1.1" 500 125160
+23/Feb/2021 22:44:36 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-4] Internal Server Error: /api/get_mentor_mentee_statistics/
+Traceback (most recent call last):
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\handlers\base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\api\views.py", line 1122, in get_mentor_mentee_statistics
+    response['n_meetings'] = Meeting.objects.filter(creator=mentor, guest=mentee).count()
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\query.py", line 942, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\query.py", line 962, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, *args, **kwargs)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\query.py", line 969, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\sql\query.py", line 1358, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\sql\query.py", line 1377, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\sql\query.py", line 1292, in build_filter
+    self.check_related_objects(join_info.final_field, value, join_info.opts)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\sql\query.py", line 1119, in check_related_objects
+    self.check_query_object_type(value, opts, field)
+  File "C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\db\models\sql\query.py", line 1100, in check_query_object_type
+    raise ValueError(
+ValueError: Cannot query "shaurya": Must be "Account" instance.
+23/Feb/2021 22:44:36 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-4] "GET /api/get_mentor_mentee_statistics/?mentor_username=shaurya&mentee_username=pratik&n_meetings=&n_messages=&n_meeting_summaries=&n_milestones=&avg_meeting_duration= HTTP/1.1" 500 125425
+23/Feb/2021 22:44:36 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-6] Not Found: /favicon.ico
+23/Feb/2021 22:44:36 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-6] "GET /favicon.ico HTTP/1.1" 404 2466
