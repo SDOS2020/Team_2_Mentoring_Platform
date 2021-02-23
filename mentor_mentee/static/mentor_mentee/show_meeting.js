@@ -30,7 +30,7 @@ const ShowMeeting = {
 							</i>
 						</td>
 
-						<td style="width: 75%;">
+						<td style="width: 60%; padding-right: 0; padding-left: 0;">
 							<a v-bind:href="meeting.meeting_url" target="blank" style="text-decoration: none; color: black;">
 								<b>[[ meeting.title ]]</b> &nbsp
 								
@@ -43,18 +43,24 @@ const ShowMeeting = {
 							</a>
 						</td>
 
-						<td>
-							<button style="background-color: #7474aa; color: white;" class="btn btn-block" data-toggle="modal" data-target="#editMeetModal" data-whatever="@mdo">
+						<td style="width: 10%;">
+							<button 
+								style="background-color: #7474aa; color: white;" 
+								class="btn btn-sm btn-block" 
+								data-toggle="modal" 
+								:data-target="'#editMeetModal' + index" 
+								data-whatever="@mdo"
+							>
 								Edit
 							</button>
 						</td>
 
-						<div class="modal fade" id="editMeetModal" tabindex="-1" role="dialog" aria-labelledby="editMeetModalLabel" aria-hidden="true">
+						<div class="modal fade" :id="'editMeetModal' + index" tabindex="-1" role="dialog" :aria-labelledby="'editMeetModalLabel' + index" aria-hidden="true">
 							<div class="modal-dialog" role="document">
 								<div class="modal-content">
 
 									<div class="modal-header">
-										<h5 class="modal-title" id="editMeetModalLabel">Edit meeting</h5>
+										<h5 class="modal-title" :id="'editMeetModalLabel' + index">Edit meeting</h5>
 										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 											<span aria-hidden="true">&times;</span>
 										</button>
@@ -80,7 +86,7 @@ const ShowMeeting = {
 											<div class="form-group">
 												<label for="meeting-time" class="col-form-label">Time:</label>
 												<br/>
-												<input v-model="meeting.time" type="datetime-local" class="form-control" id="meeting-time" name="meeting-time" min="2020-11-20T08:30" required>
+												<input v-model="m_time" type="datetime-local" class="form-control" id="meeting-time" name="meeting-time" min="2020-11-20T08:30" required>
 											</div>
 										</form>
 									</div>
@@ -101,6 +107,7 @@ const ShowMeeting = {
 	data() {
 		return {
 			meetings: [],
+			m_time: "",
 		};
 	},
 
@@ -137,7 +144,7 @@ const ShowMeeting = {
 				'title': this.meetings[index].title,
 				'agenda': this.meetings[index].agenda,
 				'meeting_url': this.meetings[index].meeting_url,
-				'time': this.meetings[index].time,
+				'time': this.m_time,
 			}, {
 				headers: {
 					'X-CSRFTOKEN': this.csrf
@@ -149,7 +156,12 @@ const ShowMeeting = {
 				console.log('[ERROR]');
 				console.log(error);
 			});
-			document.getElementById("close-button").click();
+			
+			$('#editMeetModal' + index).modal('hide');
+
+			$('body').removeClass('modal-open');
+			$('.modal-backdrop').remove();
+
 			this.get_meetings();
 		}
 	}

@@ -592,9 +592,6 @@ def edit_meeting(request):
 	
 	success = True
 
-	print('New updated values')
-	print(meeting_title, meeting_agenda, meeting_url, meeting_time)
-
 	meeting = Meeting.objects.get(id=meeting_id)
 
 	#Check if the current user is either the creator or the guest of the meeting
@@ -609,6 +606,7 @@ def edit_meeting(request):
 		meeting.save()
 	
 	return JsonResponse({'success': success})
+
 
 @login_required
 def get_meeting_summaries(request, guest_name):
