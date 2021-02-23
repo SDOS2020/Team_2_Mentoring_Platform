@@ -557,7 +557,7 @@ def add_meeting(request):
 	guest = User.objects.filter(username=guest_name).first()
 	req['time'] = make_aware(datetime.strptime(req['time'], '%Y-%m-%dT%H:%M'))
 
-	Meeting.objects.create(
+	meeting = Meeting.objects.create(
 		creator=user.account,
 		guest=guest.account,
 		title=req['title'],
@@ -571,9 +571,17 @@ def add_meeting(request):
 	}
 
 	email_subject = "Meeting created"
-	email_body = f"Meeting details:\n" \
-				 f"Creator: {user.username}" \
-				 f"Guest:   {guest.username}"
+	email_body = """Meeting details:
+		Creator: {}
+		Guest:   {}
+		Title:   {}
+		Agenda:  {}
+		URL:     {}
+		Time:    {}
+	""".replace('\t', '').format(user.username, guest.username, meeting.title, 
+		meeting.agenda, meeting.meeting_url, meeting.time
+	)
+
 	send_email_custom(to=[user.email, guest.email], subject=email_subject, body=email_body)
 
 	return JsonResponse(response)
@@ -603,6 +611,23 @@ def edit_meeting(request):
 		meeting.meeting_url = meeting_url
 		meeting.time = meeting_time
 		meeting.save()
+
+	creator, guest = meeting.creator.user, meeting.guest.user
+	
+	email_subject = "Meeting updated"
+	email_body = """Meeting updated by {}.
+		New meeting details:
+		Creator: {}
+		Guest:   {}
+		Title:   {}
+		Agenda:  {}
+		URL:     {}
+		Time:    {}
+	""".replace('\t', '').format(user.username, creator.username, guest.username, meeting.title, 
+		meeting.agenda, meeting.meeting_url, meeting.time
+	)
+	
+	send_email_custom(to=[creator.email, guest.email], subject=email_subject, body=email_body)
 	
 	return JsonResponse({'success': success})
 

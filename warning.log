@@ -1060,3 +1060,45 @@ ValueError: Cannot query "shaurya": Must be "Account" instance.
 23/Feb/2021 22:44:36 ERROR location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-4] "GET /api/get_mentor_mentee_statistics/?mentor_username=shaurya&mentee_username=pratik&n_meetings=&n_messages=&n_meeting_summaries=&n_milestones=&avg_meeting_duration= HTTP/1.1" 500 125425
 23/Feb/2021 22:44:36 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\utils\log.py:224] thread:[Thread-6] Not Found: /favicon.ico
 23/Feb/2021 22:44:36 WARNING location:[C:\Users\Titan\Desktop\Desktop data\Team_2_Mentoring_Platform\env\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-6] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 18:55:26 WARNING location:[/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/utils/log.py:224] thread:[Thread-4] Not Found: /favicon.ico
+23/Feb/2021 18:55:26 WARNING location:[/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-4] "GET /favicon.ico HTTP/1.1" 404 2466
+23/Feb/2021 18:59:46 ERROR location:[/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/utils/log.py:224] thread:[Thread-1] Internal Server Error: /api/edit_meeting/
+Traceback (most recent call last):
+  File "/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/contrib/auth/decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/Users/shauryabagga/iiitd/sem7/sdos/Team_2_Mentoring_Platform/api/views.py", line 613, in edit_meeting
+    meeting.save()
+  File "/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/db/models/base.py", line 753, in save
+    self.save_base(using=using, force_insert=force_insert,
+  File "/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/db/models/base.py", line 790, in save_base
+    updated = self._save_table(
+  File "/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/db/models/base.py", line 872, in _save_table
+    updated = self._do_update(base_qs, using, pk_val, values, update_fields,
+  File "/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/db/models/base.py", line 926, in _do_update
+    return filtered._update(values) > 0
+  File "/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/db/models/query.py", line 803, in _update
+    return query.get_compiler(self.db).execute_sql(CURSOR)
+  File "/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/db/models/sql/compiler.py", line 1522, in execute_sql
+    cursor = super().execute_sql(result_type)
+  File "/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/db/models/sql/compiler.py", line 1143, in execute_sql
+    sql, params = self.as_sql()
+  File "/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/db/models/sql/compiler.py", line 1488, in as_sql
+    val = field.get_db_prep_save(val, connection=self.connection)
+  File "/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/db/models/fields/__init__.py", line 823, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+  File "/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/db/models/fields/__init__.py", line 1378, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/db/models/fields/__init__.py", line 1357, in get_prep_value
+    value = super().get_prep_value(value)
+  File "/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/db/models/fields/__init__.py", line 1217, in get_prep_value
+    return self.to_python(value)
+  File "/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/db/models/fields/__init__.py", line 1339, in to_python
+    raise exceptions.ValidationError(
+django.core.exceptions.ValidationError: ['“” value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] format.']
+23/Feb/2021 18:59:46 ERROR location:[/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-1] "POST /api/edit_meeting/ HTTP/1.1" 500 133333
+23/Feb/2021 19:00:23 WARNING location:[/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/utils/log.py:224] thread:[Thread-3] Not Found: /favicon.ico
+23/Feb/2021 19:00:23 WARNING location:[/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-3] "GET /favicon.ico HTTP/1.1" 404 2466
