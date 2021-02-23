@@ -178,7 +178,30 @@ const ShowMeeting = {
 				console.log(error);
 			});
 		},
+		validate_input(index) {
+			let alert_message = ""; 
+			if (this.meetings[index].title.length === 0) {
+				alert_message += "Please fill the title\n";
+			}
+
+			if (this.m_time.length === 0) {
+				alert_message += "Please fill the time\n";
+			}
+
+			if (alert_message.length === 0) {
+				alert("[SUCCESS]\nMeeting successfully updated!")
+				return true;
+			}
+			else {
+				alert("[ERROR]\n" + alert_message);
+				return false;
+			}
+		},
 		edit_meeting(index) {
+			if (!this.validate_input(index)) {
+				return ;
+			}
+
 			let request_url = "/api/edit_meeting/";
 
 			axios.post(request_url, {
@@ -193,18 +216,18 @@ const ShowMeeting = {
 				}
 			})
 			.then(response => {
+				this.get_meetings();
 			})
 			.catch(error => {
 				console.log('[ERROR]');
 				console.log(error);
 			});
 			
-			$('#editMeetModal' + index).modal('hide');
+			this.m_time = "";
 
+			$('#editMeetModal' + index).modal('hide');
 			$('body').removeClass('modal-open');
 			$('.modal-backdrop').remove();
-
-			this.get_meetings();
 		}
 	}
 };
