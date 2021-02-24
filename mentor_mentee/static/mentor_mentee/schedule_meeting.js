@@ -126,7 +126,10 @@ const ScheduleMeeting = {
 			this.meeting_url = "";
 			this.meeting_time = "";
 
-			document.getElementById("close-button").click();
+			// document.getElementById("close-button").click();
+			$('#scheduleModal').modal('hide');
+			$('body').removeClass('modal-open');
+			$('.modal-backdrop').remove();
 		}
 	}
 };

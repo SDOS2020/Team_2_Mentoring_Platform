@@ -30,7 +30,7 @@ const ShowMeeting = {
 							</i>
 						</td>
 
-						<td style="width: 60%; padding-right: 0; padding-left: 0;">
+						<td style="width: 55%; padding-right: 0; padding-left: 0;">
 							<a v-bind:href="meeting.meeting_url" target="blank" style="text-decoration: none; color: black;">
 								<b>[[ meeting.title ]]</b> &nbsp
 								
@@ -50,6 +50,7 @@ const ShowMeeting = {
 								data-toggle="modal" 
 								:data-target="'#editMeetModal' + index" 
 								data-whatever="@mdo"
+								@click='update_meeting_modal(index)'
 							>
 								Edit
 							</button>
@@ -70,17 +71,17 @@ const ShowMeeting = {
 										<form>
 											<div class="form-group">
 												<label for="meeting-title" class="col-form-label">Title:</label>
-												<input v-model="meeting.title" type="text" class="form-control" id="meeting-title">
+												<input v-model="m_title" type="text" class="form-control" id="meeting-title">
 											</div>
 
 											<div class="form-group">
 												<label for="message-agenda" class="col-form-label">Agenda:</label>
-												<textarea v-model="meeting.agenda" class="form-control" id="message-agenda"></textarea>
+												<textarea v-model="m_agenda" class="form-control" id="message-agenda"></textarea>
 											</div>
 
 											<div class="form-group">
 												<label for="meeting-url" class="col-form-label">Meeting URL:</label>
-												<input v-model="meeting.meeting_url" type="text" class="form-control" id="meeting-url">
+												<input v-model="m_url" type="text" class="form-control" id="meeting-url">
 											</div>
 												
 											<div class="form-group">
@@ -107,6 +108,9 @@ const ShowMeeting = {
 	data() {
 		return {
 			meetings: [],
+			m_title: "",
+			m_agenda: "",
+			m_url: "",
 			m_time: "",
 		};
 	},
@@ -119,48 +123,6 @@ const ShowMeeting = {
 	},
 	
 	created() {
-		// TO TEST MENTOR STATISTICS
-		// let request_url = "/api/get_mentor_statistics/";
-		// axios.get(request_url, {
-		// 	params: {
-		// 		'mentor_username': 'shaurya',
-		// 		'n_active_mentees': '',
-		// 		'n_total_mentees': '',
-		// 		'n_rejected_mentees': '',
-		// 		'n_meetings': '',
-		// 		'n_messages_sent': '',
-		// 		'n_messages_received': '',
-		// 		'responsibilities': '',
-		// 		'will_mentor': '',
-		// 	}
-		// })
-		// .then(response => {
-		// 	console.log(response.data);
-		// })
-		// .catch(error => {
-		// 	console.log('[ERROR]');
-		// });
-
-		// TO TEST MENTOR-MENTEE STATISTICS
-		// let request_url = "/api/get_mentor_mentee_statistics/";
-		// axios.get(request_url, {
-		// 	params: {
-		// 		'mentor_username': 'shaurya',
-		// 		'mentee_username': 'pratik',
-		// 		'n_meetings': '',
-		// 		'n_messages': '',
-		// 		'n_meeting_summaries': '',
-		// 		'n_milestones': '',
-		// 		'avg_meeting_duration': '',
-		// 	}
-		// })
-		// .then(response => {
-		// 	console.log(response.data);
-		// })
-		// .catch(error => {
-		// 	console.log('[ERROR]');
-		// });
-
 		this.get_meetings();
 		// window.setInterval(this.get_meetings, 1000);
 	},
@@ -197,6 +159,12 @@ const ShowMeeting = {
 				return false;
 			}
 		},
+		update_meeting_modal(index) {
+			this.m_title = this.meetings[index].title;
+			this.m_agenda = this.meetings[index].agenda;
+			this.m_url = this.meetings[index].meeting_url;
+			return;
+		},
 		edit_meeting(index) {
 			if (!this.validate_input(index)) {
 				return ;
@@ -206,9 +174,9 @@ const ShowMeeting = {
 
 			axios.post(request_url, {
 				'id': this.meetings[index].id,
-				'title': this.meetings[index].title,
-				'agenda': this.meetings[index].agenda,
-				'meeting_url': this.meetings[index].meeting_url,
+				'title': this.m_title,
+				'agenda': this.m_agenda,
+				'meeting_url': this.m_url,
 				'time': this.m_time,
 			}, {
 				headers: {
@@ -223,6 +191,9 @@ const ShowMeeting = {
 				console.log(error);
 			});
 			
+			this.m_title = "";
+			this.m_agenda = "";
+			this.m_url = "";
 			this.m_time = "";
 
 			$('#editMeetModal' + index).modal('hide');
