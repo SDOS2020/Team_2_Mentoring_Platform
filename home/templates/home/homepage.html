@@ -140,7 +140,7 @@ body {
 		</div>
 
 		<div id="show-meetings-app">
-			<show-meetings></show-meetings>
+			<show-meetings csrf="{{ csrf_token }}"></show-meetings>
 		</div>
 		
 		<div id="pending-requests" v-bind:hidden="!(has_pending_requests)">
