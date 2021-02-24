@@ -1,5 +1,8 @@
 const ShowMentees = {
 	delimiters: ["[[", "]]"],
+	components: {
+		"show-mentor-mentee-stats": ShowMentorMenteeStats,
+	},
 	template: `
 	<div>
 		<table class="table table-hover">
@@ -8,6 +11,7 @@ const ShowMentees = {
 					<th scope="col">#</th>
 					<th scope="col">Username</th>
 					<th scope="col">Actions</th>
+					<th scope="col"></th>
 					<th scope="col"></th>
 				</tr>
 			</thead>
@@ -31,12 +35,18 @@ const ShowMentees = {
 					</td>
 
 					<td>
+						<show-mentor-mentee-stats :mentor="mentor" :mentee="mentee.username">
+						</show-mentor-mentee-stats>
+					</td>
+
+					<td>
 						<a
 							class="btn btn-sm btn-danger"
 							data-toggle="modal"
 							v-bind:data-target="'#endRelModalLong' + index"
+							title="End Relationship"
 						>
-							Remove
+							<i class="far fa-times-circle"></i>
 						</a>
 					</td>
 
@@ -82,6 +92,13 @@ const ShowMentees = {
 			end_reason: ""
 		};
 	},
+
+	props: {
+		mentor: {
+			required: true
+		}
+	},
+
 	created() {
 		this.get_my_mentees();
 	},

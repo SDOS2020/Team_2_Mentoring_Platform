@@ -32,6 +32,12 @@ My Mentor
 		width: 20rem;
 	}
 
+	#mentor-mentee-stats {
+		position: absolute;
+		top: 4.5rem;
+		right: 1rem;
+	}
+
 </style>
 
 {% endblock header %}
@@ -78,6 +84,10 @@ My Mentor
 			<chat-window receiver="{{ mentor }}" sender="{{ user.username }}" csrf="{{ csrf_token }}"></chat-window>
 		</div>
 
+		<div id="mentor-mentee-stats">
+			<show-mentor-mentee-stats mentor="{{ mentor }}" mentee="{{ user.username }}"></show-mentor-mentee-stats>
+		</div>
+
 
 	</div>
 </center>
@@ -95,6 +105,7 @@ My Mentor
 <script src="{% static 'mentor_mentee/show_meeting_summary.js' %}"></script>
 <script src="{% static 'mentor_mentee/add_meeting_summary.js' %}"></script>
 <script src="{% static 'mentor_mentee/progress_tracker.js' %}"></script>
+<script src="{% static 'mentor_mentee/show_mentor_mentee_stats.js' %}"></script>
 
 <script>
 	const app = new Vue({
@@ -106,6 +117,8 @@ My Mentor
 			"show-meeting-summary": ShowMeetingSummary,
 			"add-meeting-summary": AddMeetingSummary,
 			"progress-tracker": ProgressTracker,
+			"show-mentor-mentee-stats": ShowMentorMenteeStats,
+			
 		},
 	});
 

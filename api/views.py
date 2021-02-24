@@ -1193,7 +1193,7 @@ def get_mentor_mentee_statistics(request):
 
 		avg_meeting_duration = -1
 		if summaries.count() > 0:
-			avg_meeting_duration = total_time / summaries.count()
+			avg_meeting_duration = round(total_time / summaries.count(), 2)
 
 		response['avg_meeting_duration'] = avg_meeting_duration
 
