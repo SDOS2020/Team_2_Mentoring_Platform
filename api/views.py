@@ -6,7 +6,7 @@ from users.forms import EditAreasForm
 from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.utils.timezone import make_aware # Naive to native
-from django.contrib.auth.decorators import login_required
+from users.decorators import login_required
 
 from users.models import *
 from users.decorators import mentee_required, mentor_required
