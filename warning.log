@@ -1230,3 +1230,5 @@ django.core.exceptions.ValidationError: ['“” value has an invalid format. It
 24/Feb/2021 08:54:11 WARNING location:[/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-5] "POST /api/edit_meeting/ HTTP/1.1" 403 2513
 24/Feb/2021 08:58:27 WARNING location:[/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/utils/log.py:224] thread:[Thread-3] Not Found: /favicon.ico
 24/Feb/2021 08:58:27 WARNING location:[/Users/shauryabagga/iiitd/sem7/sdos/project/env/lib/python3.8/site-packages/django/core/servers/basehttp.py:157] thread:[Thread-3] "GET /favicon.ico HTTP/1.1" 404 2466
+10/Mar/2021 19:11:51 WARNING location:[E:\ResearchMentoringPlatform\Team_2_Mentoring_Platform\venv\lib\site-packages\django\utils\log.py:224] thread:[Thread-3] Not Found: /favicon.ico
+10/Mar/2021 19:11:51 WARNING location:[E:\ResearchMentoringPlatform\Team_2_Mentoring_Platform\venv\lib\site-packages\django\core\servers\basehttp.py:157] thread:[Thread-3] "GET /favicon.ico HTTP/1.1" 404 2466
