@@ -138,7 +138,7 @@ class Mentor(models.Model):
 	responsibility6 = models.BooleanField(default=False)
 	responsibility7 = models.BooleanField(default=False)
 	responsibility8 = models.BooleanField(default=False)
-	other_responsibility = models.TextField(null=True, max_length=512)
+	other_responsibility = models.TextField(null=True, blank=True, max_length=512)
 
 	def __str__(self):
 		return self.account.user.username
