@@ -120,6 +120,7 @@ class Mentor(models.Model):
 		]
 	)
 
+	verified = models.BooleanField(default=False)
 	is_open_to_mentorship = models.BooleanField(default=True)
 	
 	will_mentor_faculty = models.BooleanField(default=False)
