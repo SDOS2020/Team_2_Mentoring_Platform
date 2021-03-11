@@ -4,6 +4,8 @@ from pathlib import Path
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from django.contrib.messages import constants
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -201,6 +203,15 @@ LOGGING = {
 			'level': 'INFO'
 		}
 	},
+}
+
+# Messages Framework
+MESSAGE_TAGS = {
+	constants.DEBUG: 'alert-info',
+	constants.INFO: 'alert-info',
+	constants.SUCCESS: 'alert-success',
+	constants.WARNING: 'alert-warning',
+	constants.ERROR: 'alert-danger',
 }
 
 if int(os.environ.get('SDOS_PRODUCTION_SERVER')) == 1:
