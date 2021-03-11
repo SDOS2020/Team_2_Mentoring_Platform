@@ -18,6 +18,18 @@
 </head>
 
 <body style="background-color: whitesmoke; height: 100%;">
+	{% if messages %}
+	<div class="messages">
+		{% for message in messages %}
+		<div class="alert {{ message.tags }} alert-dismissible p-3" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			{{ message }}
+		</div>
+		{% endfor %}
+	</div>
+	{% endif %}
 <nav id="baseNav" class="navbar navbar-expand-lg navbar-fixed-top navbar-dark">
 	<a class="navbar-brand" href="{% url 'homepage' %}">
 		<strong>RMP</strong>
