@@ -9,7 +9,7 @@ const Requests = {
 
 				<div align='right'>
 					<button class="btn btn-sm btn-primary" data-toggle="modal" :data-target="'#requestModal' + index" data-whatever="@mdo">
-					View Request
+						View Request
 					</button>
 				</div>
 
@@ -18,7 +18,9 @@ const Requests = {
 						<div class="modal-content">
 
 							<div class="modal-header">
-								<h5 class="modal-title" :id="'requestModalLabel' + index">Request Details</h5>
+								<h5 class="modal-title" :id="'requestModalLabel' + index">
+									Request Details
+								</h5>
 								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 									<span aria-hidden="true">&times;</span>
 								</button>
@@ -74,14 +76,16 @@ const Requests = {
 							</div>
 							
 							<div class="modal-footer">
-								<button v-on:click="accept_request(request.username, index)" class="btn btn-success"> Accept </button>
+								<button v-on:click="accept_request(request.username, index)" class="btn btn-success">
+									Accept
+								</button>
 								
 								<a
 									class="btn btn-danger"
 									data-toggle="modal"
 									v-bind:data-target="'#rejectReqModal' + index"
 								>
-									Reject
+									Decline
 								</a>
 
 								<button id="close-button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -92,7 +96,9 @@ const Requests = {
 								<div class="modal-dialog" role="document">
 									<div class="modal-content">
 										<div class="modal-header">
-											<h5 class="modal-title" v-bind:id="'rejectReqModalTitle' + index">Reject Request</h5>
+											<h5 class="modal-title" v-bind:id="'rejectReqModalTitle' + index">
+												Reject Request
+											</h5>
 											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 												<span aria-hidden="true">&times;</span>
 											</button>
