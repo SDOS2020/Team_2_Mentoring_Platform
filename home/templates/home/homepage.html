@@ -7,199 +7,315 @@
 Homepage
 {% endblock title %}
 
+
 {% block header %}
-<link rel="stylesheet" type="text/css" href="{% static 'home/todo.css' %}"/>
-<link rel="stylesheet" type="text/css" href="{% static 'home/bg.css' %}"/>
-<link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
-<style>
-html, body {
-	height: 100%;
-	width: 100%;
-}
 
-body {
-	background-image: url("{% static 'home/bg.jpg' %}");
-	background-color: white;
-	background-size: 100% 100%;
-	background-repeat: no-repeat;
-	background-position: left top;
-}
+	<link rel="stylesheet" type="text/css" href="{% static 'home/todo.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'home/bg.css' %}" />
+	<link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+	<style>
+		html, body {
+			height: 100%;
+			width: 100%;
+		}
 
-[v-cloak] {
-	display: none;
-}
-</style>
+		body {
+			background-image: url("{% static 'home/bg.jpg' %}");
+			background-color: white;
+			background-size: 100% 100%;
+			background-repeat: no-repeat;
+			background-position: left top;
+		}
+
+		[v-cloak] {
+			display: none;
+		}
+	</style>
+
 {% endblock header %}
 
 
 {% block content %}
 
-<div class="jumbotron jumbotron-fluid" style="background: none; ">
-	<center>
-		{% if user.is_authenticated %}
-		
-			<div style="margin-top: 10vh;">
-				<h1 style="display: inline; font-weight: 200; font-size: 3.5rem;"> Hi </h1>&nbsp
-				<h1 class="ml1">
-					<span class="text-wrapper">
-						<span class="line line1"></span>
-						<span class="letters">{{ user.username }}</span>
-						<span class="line line2"></span>
-					</span>
-				</h1>
-			</div>
-			
-		{% else %}
+	{% if user.is_authenticated %}
 
-			<div style="margin-top: 10vh;">	
-				<div class="container">
-					<img 
-						src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Association_for_Computing_Machinery_%28ACM%29_logo.svg/1024px-Association_for_Computing_Machinery_%28ACM%29_logo.svg.png"
-						style="height: 20vh;">
-					<h1 class="display-2">Research Mentoring Platform</h1>
-					<br/>
-					<!-- <p class="lead">A place to learn and grow!</p> -->
-				</div>
-
-				<h1 class="ml1">
-					<span class="text-wrapper">
-						<span class="line line1"></span>
-						<span class="letters" style="font-size: 2rem; margin-top: 0; word-spacing: 1rem; letter-spacing: 0.5rem;">
-							A place to learn and grow!
+		<div class="jumbotron jumbotron-fluid" style="background: none; ">
+			<center>
+				<div style="margin-top: 10vh;">
+					<h1 style="display: inline; font-weight: 200; font-size: 3.5rem;"> Hi </h1>&nbsp
+					<h1 class="ml1">
+						<span class="text-wrapper">
+							<span class="line line1"></span>
+							<span class="letters">{{ user.username }}</span>
+							<span class="line line2"></span>
 						</span>
-						<span class="line line2"></span>
-					</span>
-				</h1>
+					</h1>
+				</div>
+			</center>
+		</div>
+
+		<div id="authenticated_app" style="margin-left: 3rem; margin-top: -3rem;">
+			<div id="todo-app">
+				<todo username='{{ user.username }}'></todo>
 			</div>
 
-		{% endif %}		
-	</center>
-</div>
+			<div id="show-meetings-app">
+				<show-meetings csrf="{{ csrf_token }}"></show-meetings>
+			</div>
 
-
-{% if user.is_authenticated %}
-	<style>
-		#pending-requests {
-			position: absolute;
-			background-color: #404065;
-			right: 3rem;
-			width: 15rem;
-			top: 5rem;
-			color: white;
-			border-radius: 10px;
-			padding: 1rem;
-		}
-
-		#pending-requests a {
-			text-decoration: none;
-			color: white;
-		}
-
-		#pending-requests a:hover {
-			color: rgb(200, 200, 220);
-			font-weight: bolder;
-		}
-
-		#todo-app {
-			position: absolute;
-			left: 3rem;
-			bottom: 1rem;
-			width: 25rem;
-		}
-
-		#show-meetings-app {
-			position: absolute;
-			right: 3rem;
-			bottom: 3rem;
-			width: 25rem;
-		}
-
-		#show-meetings-body {
-			height: 46vh !important;
-			background-color: rgba(255, 255, 255, 1);
-			box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.2);
-		}
-
-		#show-meetings-header {
-			background: none !important;
-		}
-
-		#show-meetings-header font {
-			font-face: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-			font-size: 40px;
-			font-weight: 100;
-			text-align: center;
-			color: #404065;
-			-webkit-text-rendering: optimizeLegibility;
-			-moz-text-rendering: optimizeLegibility;
-			text-rendering: optimizeLegibility;
-		}
-	</style>
-
-	<div id="app" style="margin-left: 3rem; margin-top: -3rem;">
-
-		<div id="todo-app">
-			<todo username='{{ user.username }}'></todo>
+			<div id="pending-requests" v-bind:hidden="!(has_pending_requests)">
+				<a href="{% url 'my_requests' %}">
+					You have pending requests
+				</a>
+			</div>
 		</div>
 
-		<div id="show-meetings-app">
-			<show-meetings csrf="{{ csrf_token }}"></show-meetings>
+		<style>
+			#pending-requests {
+				position: absolute;
+				background-color: #404065;
+				right: 3rem;
+				width: 15rem;
+				top: 5rem;
+				color: white;
+				border-radius: 10px;
+				padding: 1rem;
+			}
+
+			#pending-requests a {
+				text-decoration: none;
+				color: white;
+			}
+
+			#pending-requests a:hover {
+				color: rgb(200, 200, 220);
+				font-weight: bolder;
+			}
+
+			#todo-app {
+				position: absolute;
+				left: 3rem;
+				bottom: 1rem;
+				width: 25rem;
+			}
+
+			#show-meetings-app {
+				position: absolute;
+				right: 3rem;
+				bottom: 3rem;
+				width: 25rem;
+			}
+
+			#show-meetings-body {
+				height: 46vh !important;
+				background-color: rgba(255, 255, 255, 1);
+				box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.2);
+			}
+
+			#show-meetings-header {
+				background: none !important;
+			}
+
+			#show-meetings-header font {
+				font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+				font-size: 40px;
+				font-weight: 100;
+				text-align: center;
+				color: #404065;
+				-webkit-text-rendering: optimizeLegibility;
+				-moz-text-rendering: optimizeLegibility;
+				text-rendering: optimizeLegibility;
+			}
+		</style>
+
+
+	{% else %}
+
+		<style>
+			.stat_box {
+				background-color: rgba(255, 255, 255, 0.4);
+				padding: 5px 20px;
+				cursor: default !important;
+			}
+
+			#visitor-app td :hover > .stat_box {
+				background-color: rgba(255, 255, 255, 0.8);
+				transform: translateY(-4px);
+			}
+		</style>
+
+		<div class="jumbotron jumbotron-fluid" style="background: none; ">
+			<center>
+				<div style="margin-top: 10vh;">
+					<div class="container">
+						<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Association_for_Computing_Machinery_%28ACM%29_logo.svg/1024px-Association_for_Computing_Machinery_%28ACM%29_logo.svg.png"
+							style="height: 20vh;">
+						<h1 class="display-2">Research Mentoring Platform</h1>
+						<br />
+						<!-- <p class="lead">A place to learn and grow!</p> -->
+					</div>
+
+					<h1 class="ml1">
+						<span class="text-wrapper">
+							<span class="line line1"></span>
+							<span class="letters"
+								style="font-size: 2rem; margin-top: 0; word-spacing: 1rem; letter-spacing: 0.5rem;">
+								A place to learn and grow!
+							</span>
+							<span class="line line2"></span>
+						</span>
+					</h1>
+				</div>
+			</center>
+			
+			<div id="visitor-app" style="position: absolute; bottom: 2vh;">
+				<table style="width: 100vw;">
+					<tr>
+						<td v-for="field in platform_fields">
+							<center>
+							<div class="btn stat_box">
+									<h3>[[ field['value'] ]]</h3>
+									[[ field['info'] ]]
+								</td>
+							</center>
+						</div>
+					</tr>
+				</table>
+			</div>
 		</div>
-		
-		<div id="pending-requests" v-bind:hidden="!(has_pending_requests)">
-			<a href="{% url 'my_requests' %}">
-				You have pending requests
-			</a>
-		</div>
-	</div>
-{% endif %}
+
+	{% endif %}
 
 {% endblock content %}
 
 
 {% block javascript %}
-<!-- <script src="https://unpkg.com/vue"></script> -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
-<script src="{% static 'home/bg.js' %}"></script>
 
-{% if user.is_authenticated %}
+	{% if user.is_authenticated %}
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script src="{% static 'home/bg.js' %}"></script>
+		<script src="{% static 'home/todo_app.js' %}"></script>
+		<script src="{% static 'mentor_mentee/show_meeting.js' %}"></script>
+
+		<script>
+			const app = new Vue({
+				delimiters: ["[[", "]]"],
+
+				data() {
+					return {
+						has_pending_requests: false,
+					};
+				},
+
+				components: {
+					'todo': ToDoComponent,
+					"show-meetings": ShowMeeting,
+				},
+
+				created() {
+					this.check_for_pending_requests();
+				},
+
+				methods: {
+					check_for_pending_requests() {
+						const request_url = "/api/has_pending_requests/";
 	
-	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-	<script src="{% static 'home/todo_app.js' %}"></script>
-	<script src="{% static 'mentor_mentee/show_meeting.js' %}"></script>
+						axios.get(request_url)
+						.then(response => {
+							this.has_pending_requests = response.data.has_pending_requests;
+						})
+						.catch(error => {
+							console.log("[ERROR]");
+							console.log(error);
+						});
+					}
+				}
+			});
 
-	<script>
-		const app = new Vue({
-			delimiters: ["[[", "]]"],
+			app.$mount('#authenticated_app');
 
-			data() {
-				return {
-					has_pending_requests: false
-				};
-			},
+		</script>
 
-			components: {
-				'todo': ToDoComponent,
-				"show-meetings": ShowMeeting,
-			},
 
-			created() {
-				const request_url = "/api/has_pending_requests/";
+	{% else %}
 
-				axios.get(request_url)
-				.then(response => {
-					this.has_pending_requests = response.data.has_pending_requests;
-				})
-				.catch(error => {
-					console.log("[ERROR]");
-					console.log(error);
-				});
-			}
-		});
-		app.$mount('#app');
-	</script>
 
-{% endif %}
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script src="{% static 'home/bg.js' %}"></script>
+
+		<script>
+			const app = new Vue({
+				delimiters: ["[[", "]]"],
+
+				data() {
+					return {
+						platform_fields: {
+							'n_mentors': {
+								'info': 'Registered mentors',
+								'value': '',
+							},
+
+							'n_mentees': {
+								'info': 'Registered mentees',
+								'value': '',
+							},
+
+							'n_meetings': {
+								'info': 'Meetings conducted',
+								'value': '',
+							},
+
+							'n_mentorship_areas': {
+								'info': 'Available mentorship areas',
+								'value': '',
+							},
+
+							'n_milestones_reached': {
+								'info': 'Milestones reached',
+								'value': '',
+							},
+						}
+					};
+				},
+
+				created() {
+					this.get_platform_stats();
+				},
+
+				methods: {
+					get_platform_stats() {
+						let requested_fields = {};
+						for (let field in this.platform_fields) {
+							requested_fields[field] = '';
+						}
+	
+						const request_url = "/api/get_platform_statistics/";
+						axios.get(request_url, {
+							params: requested_fields
+						})
+						.then(response => {
+							for (let field in this.platform_fields) {
+								this.platform_fields[field]['value'] = response.data[field];
+							}
+							console.log(this.platform_fields);
+						})
+						.catch(error => {
+							console.log("[ERROR]");
+							console.log(error);
+						});
+					},
+				}
+			});
+
+			app.$mount('#visitor-app');
+
+		</script>
+
+	{% endif %}
 
 {% endblock javascript %}
