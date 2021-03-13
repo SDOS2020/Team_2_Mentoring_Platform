@@ -59,4 +59,5 @@ urlpatterns = [
 	path("get_mentor_statistics/", api_views.get_mentor_statistics, name="get_mentor_statistics"),
 	path("get_mentee_statistics/", api_views.get_mentee_statistics, name="get_mentee_statistics"),
 	path("get_mentor_mentee_statistics/", api_views.get_mentor_mentee_statistics, name="get_mentor_mentee_statistics"),
+	path("get_platform_statistics/", api_views.get_platform_statistics, name="get_platform_statistics"),
 ]

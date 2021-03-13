@@ -1199,3 +1199,28 @@ def get_mentor_mentee_statistics(request):
 
 	response['success'] = True
 	return JsonResponse(response)
+
+
+# No login required
+def get_platform_statistics(request):
+	response = {}
+	params = request.GET.dict()
+
+	if 'n_mentors' in params:
+		response['n_mentors'] = Mentor.objects.count()
+
+	if 'n_mentees' in params:
+		response['n_mentees'] = Mentee.objects.count()
+
+	if 'n_meetings' in params:
+		response['n_meetings'] = Meeting.objects.count()
+
+	if 'n_mentorship_areas' in params:
+		response['n_mentorship_areas'] = len(Areas.choices)
+
+	if 'n_milestones_reached' in params:
+		response['n_milestones_reached'] = Milestone.objects.count()
+
+	response['success'] = True
+	return JsonResponse(response)
+	
