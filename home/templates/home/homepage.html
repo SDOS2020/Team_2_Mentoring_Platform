@@ -23,8 +23,9 @@ Homepage
 			background-image: url("{% static 'home/bg.jpg' %}");
 			background-color: white;
 			background-size: 100% 100%;
+			background-position: center;
+			background-attachment: fixed;
 			background-repeat: no-repeat;
-			background-position: left top;
 		}
 
 		[v-cloak] {
@@ -142,47 +143,98 @@ Homepage
 				background-color: rgba(255, 255, 255, 0.8);
 				transform: translateY(-4px);
 			}
+
+			/* Scroll effect - start */
+			.scroll-container {
+				height: 91vh;
+				overflow-y: scroll;
+				scroll-snap-type: y mandatory;
+			}
+
+			section {
+				height: 91vh;
+				scroll-snap-align: center;
+			}
+
+			/* Other styles */
+			section {
+				padding-top: 1rem;
+				/* display: flex; */
+				/* align-items: center; */
+				/* justify-content: center; */
+			}
+			/* Scroll effect - end */
 		</style>
 
-		<div class="jumbotron jumbotron-fluid" style="background: none; ">
-			<center>
-				<div style="margin-top: 10vh;">
-					<div class="container">
-						<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Association_for_Computing_Machinery_%28ACM%29_logo.svg/1024px-Association_for_Computing_Machinery_%28ACM%29_logo.svg.png"
-							style="height: 20vh;">
-						<h1 class="display-2">Research Mentoring Platform</h1>
-						<br />
-						<!-- <p class="lead">A place to learn and grow!</p> -->
-					</div>
-
-					<h1 class="ml1">
-						<span class="text-wrapper">
-							<span class="line line1"></span>
-							<span class="letters"
-								style="font-size: 2rem; margin-top: 0; word-spacing: 1rem; letter-spacing: 0.5rem;">
-								A place to learn and grow!
-							</span>
-							<span class="line line2"></span>
-						</span>
-					</h1>
-				</div>
-			</center>
-			
-			<div id="visitor-app" style="position: absolute; bottom: 2vh;">
-				<table style="width: 100vw;">
-					<tr>
-						<td v-for="field in platform_fields">
-							<center>
-							<div class="btn stat_box">
-									<h3>[[ field['value'] ]]</h3>
-									[[ field['info'] ]]
-								</td>
-							</center>
+		<main class="scroll-container" style="overflow-x: hidden;">
+			<section>
+				<center>
+					<div style="margin-top: 8vh;">
+						<div class="container">
+							<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Association_for_Computing_Machinery_%28ACM%29_logo.svg/1024px-Association_for_Computing_Machinery_%28ACM%29_logo.svg.png"
+								style="height: 20vh;">
+							<h1 class="display-2">Research Mentoring Platform</h1>
+							<br />
+							<!-- <p class="lead">A place to learn and grow!</p> -->
 						</div>
-					</tr>
-				</table>
-			</div>
-		</div>
+
+						<h1 class="ml1">
+							<span class="text-wrapper">
+								<span class="line line1"></span>
+								<span class="letters"
+									style="font-size: 2rem; margin-top: 0; word-spacing: 1rem; letter-spacing: 0.5rem;">
+									A place to learn and grow!
+								</span>
+								<span class="line line2"></span>
+							</span>
+						</h1>
+					</div>
+				</center>
+			
+				<div id="visitor-app" style="margin-top: 130px; margin-bottom: 0;">
+					<table style="width: 100vw; ">
+						<tr>
+							<td v-for="field in platform_fields">
+								<center>
+								<div class="btn stat_box">
+										<h3>[[ field['value'] ]]</h3>
+										[[ field['info'] ]]
+									</td>
+								</center>
+							</div>
+						</tr>
+					</table>
+				</div>
+			</section>
+
+			<section style="display: flex; align-items: center;">
+				<div style="padding: 3rem; background-color: rgba(50, 100, 150, 0.3); font-size: larger;">
+					ACM India is committed to improving research in Computing in India. Through this platform, it aims to provide mentorship
+					to PhD students as well as junior and less experienced faculty who may need some mentorship for their research. It also
+					aims to provide mentorship to BTech and MTech students for their thesis work, if it is a research thesis.
+					<br/><br/>
+					
+					The list of mentors who have agreed to provide guidance is here - we hope to continue expanding this list and include
+					more experts, including from industry and outside India.
+					<br/><br/>
+					
+					The names of mentees is kept confidential - only the mentor knows the name of the mentee, and his/her registration.
+					<br/><br/>
+					
+					Research mentoring is a process in which the mentor helps the mentee over a period of time to help improve the quality
+					of research of the mentee. The mentor-mentee relationship is therefore expected to last for a reasonable period, though
+					one-time mentoring help is also sometimes desirable, and is available. Please see the note regarding the mentorship
+					process and your commitment.
+					<br/><br/>
+					
+					If you are interested in seeking mentorship help, please signup.
+					<br/><br/>
+					
+					If you are interested in providing mentorship for research, please sign up - your request will be sent to the
+					administration, and when approved, your profile will appear in the mentor page.
+				</div>
+			</section>
+		</main>
 
 	{% endif %}
 
