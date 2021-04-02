@@ -182,6 +182,7 @@ const AddMeetingSummary = {
 			this.next_meeting_agenda = "";
 
 			alert('[SUCCESS] Meeting summary added');
+			
 			document.getElementById("summary-close-button").click();
 		}
 	}
