@@ -115,21 +115,32 @@ const ScheduleMeeting = {
 				}
 			})
 			.then(response => {
+				
+				this.meeting_title = "";
+				this.meeting_agenda = "";
+				this.meeting_url = "";
+				this.meeting_time = "";
+
+				// document.getElementById("close-button").click();
+				$('#scheduleModal').modal('hide');
+				$('body').removeClass('modal-open');
+				$('.modal-backdrop').remove();
+				
+				location.reload();
 			})
 			.catch(error => {
 				console.log('[ERROR]');
 				console.log(error);
+				this.meeting_title = "";
+				this.meeting_agenda = "";
+				this.meeting_url = "";
+				this.meeting_time = "";
+
+				// document.getElementById("close-button").click();
+				$('#scheduleModal').modal('hide');
+				$('body').removeClass('modal-open');
+				$('.modal-backdrop').remove();
 			});
-
-			this.meeting_title = "";
-			this.meeting_agenda = "";
-			this.meeting_url = "";
-			this.meeting_time = "";
-
-			// document.getElementById("close-button").click();
-			$('#scheduleModal').modal('hide');
-			$('body').removeClass('modal-open');
-			$('.modal-backdrop').remove();
 		}
 	}
 };

@@ -67,7 +67,7 @@ const ShowMentorMenteeStats = {
 				},
 				
 				'avg_meeting_duration': {
-					'info': 'Average meeting duration',
+					'info': 'Average meeting duration (hrs)',
 					'value': '',
 				},
 			}
@@ -101,6 +101,17 @@ const ShowMentorMenteeStats = {
 			.then(response => {
 				for (let field in this.fields) {
 					this.fields[field]['value'] = response.data[field];
+				}
+
+				let v = this.fields['avg_meeting_duration']['value'];
+				let hours = Math.floor(v);
+				let minutes = Math.floor((v - hours) * 60);
+				
+				if (hours > 0) {
+					this.fields['avg_meeting_duration']['value'] = hours + 'h ' + minutes + 'm'
+				} 
+				else {
+					this.fields['avg_meeting_duration']['value'] = minutes + 'm'
 				}
 			})
 			.catch(error => {
