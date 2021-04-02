@@ -20,7 +20,11 @@ const ProgressTracker = {
 			</div>
 
 			<main>
-				<p v-for="milestone in milestones">[[ milestone ]]</p>
+				<p v-for="milestone in milestones">
+					[[ milestone.content ]]
+					</br>
+					<small class="font-italic" style="color: #7575ab;"> [[ milestone.timestamp ]] </small>
+				</p>
 			</main>
 
 			

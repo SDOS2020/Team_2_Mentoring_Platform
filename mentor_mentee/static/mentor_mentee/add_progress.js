@@ -27,6 +27,12 @@ const AddProgress = {
 								<label class="col-form-label">Enter details:</label>
 								<textarea v-model="new_milestone" class="form-control"></textarea>
 							</div>
+
+							<div class="form-group">
+								<label for="milestone-time" class="col-form-label">Time:</label>
+								<br/>
+								<input v-model="milestone_time" type="date" class="form-control" id="milestone-time" name="milestone-time" min="2020-11-20" max="2000-13-13" required>
+							</div>
 						</form>
 					</div>
 
@@ -43,6 +49,7 @@ const AddProgress = {
 	data() {
 		return {
 			new_milestone: "",
+			milestone_time: "",
 		};
 	},
 
@@ -58,15 +65,39 @@ const AddProgress = {
 		},
 	},
 
+	mounted() {
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth()+1; //January is 0!
+		var yyyy = today.getFullYear();
+		if (dd < 10) {
+				dd ='0'+ dd
+		}
+
+		if (mm < 10) {
+			mm = '0' + mm
+		} 
+
+		today = yyyy + '-' + mm + '-' + dd;
+		this.milestone_time = today;
+		document.getElementById("milestone-time").setAttribute("max", today);
+	},
+
 	methods: {
 
 		add_new_meeting() {
+			if (this.new_milestone == "" || this.new_milestone == "") {
+				alert("Please fill all the details.")
+				return;
+			}
+			
 			let request_url = "/api/add_milestone/";
 
 			axios.post(request_url, {
 				'mentor': this.mentor,
 				'mentee': this.mentee,
 				'content': this.new_milestone,
+				'timestamp': this.milestone_time
 			}, {
 				headers: {
 					'X-CSRFTOKEN': this.csrf
