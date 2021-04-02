@@ -263,6 +263,7 @@ def accept_mentorship_request(request):
 		MyMentor.objects.create(mentor=user.account.mentor, mentee=requestor.account.mentee)
 		MenteeSentRequest.objects.filter(mentor=user.account.mentor, mentee=requestor.account.mentee).delete()
 		MentorshipRequestMessage.objects.filter(mentor=user.account.mentor, mentee=requestor.account.mentee).delete()
+		send_email_custom([requestor.email], 'Mentorship Request Accepted!', f'{request.user.username} has accepted your mentorship request!')
 		status = True
 	
 	return JsonResponse({"success" : status})
