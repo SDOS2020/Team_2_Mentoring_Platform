@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 
 from mentor_mentee.methods import send_email_custom
-from users.forms import EditAreasForm
+from users.forms import EditAreasForm, MilestoneForm
 from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.utils.timezone import make_aware # Naive to native
@@ -785,8 +785,8 @@ def get_milestones(request):
 	mentor = User.objects.get(username=mentor_name).account.mentor
 	mentee = User.objects.get(username=mentee_name).account.mentee
 
-	milestones = Milestone.objects.filter(mentor=mentor, mentee=mentee).all()
-	milestones = [milestone.content for milestone in milestones]
+	milestones = Milestone.objects.filter(mentor=mentor, mentee=mentee).all().order_by('-timestamp')
+	milestones = [{'content': milestone.content, 'timestamp': milestone.timestamp} for milestone in milestones]
 
 	response = {
 		'milestones': milestones,
@@ -798,18 +798,11 @@ def get_milestones(request):
 @login_required
 @mentor_required
 def add_milestone(request):
-	req = json.loads(request.body)
-
-	mentor_name = req.get('mentor')
-	mentee_name = req.get('mentee')
-	content = req.get('content')
-	
-	mentor = User.objects.get(username=mentor_name).account.mentor
-	mentee = User.objects.get(username=mentee_name).account.mentee
-
-	Milestone.objects.create(mentor=mentor, mentee=mentee, content=content)
-
-	return JsonResponse({'success': True})
+	milestone_form = MilestoneForm(request.POST)
+	if milestone_form.is_valid():
+		milestone_form.save()
+		return JsonResponse({'success': True})
+	return JsonResponse({'success': False})
 
 
 @login_required
