@@ -1,10 +1,14 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
-from .models import Areas, Gender, Fields, User, MentorRoles, MenteeRoles, Account, MentorArea, Milestone
+from .models import Areas, Gender, Fields, User, MentorRoles, MenteeRoles, Account, MentorArea, Milestone, Mentor, \
+	Mentee
 
 
 class MilestoneForm(forms.ModelForm):
+	mentor = forms.ModelChoiceField(queryset=Mentor.objects.all(), to_field_name='username')
+	mentee = forms.ModelChoiceField(queryset=Mentee.objects.all(), to_field_name='username')
+
 	class Meta:
 		model = Milestone
 		fields = '__all__'
