@@ -1,7 +1,13 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
-from .models import Areas, Gender, Fields, User, MentorRoles, MenteeRoles, Account, MentorArea
+from .models import Areas, Gender, Fields, User, MentorRoles, MenteeRoles, Account, MentorArea, Milestone
+
+
+class MilestoneForm(forms.ModelForm):
+	class Meta:
+		model = Milestone
+		fields = '__all__'
 
 
 class MentorRegistrationForm(UserCreationForm):
