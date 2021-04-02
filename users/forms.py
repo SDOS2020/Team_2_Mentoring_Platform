@@ -6,8 +6,6 @@ from .models import Areas, Gender, Fields, User, MentorRoles, MenteeRoles, Accou
 
 
 class MilestoneForm(forms.ModelForm):
-	mentor = forms.ModelChoiceField(queryset=Mentor.objects.all(), to_field_name='username')
-	mentee = forms.ModelChoiceField(queryset=Mentee.objects.all(), to_field_name='username')
 
 	class Meta:
 		model = Milestone
