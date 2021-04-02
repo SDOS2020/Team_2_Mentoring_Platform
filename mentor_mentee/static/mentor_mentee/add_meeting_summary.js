@@ -26,7 +26,7 @@ const AddMeetingSummary = {
 							<div class="form-group">
 								<label class="col-form-label">Start time:</label>
 								<br/>
-								<input v-model="meeting_date" type="datetime-local" class="form-control" min="2020-12-22T08:30" required>
+								<input v-model="meeting_date" id="start-time" type="datetime-local" class="form-control" max="" required>
 							</div>
 						
 							<div class="form-group">
@@ -47,7 +47,7 @@ const AddMeetingSummary = {
 							<div class="form-group">
 								<label class="col-form-label">Next meeting date:</label>
 								<br/>
-								<input v-model="next_meeting_date" type="datetime-local" class="form-control" min="2020-12-22T08:30" required>
+								<input v-model="next_meeting_date" type="datetime-local" class="form-control" required>
 							</div>
 							
 							<div class="form-group">
@@ -77,6 +77,24 @@ const AddMeetingSummary = {
 			next_meeting_date: "",
 			next_meeting_agenda: "",
 		};
+	},
+
+	mounted() {
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth()+1; //January is 0!
+		var yyyy = today.getFullYear();
+		if (dd < 10) {
+				dd ='0'+ dd
+		}
+
+		if (mm < 10) {
+			mm = '0' + mm
+		} 
+
+		today = yyyy + '-' + mm + '-' + dd + 'T23:59:59';
+	
+		document.getElementById("start-time").setAttribute("max", today);
 	},
 
 	props: {
