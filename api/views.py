@@ -798,10 +798,14 @@ def get_milestones(request):
 @login_required
 @mentor_required
 def add_milestone(request):
-	milestone_form = MilestoneForm(request.POST)
+	form_data = json.loads(request.body)
+	form_data['mentor'] = User.objects.get(username=form_data.get('mentor')).account.mentor
+	form_data['mentee'] = User.objects.get(username=form_data.get('mentee')).account.mentee
+	milestone_form = MilestoneForm(form_data)
 	if milestone_form.is_valid():
 		milestone_form.save()
 		return JsonResponse({'success': True})
+	print(milestone_form.errors)
 	return JsonResponse({'success': False})
 
 
