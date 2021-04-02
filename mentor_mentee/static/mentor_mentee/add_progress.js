@@ -31,7 +31,7 @@ const AddProgress = {
 							<div class="form-group">
 								<label for="milestone-time" class="col-form-label">Time:</label>
 								<br/>
-								<input v-model="milestone_time" type="date" class="form-control" id="milestone-time" name="milestone-time" min="2020-11-20" max="2000-13-13" required>
+								<input v-model="milestone_time" type="date" class="form-control" id="milestone-time" name="milestone-time" max="" required>
 							</div>
 						</form>
 					</div>
