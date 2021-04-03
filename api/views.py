@@ -530,7 +530,7 @@ def get_meetings(request, guest_name):
 	meetings = [dict((field, getattr(meeting, field)) for field in fields) for meeting in meeting_created_by_me] + \
 		[dict((field, getattr(meeting, field)) for field in fields) for meeting in meeting_created_for_me]
 
-	meetings.sort(key=lambda x: x['time'])
+	meetings.sort(key=lambda x: x['time'], reverse=True)
 
 	for i in range(len(meetings)):
 		meetings[i]['day'] = meetings[i]['time'].strftime('%a')
