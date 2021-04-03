@@ -263,6 +263,7 @@ def accept_mentorship_request(request):
 		MyMentor.objects.create(mentor=user.account.mentor, mentee=requestor.account.mentee)
 		MenteeSentRequest.objects.filter(mentor=user.account.mentor, mentee=requestor.account.mentee).delete()
 		MentorshipRequestMessage.objects.filter(mentor=user.account.mentor, mentee=requestor.account.mentee).delete()
+		send_email_custom([requestor.email], 'Mentorship Request Accepted!', f'{request.user.username} has accepted your mentorship request!')
 		status = True
 	
 	return JsonResponse({"success" : status})
@@ -529,7 +530,7 @@ def get_meetings(request, guest_name):
 	meetings = [dict((field, getattr(meeting, field)) for field in fields) for meeting in meeting_created_by_me] + \
 		[dict((field, getattr(meeting, field)) for field in fields) for meeting in meeting_created_for_me]
 
-	meetings.sort(key=lambda x: x['time'])
+	meetings.sort(key=lambda x: x['time'], reverse=True)
 
 	for i in range(len(meetings)):
 		meetings[i]['day'] = meetings[i]['time'].strftime('%a')
