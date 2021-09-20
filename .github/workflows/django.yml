@@ -48,3 +48,4 @@ jobs:
     - name: Run Tests
       run: |
         python manage.py test sdos_project
+        echo $SDOS_DB
